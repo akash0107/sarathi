@@ -392,6 +392,13 @@
     // If the vision image path is set but the file is missing, fall back gracefully.
     Array.prototype.forEach.call(document.querySelectorAll(".vision-img"), function (img) {
       img.addEventListener("error", function () {
+        if (!img.dataset.retried) {
+          img.dataset.retried = "1";
+          var pic = img.closest("picture");
+          if (pic) { var src = pic.querySelector("source"); if (src) src.remove(); }
+          img.src = img.getAttribute("src").split("?")[0] + "?r=" + Date.now();
+          return;
+        }
         var sec = img.closest(".vision");
         var box = img.closest(".vision-link") || img;
         if (sec) sec.classList.remove("has-image");
