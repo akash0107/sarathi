@@ -66,6 +66,7 @@
     book: '<path d="M4 4h6a3 3 0 013 3v13a2 2 0 00-2-2H4z"/><path d="M20 4h-6a3 3 0 00-3 3v13a2 2 0 012-2h7z"/>',
     feather: '<path d="M20 4C12 4 6 10 5 19"/><path d="M20 4c0 7-5 12-12 13"/><ellipse cx="15" cy="9" rx="2" ry="2.6" transform="rotate(40 15 9)"/>',
     heart: '<path d="M12 20s-7-4.5-9-9a4.8 4.8 0 019-3 4.8 4.8 0 019 3c-2 4.5-9 9-9 9z"/>',
+    plane: '<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
     phone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 006 6L16 13l5 2v4a2 2 0 01-2 2A17 17 0 013 5a2 2 0 012-2z"/>',
     arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     loop: '<path d="M20 12a8 8 0 11-3-6.2"/><path d="M20 4v4h-4"/>'
@@ -237,6 +238,46 @@
     }).join("") + "</section>";
   };
 
+  R.checklist = function (s) {
+    var base = "sarathi:check:" + (s.id || "list") + ":";
+    return '<section class="card sec checklist">' + h2(s.title) + (s.note ? '<p class="muted small">' + md(s.note) + "</p>" : "") +
+      '<div class="todo-grid">' + (s.groups || []).map(function (g, gi) {
+        return '<div class="check-group"><h3>' + md(g.title) + '</h3><ul class="checks">' +
+          (g.items || []).map(function (it, ii) {
+            var id = "chk-" + esc(s.id || "list") + "-" + gi + "-" + ii;
+            return '<li><input type="checkbox" id="' + id + '" data-key="' + esc(base + gi + "-" + ii) + '"><label for="' + id + '">' + md(it) + "</label></li>";
+          }).join("") + '</ul><p class="check-count muted small" aria-live="polite"></p></div>';
+      }).join("") + "</div></section>";
+  };
+
+  R.goals = function (s) {
+    var phases = (s.phases || []).map(function (ph, i) {
+      return '<li class="phase phase-' + (i + 1) + '"><div class="phase-head"><span class="phase-title">' + esc(ph.title) + "</span>" +
+        (ph.period ? '<span class="phase-period">' + esc(ph.period) + "</span>" : "") + "</div>" +
+        '<ul class="goal-list">' + (ph.items || []).map(function (g) {
+          return "<li><strong>" + md(g.goal) + "</strong>" + (g.detail ? '<span class="goal-detail">' + md(g.detail) + "</span>" : "") + "</li>";
+        }).join("") + "</ul></li>";
+    }).join("");
+    return '<section class="card sec goals">' + h2(s.title) +
+      (s.theme && s.theme.length ? '<p class="goal-theme">' + s.theme.map(esc).join(' <span aria-hidden="true">•</span> ') + "</p>" : "") +
+      '<ol class="phases">' + phases + "</ol>" +
+      (s.motto ? '<blockquote class="motto">' + md(s.motto) + "</blockquote>" : "") + "</section>";
+  };
+
+  R.vision = function (s) {
+    var dims = (s.width ? ' width="' + esc(s.width) + '"' : "") + (s.height ? ' height="' + esc(s.height) + '"' : "");
+    var img = '<img class="vision-img" src="' + esc(s.fallback || s.image) + '" alt="' + esc(s.alt || s.title) + '"' + dims + ' decoding="async">';
+    var pic = s.fallback && s.fallback !== s.image ? '<picture><source type="image/webp" srcset="' + esc(s.image) + '">' + img + "</picture>" : img;
+    var inner = s.image
+      ? '<a class="vision-link" href="' + esc(s.full || s.fallback || s.image) + '" target="_blank" rel="noopener" aria-label="Open the vision card full size">' + pic + "</a>"
+      : '<div class="vision-empty"><img src="assets/img/sarathi-logo.webp" width="72" height="72" alt="">' +
+        '<p class="vision-text">' + md(s.placeholder || "Your vision card will appear here.") + "</p>" +
+        (s.help ? '<p class="muted small">' + md(s.help) + "</p>" : "") + "</div>";
+    return (s.image ? h2(s.title || "Vision card") : "") +
+      '<section class="sec vision' + (s.image ? " has-image" : "") + '">' + (s.image ? "" : '<span class="vision-label">' + esc(s.title || "Vision card") + "</span>") + inner + "</section>" +
+      (s.image && s.caption ? '<p class="vision-cap muted small">' + md(s.caption) + "</p>" : "");
+  };
+
   function renderSections(sections) {
     return (sections || []).map(function (s) {
       var fn = R[s.type];
@@ -274,7 +315,7 @@
     var goal = store.get("sarathi:goal:" + istDateKey());
 
     var cards = C.pages.map(function (pg) {
-      return '<a class="tile accent-' + esc(pg.accent) + '" href="' + esc(pg.file) + '">' +
+      return '<a class="tile accent-' + esc(pg.accent) + (pg.featured ? " is-featured" : "") + '" href="' + esc(pg.file) + '">' +
         '<span class="tile-ico">' + icon(pg.icon) + "</span>" +
         '<span class="tile-text"><span class="tile-title">' + esc(pg.title) + '</span><span class="tile-sub">' + esc(pg.subtitle) + "</span></span>" +
         '<span class="tile-go">' + icon("arrow") + "</span></a>";
@@ -333,6 +374,32 @@
     });
   }
 
+  function wireChecklists() {
+    Array.prototype.forEach.call(document.querySelectorAll(".check-group"), function (g) {
+      var boxes = g.querySelectorAll("input[type=checkbox]");
+      var count = g.querySelector(".check-count");
+      function update() {
+        var n = 0;
+        Array.prototype.forEach.call(boxes, function (b) { if (b.checked) n++; });
+        count.textContent = n + " of " + boxes.length + " done";
+      }
+      Array.prototype.forEach.call(boxes, function (b) {
+        b.checked = store.get(b.getAttribute("data-key")) === "1";
+        b.addEventListener("change", function () { store.set(b.getAttribute("data-key"), b.checked ? "1" : "0"); update(); });
+      });
+      update();
+    });
+    // If the vision image path is set but the file is missing, fall back gracefully.
+    Array.prototype.forEach.call(document.querySelectorAll(".vision-img"), function (img) {
+      img.addEventListener("error", function () {
+        var sec = img.closest(".vision");
+        var box = img.closest(".vision-link") || img;
+        if (sec) sec.classList.remove("has-image");
+        box.outerHTML = '<div class="vision-empty"><p class="vision-text">Your vision card will appear here.</p><p class="muted small">Image not found at ' + esc(img.getAttribute("src")) + ".</p></div>";
+      });
+    });
+  }
+
   /* ---------- boot ---------- */
   renderChrome();
   if (pageId === "home") {
@@ -347,4 +414,5 @@
     }
   }
   wirePrompts();
+  wireChecklists();
 })();

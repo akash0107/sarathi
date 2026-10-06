@@ -23,6 +23,9 @@
        journal   -> { type, title, entries: [{ date, note, worked: [], didnt: [] }] }
        contact   -> { type, title, items: [{ name, detail, phone, link }] }
        chips     -> { type, title, items: ["...", ...] }
+       checklist -> { type, title, id, note, groups: [{ title, items: [...] }] }  (tick boxes, saved in this browser)
+       vision    -> { type, title, image, fallback, full, width, height, alt, caption, placeholder, help }  (image "" = placeholder)
+       goals     -> { type, title, theme: [...], phases: [{ title, period, items: [{ goal, detail }] }], motto }
    ===================================================================== */
 
 window.SARATHI = {
@@ -305,6 +308,145 @@ window.SARATHI = {
             { title: "Design & leadership", items: ["To expand: design a test framework from scratch", "To expand: test strategy for a microservices product", "To expand: leading a QA team, mentoring, metrics"] },
             { title: "Behavioural", items: ["To expand: STAR stories (impact, conflict, failure)", "To expand: why this company / why now", "To expand: salary negotiation for 40+ LPA"] }
           ]
+        }
+      ]
+    },
+
+    /* ---------------------------------------------------- Dubai Dream */
+    {
+      id: "dubai",
+      file: "dubai.html",
+      title: "Dubai Dream",
+      subtitle: "See the life clearly, then build it two hours at a time",
+      icon: "plane",
+      accent: "gold",
+      featured: true,                 // wider, highlighted card on the home page
+      sections: [
+        {
+          type: "vision",
+          title: "Vision card",
+          image: "assets/img/vision-card.webp",   // shown on the page ("" = placeholder)
+          fallback: "assets/img/vision-card.jpg", // for browsers without WebP + the GitHub Markdown page
+          full: "assets/img/vision-card.jpg",     // opened when the card is tapped
+          width: 1600, height: 900,
+          alt: "Akash's Vision board: short, mid and long-term goals with the motto 'I can be ambitious and calm. I trust myself to take the next step.'",
+          placeholder: "Your vision card will appear here.",
+          help: "Coming soon. Save the image as assets/img/vision-card.* and set its path in content.js.",
+          caption: "Akash's vision board. Tap to open full size."
+        },
+        {
+          type: "callout",
+          tone: "gold",
+          title: "The dream",
+          body: ["A strong **QA / SDET lead role in Dubai or abroad**, and in the long run, **a home and IT career in Europe**. The board below maps the road there, step by step."]
+        },
+        {
+          type: "goals",
+          title: "Akash's Vision",
+          theme: ["Calm", "Motivated", "Energetic", "Self-belief"],
+          phases: [
+            { title: "Short term", period: "2026-2027", items: [
+              { goal: "₹45 LPA+ CTC job offer", detail: "By 31 December 2026" },
+              { goal: "Move daily, eat well", detail: "A calm, focused mind" },
+              { goal: "₹10 lakh debt → ₹0", detail: "By 31 March 2027" },
+              { goal: "Soft-spoken, calm, gentle" }
+            ] },
+            { title: "Mid term", period: "2028-2030", items: [
+              { goal: "Senior Test Automation Architect" },
+              { goal: "8 kg lighter", detail: "Strong, fit, energised" },
+              { goal: "Mahindra XUV 7XO", detail: "₹25 lakh planned ex-showroom budget" },
+              { goal: "Daily yoga & meditation" }
+            ] },
+            { title: "Long term", period: "2031+", items: [
+              { goal: "Vice President", detail: "At a reputed multinational company" },
+              { goal: "Lifelong energy & wellbeing" },
+              { goal: "₹20 lakh invested", detail: "Patience, consistency, freedom" },
+              { goal: "A home & IT career in Europe", detail: "₹10 lakh relocation fund" }
+            ] }
+          ],
+          motto: "I can be ambitious and calm. I trust myself to take the next step."
+        },
+        {
+          type: "visualize",
+          title: "The vision",
+          intro: "Sit tall, breathe slowly and see it in detail. Not as a wish, but as a place you are walking towards.",
+          parts: [
+            {
+              title: "1. The role",
+              prompts: [
+                "A **Senior SDET / QA Lead** role at a well-funded bank, fintech or strong product company in Dubai or abroad.",
+                "You own the test strategy. Your Playwright and API frameworks run in CI on every commit, and the team trusts your judgement.",
+                "You walk in calm, prepared and respected."
+              ]
+            },
+            {
+              title: "2. The money",
+              prompts: [
+                "**Tax-free income** (the UAE has no personal income tax).",
+                "The **₹1 lakh EMI** goes out each month with ease, without a second thought.",
+                "Savings grow every month instead of draining. **Financial freedom**, and your family secure."
+              ]
+            },
+            {
+              title: "3. The person you become",
+              prompts: [
+                "Up at 6, mind steady, work done before distractions get a chance.",
+                "When code gets hard you get curious, not anxious.",
+                "Disciplined, kind, confident: someone others lean on."
+              ]
+            },
+            {
+              title: "4. The discipline it takes",
+              prompts: [
+                "None of this arrives by wishing. It is built **two hours at a time**.",
+                "One focused learning block, one application, one referral request, one interview topic. Every day.",
+                "On low days, do the smallest version. Never zero."
+              ]
+            }
+          ]
+        },
+        {
+          type: "checklist",
+          id: "dubai",
+          title: "What it takes",
+          note: "Tick items as you complete them (saved in this browser only). Edit the list in content.js anytime.",
+          groups: [
+            { title: "Upskilling", items: [
+              "Playwright advanced: fixtures, sharding, trace viewer",
+              "API & contract testing (Rest Assured, Pact)",
+              "GenAI / LLM testing fundamentals",
+              "CI/CD pipelines as code (Jenkins / GitHub Actions)"
+            ] },
+            { title: "Applications", items: [
+              "Shortlist UAE / abroad target companies (banks, fintechs, product firms)",
+              "Update LinkedIn: open to work in Dubai / UAE",
+              "Tailor the resume for Gulf roles: quantified impact, 2 pages max",
+              "Set a weekly application target and keep it"
+            ] },
+            { title: "Referrals", items: [
+              "Find SDETs / QA leads at target companies in Dubai on LinkedIn",
+              "Send short, specific referral requests every week",
+              "Follow up politely after 5-7 days"
+            ] },
+            { title: "Interview prep", items: [
+              "Framework design walkthrough: your own framework story",
+              "Leadership and STAR stories",
+              "Live coding in Java",
+              "Research salary bands in AED and set your number"
+            ] }
+          ]
+        },
+        {
+          type: "verse",
+          ref: "6.5",
+          speaker: "Krishna",
+          note: "Nobody else can do this lifting for you, and nobody can stop you from doing it."
+        },
+        {
+          type: "callout",
+          tone: "teal",
+          title: "Today's link to the dream",
+          body: ["Every focused block today is a brick in that life. Go to [Today](today.html) and pick the one action for the next two hours."]
         }
       ]
     },
