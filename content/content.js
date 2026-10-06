@@ -325,10 +325,10 @@ window.SARATHI = {
         {
           type: "vision",
           title: "Vision card",
-          image: "assets/img/vision-card.webp?v=202610061659",   // shown on the page ("" = placeholder)
-          fallback: "assets/img/vision-card.jpg?v=202610061659", // for browsers without WebP + the GitHub Markdown page
-          full: "assets/img/vision-card.jpg?v=202610061659",     // opened when the card is tapped
-          width: 1600, height: 900,
+          image: "assets/img/vision-card.webp?v=202610061704",   // shown on the page ("" = placeholder)
+          fallback: "assets/img/vision-card.jpg?v=202610061704", // for browsers without WebP + the GitHub Markdown page
+          full: "assets/img/vision-card.jpg?v=202610061704",     // opened when the card is tapped
+          width: 1672, height: 1163,
           alt: "Akash's Vision board: short, mid and long-term goals with the motto 'I can be ambitious and calm. I trust myself to take the next step.'",
           placeholder: "Your vision card will appear here.",
           help: "Coming soon. Save the image as assets/img/vision-card.* and set its path in content.js.",
