@@ -471,9 +471,13 @@ window.SARATHI = {
               worked: [
                 "Completed a full 2-hour coding session (Japneet's Udemy course) in the morning.",
                 "Finished half of Kartik's pytest sessions.",
-                "Every-2-hours reminders and one-block-at-a-time focus."
+                "Every-2-hours reminders and one-block-at-a-time focus.",
+                "Started AI courses in the evening.",
+                "Built an n8n AI agent that creates Jira bugs from an Excel file.",
+                "Built an AI agent that fetches Azure DevOps user stories, generates test cases and pushes them back to Azure DevOps.",
+                "Applied to a couple of jobs and got some replies."
               ],
-              didnt: ["Got stuck on Playwright custom fixtures in TypeScript (syntax felt hard), but asked for help instead of escaping."]
+              didnt: ["Got stuck on Playwright custom fixtures in TypeScript (syntax felt hard), but asked for help instead of escaping.", "No referrals yet; follow-ups needed."]
             },
             {
               date: "2026-10-06",
