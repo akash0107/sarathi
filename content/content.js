@@ -469,11 +469,11 @@ window.SARATHI = {
               date: "2026-10-07",
               note: "First full day with Sarathi. Goal for the day: make myself satisfied.",
               worked: [
-                "Completed a full 2-hour coding session (Chapni's Udemy course) in the morning.",
+                "Completed a full 2-hour coding session (Japneet's Udemy course) in the morning.",
                 "Finished half of Kartik's pytest sessions.",
                 "Every-2-hours reminders and one-block-at-a-time focus."
               ],
-              didnt: ["to fill in"]
+              didnt: ["Got stuck on Playwright custom fixtures in TypeScript (syntax felt hard), but asked for help instead of escaping."]
             },
             {
               date: "2026-10-06",
