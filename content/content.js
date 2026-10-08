@@ -628,14 +628,20 @@ markers =
           entries: [
             {
               date: "2026-10-08",
-              note: "Overslept after a restless night and woke up feeling guilty, but restarted instead of writing the day off. Plan: job follow-ups after lunch, then Japneet's Playwright course in the afternoon.",
+              note: "A real win. Overslept to 9:19 AM after a restless night and woke up feeling guilty, but restarted instead of writing the day off. By 5:39 PM IST: finished the pytest test, did the internal job application, sent my learnings (now the [Pytest Notes](pytest.html) page) and completed everything I planned in Japneet's Playwright course, up to the API section and the playwright.config.ts file.",
               worked: [
-                "Restarted the day after a late, guilty start instead of giving up.",
+                "The gentle restart plan after the late, guilty start, instead of giving up on the day.",
+                "Short 25-minute focused blocks with the phone away.",
+                "The movement / 'Uttishtha' (arise!) motivation message at about 2 PM.",
                 "Finished the pytest test in the morning.",
-                "Started an internal job application.",
-                "Sent my pytest learnings to Sarathi and got simple notes with code examples ([Pytest Notes](pytest.html))."
+                "Did the internal job application.",
+                "Sent my pytest learnings to Sarathi and got simple notes with code examples ([Pytest Notes](pytest.html)).",
+                "Completed all of today's planned Playwright course work (Japneet), up to the API section and playwright.config.ts."
               ],
-              didnt: ["Overslept after a restless night; the mind kept racing while trying to sleep."]
+              didnt: [
+                "Overslept to 9:19 AM after a restless night; the mind kept racing while trying to sleep.",
+                "Pending: LinkedIn referral follow-ups are still to be sent."
+              ]
             },
             {
               date: "2026-10-07",
