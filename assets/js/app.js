@@ -79,7 +79,7 @@
   function renderChrome() {
     var nav = C.pages.map(function (p) {
       var cur = p.id === pageId ? ' aria-current="page"' : "";
-      return '<a class="nav-link accent-' + esc(p.accent) + '" href="' + esc(p.file) + '"' + cur + ">" + esc(p.title) + "</a>";
+      return '<a class="nav-link accent-' + esc(p.accent) + '" href="' + esc(p.file) + '"' + cur + ">" + esc(p.nav || p.title) + "</a>";
     }).join("");
     var header = document.getElementById("site-header");
     if (header) {
@@ -278,6 +278,20 @@
       (s.image && s.caption ? '<p class="vision-cap muted small">' + md(s.caption) + "</p>" : "");
   };
 
+  // Learning notes: paragraphs, bullet lists and code blocks (whitespace preserved).
+  R.lesson = function (s) {
+    return '<section class="card sec lesson">' + h2(s.title) + (s.blocks || []).map(function (b) {
+      if (b.code != null) {
+        var code = String(b.code).replace(/^\n+/, "").replace(/\s+$/, "");
+        return '<div class="code-block"><div class="code-head"><span class="code-lang">' + esc(b.lang || "code") + "</span>" +
+          '<button type="button" class="code-copy" aria-label="Copy code">Copy</button></div>' +
+          '<pre tabindex="0"><code>' + esc(code) + "</code></pre></div>";
+      }
+      if (b.list) return '<ul class="list">' + b.list.map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>";
+      return "<p>" + md(b.text) + "</p>";
+    }).join("") + "</section>";
+  };
+
   function renderSections(sections) {
     return (sections || []).map(function (s) {
       var fn = R[s.type];
@@ -407,6 +421,17 @@
     });
   }
 
+  function wireCode() {
+    Array.prototype.forEach.call(document.querySelectorAll(".code-copy"), function (btn) {
+      btn.addEventListener("click", function () {
+        var code = btn.closest(".code-block").querySelector("code").textContent;
+        function done(ok) { btn.textContent = ok ? "Copied" : "Select & copy"; setTimeout(function () { btn.textContent = "Copy"; }, 1500); }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(function () { done(true); }, function () { done(false); });
+        else done(false);
+      });
+    });
+  }
+
   /* ---------- boot ---------- */
   renderChrome();
   if (pageId === "home") {
@@ -422,4 +447,5 @@
   }
   wirePrompts();
   wireChecklists();
+  wireCode();
 })();

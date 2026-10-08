@@ -325,6 +325,18 @@ p:last-child { margin-bottom: 0; }
 .foot-help a { color: var(--rose); font-weight: 600; }
 .error, .noscript { max-width: 640px; margin: 20px auto; padding: 14px 16px; border-radius: 12px; background: rgba(240,138,155,0.1); border: 1px solid rgba(240,138,155,0.35); }
 
+/* ---------- lesson / code blocks ---------- */
+.lesson .list { margin: 0 0 12px; }
+.code-block { margin: 8px 0 14px; border: 1px solid rgba(44, 196, 181, 0.28); border-radius: 12px; background: #04071a; overflow: hidden; }
+.code-block:last-child { margin-bottom: 0; }
+.code-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 6px 4px 14px; background: rgba(44, 196, 181, 0.09); border-bottom: 1px solid rgba(44, 196, 181, 0.18); }
+.code-lang { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); font-weight: 600; }
+.code-copy { font: 600 0.75rem var(--sans); color: var(--muted); background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 3px 10px; cursor: pointer; }
+.code-copy:hover, .code-copy:focus-visible { color: var(--gold-2); border-color: var(--gold); }
+.code-block pre { margin: 0; padding: 12px 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: pre; tab-size: 4; }
+.code-block pre:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+.code-block code { display: block; font: 0.84rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; white-space: pre; background: none; padding: 0; border-radius: 0; color: #e7eaff; }
+
 /* ---------- larger screens ---------- */
 @media (min-width: 640px) {
   main { padding: 28px 24px 56px; }

@@ -26,6 +26,9 @@
        checklist -> { type, title, id, note, groups: [{ title, items: [...] }] }  (tick boxes, saved in this browser)
        vision    -> { type, title, image, fallback, full, width, height, alt, caption, placeholder, help }  (image "" = placeholder)
        goals     -> { type, title, theme: [...], phases: [{ title, period, items: [{ goal, detail }] }], motto }
+       lesson    -> { type, title, blocks: [{ text: "..." } | { code: `...`, lang: "python" } | { list: ["...", ...] }] }
+                    (learning notes; code goes in backtick strings so line breaks and indentation are kept)
+   - A page may set nav: "Short name" to use a shorter label in the top navigation.
    ===================================================================== */
 
 window.SARATHI = {
@@ -33,8 +36,8 @@ window.SARATHI = {
     name: "Sarathi Hub",
     owner: "Akash Debnath",
     tagline: "Your steady charioteer for mind, work and the road ahead.",
-    lastUpdated: "2026-10-07",          // YYYY-MM-DD (IST)
-    lastUpdatedLabel: "Oct 7, 2026 (IST)",
+    lastUpdated: "2026-10-08",          // YYYY-MM-DD (IST)
+    lastUpdatedLabel: "Oct 8, 2026 (IST)",
     timezone: "Asia/Kolkata"
   },
 
@@ -312,6 +315,164 @@ window.SARATHI = {
       ]
     },
 
+    /* ------------------------------------------------------------- 4b */
+    {
+      id: "pytest",
+      file: "pytest.html",
+      title: "Pytest Notes (Oct 8, 2026)",
+      nav: "Pytest Notes",
+      subtitle: "What I learned in pytest, explained simply with tiny code examples",
+      icon: "code",
+      accent: "teal",
+      sections: [
+        {
+          type: "lesson",
+          title: "1. Installation",
+          blocks: [
+            { lang: "bash", code: `pip install pytest
+pytest --version` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "2. Skeleton",
+          blocks: [
+            { text: "pytest finds files named `test_*.py` and runs every function whose name starts with `test_`. That's the whole structure." },
+            { lang: "python", code: `# test_login.py
+def test_addition():
+    assert 2 + 3 == 5` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "3. Assertion",
+          blocks: [
+            { text: "`assert` means \"this must be true\". If it's false, the test fails and pytest shows you both values." },
+            { lang: "python", code: `def test_title():
+    title = "Dashboard"
+    assert title == "Dashboard"
+    assert "Dash" in title
+    assert len(title) > 0` },
+            { text: "To check that something raises an error:" },
+            { lang: "python", code: `import pytest
+
+def test_divide_by_zero():
+    with pytest.raises(ZeroDivisionError):
+        1 / 0` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "4. Ways to run",
+          blocks: [
+            { lang: "bash", code: `pytest                          # every test in the folder
+pytest test_login.py            # one file
+pytest test_login.py::test_title  # one test
+pytest -v                       # verbose: shows each test name and PASSED/FAILED
+pytest -k "login"               # only tests with "login" in the name
+pytest -k "login and not admin" # combine words
+pytest -s                       # show print() output
+pytest -x                       # stop at the first failure` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "5. Fixtures",
+          blocks: [
+            { text: "Think of a fixture as a helper who sets the table before you eat and clears it afterwards. The test just asks for it by name." },
+            { lang: "python", code: `import pytest
+
+@pytest.fixture
+def user():
+    print("setup: create user")
+    yield {"name": "akash", "role": "admin"}   # the test gets this
+    print("teardown: delete user")             # runs after the test
+
+def test_user_role(user):          # asking for the fixture by name
+    assert user["role"] == "admin"` },
+            { text: "Code before `yield` is setup, and code after `yield` is cleanup." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "6. conftest.py and scope",
+          blocks: [
+            { text: "Put fixtures in `conftest.py` and every test file in that folder can use them without importing anything. Scope decides how often the fixture runs:" },
+            { list: [
+              "`function` (the default) runs once per test",
+              "`class` runs once per test class",
+              "`module` runs once per file",
+              "`session` runs once for the whole run"
+            ] },
+            { lang: "python", code: `# conftest.py
+import pytest
+
+@pytest.fixture(scope="session")
+def base_url():
+    return "https://reqres.in/api"
+
+@pytest.fixture(scope="function")
+def api_headers():
+    return {"Content-Type": "application/json"}` },
+            { text: "A testing example: open the DB connection or log in once per `session`, but create fresh test data per `function`." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "7. Parametrize",
+          blocks: [
+            { text: "Same test, many data sets, and each one shows up as its own test in the report." },
+            { lang: "python", code: `import pytest
+
+@pytest.mark.parametrize("username, password, expected", [
+    ("admin", "admin123", True),
+    ("admin", "wrong",    False),
+    ("",      "admin123", False),
+])
+def test_login(username, password, expected):
+    result = (username == "admin" and password == "admin123")
+    assert result == expected` },
+            { text: "This gives you 3 tests from one function, which is great for data-driven login and API checks." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "8. Marks",
+          blocks: [
+            { text: "Marks are labels you stick on tests so you can run groups of them." },
+            { lang: "python", code: `import pytest
+
+@pytest.mark.smoke
+def test_homepage(): ...
+
+@pytest.mark.regression
+def test_full_checkout(): ...
+
+@pytest.mark.skip(reason="bug JIRA-101 open")
+def test_broken(): ...
+
+@pytest.mark.xfail(reason="known issue")
+def test_known_fail(): ...` },
+            { lang: "bash", code: `pytest -m smoke                    # only smoke tests
+pytest -m "smoke or regression"` },
+            { text: "Register custom marks in `pytest.ini` so you don't get warnings:" },
+            { lang: "ini", code: `[pytest]
+markers =
+    smoke: quick checks
+    regression: full suite` }
+          ]
+        },
+        {
+          type: "callout",
+          tone: "teal",
+          title: "Practice exercise",
+          body: [
+            "Make one folder with `conftest.py` (holding a `base_url` fixture) and `test_api.py`, then write one parametrized test marked `smoke` and run it with `pytest -v -m smoke`. That one exercise covers all 8 points."
+          ]
+        }
+      ]
+    },
+
     /* ---------------------------------------------------- Dubai Dream */
     {
       id: "dubai",
@@ -465,6 +626,17 @@ window.SARATHI = {
           title: "Log",
           help: "Add new entries at the TOP of the entries list in content.js. Fill 'worked' and 'didnt' as you learn.",
           entries: [
+            {
+              date: "2026-10-08",
+              note: "Overslept after a restless night and woke up feeling guilty, but restarted instead of writing the day off. Plan: job follow-ups after lunch, then Japneet's Playwright course in the afternoon.",
+              worked: [
+                "Restarted the day after a late, guilty start instead of giving up.",
+                "Finished the pytest test in the morning.",
+                "Started an internal job application.",
+                "Sent my pytest learnings to Sarathi and got simple notes with code examples ([Pytest Notes](pytest.html))."
+              ],
+              didnt: ["Overslept after a restless night; the mind kept racing while trying to sleep."]
+            },
             {
               date: "2026-10-07",
               note: "First full day with Sarathi. Goal for the day: make myself satisfied.",
