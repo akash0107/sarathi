@@ -498,7 +498,7 @@ markers =
           blocks: [
             { text: "**Everyday picture:** your test speaks \"code\", and the phone only understands taps and swipes. Appium is the **translator in the middle**, like a TV remote. You press a button on the remote (your code), and the TV (the phone) does it." },
             { text: "There are 4 pieces, passed along like a relay race:" },
-            { img: "assets/img/appium/architecture.svg", width: 400, height: 614, alt: "Diagram: your test code sends an HTTP command to the Appium server on port 4723, which hands it to a driver (UiAutomator2 for Android, XCUITest for iOS), which taps the button on the device.", caption: "The relay race: test code → Appium server → driver → device. Tap to open full size." },
+            { img: "assets/img/appium/architecture.svg?v=202610092330", width: 400, height: 614, alt: "Diagram: your test code sends an HTTP command to the Appium server on port 4723, which hands it to a driver (UiAutomator2 for Android, XCUITest for iOS), which taps the button on the device.", caption: "The relay race: test code → Appium server → driver → device. Tap to open full size." },
             { text: "The same flow as plain text (handy to copy into your own notes):" },
             { lang: "text", code: `Your test code (Java / Python)        -> "click the Login button"
         |  sends a command over HTTP
@@ -524,7 +524,7 @@ Device (emulator / simulator / real phone) -> the button actually gets tapped` }
           title: "2. Mac installation checklist",
           blocks: [
             { text: "**Everyday picture:** before cooking, you lay out every ingredient. Same here: tick each item once and you never repeat it." },
-            { img: "assets/img/appium/install-flow.svg", width: 400, height: 662, alt: "Diagram: 8 setup steps in order, each with the command that checks it: Node and npm, Appium, Java JDK and JAVA_HOME, Android Studio and SDK, platform-tools in PATH, emulator, Xcode for iOS, and the driver plus doctor.", caption: "Setup in order. The grey command under each step is how you check it worked." },
+            { img: "assets/img/appium/install-flow.svg?v=202610092330", width: 400, height: 662, alt: "Diagram: 8 setup steps in order, each with the command that checks it: Node and npm, Appium, Java JDK and JAVA_HOME, Android Studio and SDK, platform-tools in PATH, emulator, Xcode for iOS, and the driver plus doctor.", caption: "Setup in order. The grey command under each step is how you check it worked." },
             { list: [
               "**Node.js + npm**: Appium is written in Node. Appium 3 needs **Node 20.19+** and **npm 10+**, so install Node 22 LTS from nodejs.org or `brew install node@22`.",
               "**Appium itself**: `npm i -g appium` (`-g` means \"install globally\", so the `appium` command works in any folder).",
@@ -555,7 +555,7 @@ adb devices            # lists connected phones/emulators` },
           title: "3. Drivers vs plugins",
           blocks: [
             { text: "**Everyday picture:** Appium is like a phone charger with no plug. A **driver** is the plug for one type of phone (Android plug, iPhone plug): without it nothing works. A **plugin** is an optional extra, like a car charger attachment: nice to have, not required." },
-            { img: "assets/img/appium/drivers-plugins.svg", width: 400, height: 494, alt: "Diagram: the Appium server connects to required drivers (UiAutomator2 for Android, XCUITest for iOS) and optional plugins (such as images), with the install commands below.", caption: "Drivers are required (one per platform). Plugins are optional extras you switch on with --use-plugins." },
+            { img: "assets/img/appium/drivers-plugins.svg?v=202610092330", width: 400, height: 494, alt: "Diagram: the Appium server connects to required drivers (UiAutomator2 for Android, XCUITest for iOS) and optional plugins (such as images), with the install commands below.", caption: "Drivers are required (one per platform). Plugins are optional extras you switch on with --use-plugins." },
             { text: "In Appium 3, drivers are **not** bundled with the server, so you install the ones you need:" },
             { lang: "bash", code: `appium driver install uiautomator2    # Android driver
 appium driver install xcuitest        # iOS driver (Mac + Xcode only)
@@ -594,7 +594,7 @@ appium --base-path /wd/hub # only if an old tutorial insists on /wd/hub` },
           title: "5. Desired capabilities",
           blocks: [
             { text: "**Everyday picture:** capabilities are the **order slip** you hand a waiter: which kitchen (platform), which chef (driver), which table (device), which dish (app). The server reads the slip and starts a *session* for you." },
-            { img: "assets/img/appium/capabilities-card.svg", width: 400, height: 600, alt: "Diagram: an ID card listing each capability with an example value and a one-line meaning; the appium: prefix is highlighted.", caption: "Your session ID card. In Appium 3, every key except platformName needs the appium: prefix." },
+            { img: "assets/img/appium/capabilities-card.svg?v=202610092330", width: 400, height: 600, alt: "Diagram: an ID card listing each capability with an example value and a one-line meaning; the appium: prefix is highlighted.", caption: "Your session ID card. In Appium 3, every key except platformName needs the appium: prefix." },
             { list: [
               "`platformName`: `Android` or `iOS`. The only standard W3C key, so it has no prefix.",
               "`appium:automationName`: which driver to use: `UiAutomator2` (Android) or `XCUITest` (iOS).",
@@ -712,7 +712,7 @@ def test_login(driver):
           title: "7. Locator strategies: which one first?",
           blocks: [
             { text: "**Everyday picture:** finding a friend in a crowd. Calling their **name** works best (accessibility id). Their **seat number** is good too (id). Giving **long directions** (\"third row, after the pillar, left of the man in blue\") is xpath: it works, but breaks as soon as anyone moves." },
-            { img: "assets/img/appium/locator-ladder.svg", width: 400, height: 436, alt: "Diagram: a ladder with three rungs: 1 accessibility id (best), 2 id (good), 3 xpath (last resort), each with a code example.", caption: "Climb from the top: accessibility id first, id second, xpath only as a last resort." },
+            { img: "assets/img/appium/locator-ladder.svg?v=202610092330", width: 400, height: 436, alt: "Diagram: a ladder with three rungs: 1 accessibility id (best), 2 id (good), 3 xpath (last resort), each with a code example.", caption: "Climb from the top: accessibility id first, id second, xpath only as a last resort." },
             { list: [
               "**1. Accessibility id** (`AppiumBy.accessibilityId`): fast, stable, works on Android and iOS. Android calls it *content-desc*. Use it first.",
               "**2. id** (`AppiumBy.id`): Android *resource-id*, like `com.example.app:id/password`. Stable and fast.",
@@ -740,7 +740,7 @@ def test_login(driver):
           type: "lesson",
           title: "9. Your learning path",
           blocks: [
-            { img: "assets/img/appium/roadmap.svg", width: 400, height: 724, alt: "Diagram: a timeline. Done today: install on Mac, drivers and plugins, desired capabilities, basic UI automation. Next: 1 Inspector and locators, 2 gestures, 3 waits, 4 Page Object Model, 5 TestNG or pytest, 6 parallel runs, 7 CI.", caption: "You are here. Each stop is a few focused blocks, not one day." },
+            { img: "assets/img/appium/roadmap.svg?v=202610092330", width: 400, height: 724, alt: "Diagram: a timeline. Done today: install on Mac, drivers and plugins, desired capabilities, basic UI automation. Next: 1 Inspector and locators, 2 gestures, 3 waits, 4 Page Object Model, 5 TestNG or pytest, 6 parallel runs, 7 CI.", caption: "You are here. Each stop is a few focused blocks, not one day." },
           ]
         },
         {
