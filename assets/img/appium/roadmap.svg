@@ -3,7 +3,7 @@
 <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8bd68"/></marker>
 <marker id="art" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2cc4b5"/></marker></defs>
 <rect width="400" height="724" rx="18" fill="#0b1233"/>
-<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">Your Appium road</text>
+<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">Your Appium 3 road</text>
 <text x="200.0" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">one stop per block · you are here ➜</text>
 <rect x="24" y="84" width="352" height="144" rx="14" fill="#0f2a3a" stroke="#2cc4b5" stroke-width="2"/>
 <text x="40" y="110" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#2cc4b5" text-anchor="start">✅ DONE TODAY · Oct 9</text>
@@ -20,11 +20,11 @@
 <circle cx="48" cy="338" r="13" fill="#0b1233" stroke="#e8bd68" stroke-width="3"/>
 <text x="48" y="343" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#e8bd68" text-anchor="middle">2</text>
 <text x="76" y="338" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#e8bd68" text-anchor="start">Gestures</text>
-<text x="76" y="358" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">scroll · swipe · long-press</text>
+<text x="76" y="358" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">W3C Actions · mobile: commands</text>
 <circle cx="48" cy="400" r="13" fill="#0b1233" stroke="#2cc4b5" stroke-width="3"/>
 <text x="48" y="405" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#2cc4b5" text-anchor="middle">3</text>
 <text x="76" y="400" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="start">Waits</text>
-<text x="76" y="420" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">WebDriverWait, no sleep</text>
+<text x="76" y="420" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">WebDriverWait (selenium-support)</text>
 <circle cx="48" cy="462" r="13" fill="#0b1233" stroke="#2cc4b5" stroke-width="3"/>
 <text x="48" y="467" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#2cc4b5" text-anchor="middle">4</text>
 <text x="76" y="462" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="start">Page Object Model</text>

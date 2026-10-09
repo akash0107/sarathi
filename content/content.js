@@ -477,9 +477,9 @@ markers =
     {
       id: "appium",
       file: "appium.html",
-      title: "Appium Notes (Oct 9, 2026)",
-      nav: "Appium Notes",
-      subtitle: "Appium explained simply: everyday picture first, then tiny code, every piece explained",
+      title: "Appium 3 Notes (Oct 9, 2026)",
+      nav: "Appium 3 Notes",
+      subtitle: "Appium 3 explained simply: everyday picture first, then tiny code, every piece explained",
       icon: "code",
       accent: "teal",
       sections: [
@@ -526,7 +526,7 @@ Device (emulator / simulator / real phone) -> the button actually gets tapped` }
             { text: "**Everyday picture:** before cooking, you lay out every ingredient. Same here: tick each item once and you never repeat it." },
             { img: "assets/img/appium/install-flow.svg", width: 400, height: 662, alt: "Diagram: 8 setup steps in order, each with the command that checks it: Node and npm, Appium, Java JDK and JAVA_HOME, Android Studio and SDK, platform-tools in PATH, emulator, Xcode for iOS, and the driver plus doctor.", caption: "Setup in order. The grey command under each step is how you check it worked." },
             { list: [
-              "**Node.js + npm**: Appium is written in Node. Install the LTS version (Node 20 or 22) from nodejs.org or `brew install node`.",
+              "**Node.js + npm**: Appium is written in Node. Appium 3 needs **Node 20.19+** and **npm 10+**, so install Node 22 LTS from nodejs.org or `brew install node@22`.",
               "**Appium itself**: `npm i -g appium` (`-g` means \"install globally\", so the `appium` command works in any folder).",
               "**Java JDK + JAVA_HOME**: Android tools and the Java client need Java. `JAVA_HOME` tells programs where Java lives.",
               "**Android Studio + SDK + ANDROID_HOME**: gives you the Android SDK, `adb` (in `platform-tools`) and the emulator. `ANDROID_HOME` tells Appium where the SDK lives.",
@@ -541,13 +541,13 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools       # so "adb" works
 export PATH=$PATH:$ANDROID_HOME/emulator             # so "emulator" works` },
             { text: "Then reload and check that everything answers:" },
             { lang: "bash", code: `source ~/.zshrc        # reload the file (or open a new terminal)
-node -v                # Node version
-appium -v              # Appium version
+node -v                # Node version (20.19 or newer)
+appium -v              # Appium version (3.x)
 java -version          # Java version
 echo $ANDROID_HOME     # should print .../Library/Android/sdk
 adb devices            # lists connected phones/emulators` },
             { text: "`adb devices` should show something like `emulator-5554   device`. If the list is empty, start the emulator first (from Android Studio or `emulator -avd <name>`; see the names with `emulator -list-avds`)." },
-            { text: "*Version note:* `npm i -g appium` installs the newest Appium (3.x right now). Everything on this page is the same in Appium 2.x, which your course uses; Appium 3 just needs Node 20.19 or newer." }
+            { text: "*What Appium 3 changed (only matters when you read older tutorials):* it needs Node 20.19+; old non-W3C commands were removed (for example the old `TouchAction` taps and swipes, now done with W3C Actions or `mobile:` commands); and `--allow-insecure` features need a driver prefix, e.g. `appium --allow-insecure=uiautomator2:adb_shell`. If a 2023-era blog post fails, this is usually why." }
           ]
         },
         {
@@ -556,7 +556,7 @@ adb devices            # lists connected phones/emulators` },
           blocks: [
             { text: "**Everyday picture:** Appium is like a phone charger with no plug. A **driver** is the plug for one type of phone (Android plug, iPhone plug): without it nothing works. A **plugin** is an optional extra, like a car charger attachment: nice to have, not required." },
             { img: "assets/img/appium/drivers-plugins.svg", width: 400, height: 494, alt: "Diagram: the Appium server connects to required drivers (UiAutomator2 for Android, XCUITest for iOS) and optional plugins (such as images), with the install commands below.", caption: "Drivers are required (one per platform). Plugins are optional extras you switch on with --use-plugins." },
-            { text: "Since Appium 2, drivers are **not** bundled, so you install the ones you need:" },
+            { text: "In Appium 3, drivers are **not** bundled with the server, so you install the ones you need:" },
             { lang: "bash", code: `appium driver install uiautomator2    # Android driver
 appium driver install xcuitest        # iOS driver (Mac + Xcode only)
 appium driver list --installed        # see what you have
@@ -566,7 +566,7 @@ appium driver update uiautomator2     # update a driver later` },
 appium plugin list --installed
 appium --use-plugins=images           # start the server WITH the plugin` },
             { text: "**Doctor** checks your setup and tells you what's missing (JAVA_HOME, ANDROID_HOME, adb, etc.):" },
-            { lang: "bash", code: `appium driver doctor uiautomator2     # built in since Appium 2.4
+            { lang: "bash", code: `appium driver doctor uiautomator2     # built into Appium 3
 appium driver doctor xcuitest
 
 # older standalone tool (the old "appium-doctor" package is deprecated):
@@ -581,11 +581,11 @@ appium-doctor --android` }
             { text: "**Everyday picture:** the server is a shop. Your test can't buy anything if the shop is closed. So: open the shop first (start Appium), then send your test." },
             { lang: "bash", code: `appium                     # starts on http://127.0.0.1:4723
 appium -p 4724             # use another port if 4723 is busy
-appium --base-path /wd/hub # only if an old tutorial/client expects /wd/hub` },
+appium --base-path /wd/hub # only if an old tutorial insists on /wd/hub` },
             { list: [
               "Keep this terminal open. It shows a live log, the best place to read errors.",
               "Default port is **4723**.",
-              "**Base path:** in Appium 1 the address was `http://127.0.0.1:4723/wd/hub`. In Appium 2+ it is just `http://127.0.0.1:4723`. If an old tutorial uses `/wd/hub` and you get a 404 or \"resource could not be found\", remove `/wd/hub` from your code (or start the server with `--base-path /wd/hub`)."
+              "**Server address:** in Appium 3 it is just `http://127.0.0.1:4723`. Very old tutorials add `/wd/hub` at the end; that gives a 404 or \"resource could not be found\". Remove `/wd/hub` from your code."
             ] }
           ]
         },
@@ -594,7 +594,7 @@ appium --base-path /wd/hub # only if an old tutorial/client expects /wd/hub` },
           title: "5. Desired capabilities",
           blocks: [
             { text: "**Everyday picture:** capabilities are the **order slip** you hand a waiter: which kitchen (platform), which chef (driver), which table (device), which dish (app). The server reads the slip and starts a *session* for you." },
-            { img: "assets/img/appium/capabilities-card.svg", width: 400, height: 600, alt: "Diagram: an ID card listing each capability with an example value and a one-line meaning; the appium: prefix is highlighted.", caption: "Your session ID card. Every key except platformName needs the appium: prefix." },
+            { img: "assets/img/appium/capabilities-card.svg", width: 400, height: 600, alt: "Diagram: an ID card listing each capability with an example value and a one-line meaning; the appium: prefix is highlighted.", caption: "Your session ID card. In Appium 3, every key except platformName needs the appium: prefix." },
             { list: [
               "`platformName`: `Android` or `iOS`. The only standard W3C key, so it has no prefix.",
               "`appium:automationName`: which driver to use: `UiAutomator2` (Android) or `XCUITest` (iOS).",
@@ -605,7 +605,7 @@ appium --base-path /wd/hub # only if an old tutorial/client expects /wd/hub` },
               "`appium:noReset`: `true` keeps the app's data (stay logged in) between sessions. `false` (default) gives a cleaner start.",
               "`appium:udid`: the exact device ID from `adb devices`. Needed when more than one device is connected."
             ] },
-            { text: "**Why `appium:`?** The W3C WebDriver standard says any key that isn't a standard one must have a *vendor prefix*. Appium's own keys use `appium:`. Without it, Appium 2+ rejects the capability or ignores it." },
+            { text: "**Why `appium:`?** The W3C WebDriver standard says any key that isn't a standard one must have a *vendor prefix*. Appium's own keys use `appium:`. Always add it in Appium 3; without it the session can fail to start." },
             { lang: "json", code: `{
   "platformName": "Android",
   "appium:automationName": "UiAutomator2",
@@ -630,16 +630,26 @@ appium --base-path /wd/hub # only if an old tutorial/client expects /wd/hub` },
           title: "6. First UI test (Java + Maven, and Python + pytest)",
           blocks: [
             { text: "**Everyday picture:** a test is a short recipe: open the app, find a box, type, find a button, tap, close the app. Always close at the end (`quit`), like turning off the stove." },
-            { text: "**Step 1: add the client to `pom.xml`** (Maven downloads it for you):" },
-            { lang: "xml", code: `<dependency>
+            { text: "**Step 1: add the client to `pom.xml`** (Maven downloads it for you). `java-client` 11 is made for Appium 3 (it needs an Appium 3 server and Java 11+):" },
+            { lang: "xml", code: `<!-- Appium Java client: talks to the Appium 3 server -->
+<dependency>
     <groupId>io.appium</groupId>
     <artifactId>java-client</artifactId>
-    <version>9.4.0</version>  <!-- use the version your course uses; newer ones exist -->
+    <version>11.0.0</version>
+</dependency>
+
+<!-- Add this when you start using waits (WebDriverWait).
+     java-client 11 no longer brings it in by itself. -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-support</artifactId>
+    <version>4.50.0</version>
 </dependency>` },
             { text: "**Step 2: the test.** The locator values below are examples; replace them with the real ones you see in Appium Inspector." },
             { lang: "java", code: `import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
+import java.net.URI;
 import java.net.URL;
 
 public class FirstAppiumTest {
@@ -650,27 +660,31 @@ public class FirstAppiumTest {
                 .setDeviceName("emulator-5554")
                 .setApp("/Users/akash/apps/demo.apk");
 
-        // 2. Connect to the Appium server (no /wd/hub in Appium 2+)
-        AndroidDriver driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        // 2. Where the Appium 3 server is listening (no /wd/hub)
+        URL server = URI.create("http://127.0.0.1:4723").toURL();
+
+        // 3. Connect: this starts the session and opens the app
+        AndroidDriver driver = new AndroidDriver(server, options);
 
         try {
-            // 3. Find elements and act on them
+            // 4. Find elements and act on them
             driver.findElement(AppiumBy.accessibilityId("username")).sendKeys("akash");
             driver.findElement(AppiumBy.id("com.example.app:id/password")).sendKeys("secret123");
             driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Login']")).click();
         } finally {
-            // 4. Always close the session, even if a step fails
+            // 5. Always close the session, even if a step fails
             driver.quit();
         }
     }
 }` },
             { list: [
               "`UiAutomator2Options` = the capabilities, written as Java code instead of JSON.",
-              "`new AndroidDriver(url, options)` = \"hand the order slip to the shop at this address\". This starts the session and opens the app.",
+              "`URI.create(...).toURL()` = the shop's address. (Plain `new URL(\"...\")` also works, but newer Java marks it as outdated.)",
+              "`new AndroidDriver(server, options)` = \"hand the order slip to the shop at this address\". This starts the session and opens the app.",
               "`findElement(AppiumBy....)` = \"find the thing with this address\". `sendKeys` types, `click` taps.",
               "`try / finally` + `driver.quit()` = always clean up, even when something fails."
             ] },
-            { text: "**The same test in Python with a pytest fixture** (`pip install Appium-Python-Client pytest`). The fixture is the helper who sets the table (starts the driver) and clears it afterwards (quits):" },
+            { text: "**The same test in Python with a pytest fixture** (`pip install \"Appium-Python-Client>=6\" pytest`; version 6 needs Python 3.10+). The fixture is the helper who sets the table (starts the driver) and clears it afterwards (quits):" },
             { lang: "python", code: `# test_login_app.py
 import pytest
 from appium import webdriver
@@ -716,7 +730,7 @@ def test_login(driver):
               "**`adb devices` shows nothing, or \"unauthorized\"**: start the emulator first. For a real phone, turn on USB debugging and tap *Allow* on the phone. Still stuck: `adb kill-server && adb start-server`.",
               "**\"Could not find a driver for automationName 'UiAutomator2'\"**: the driver isn't installed: `appium driver install uiautomator2`, then check `appium driver list --installed`.",
               "**\"Connection refused\" / \"ECONNREFUSED\"**: the server isn't running or the port is different. Start `appium` and use the same port in your code (4723).",
-              "**404 / \"The requested resource could not be found\"**: you used `/wd/hub` with Appium 2+. Remove it from the URL.",
+              "**404 / \"The requested resource could not be found\"**: your URL ends with `/wd/hub`. Appium 3 doesn't use it, so remove it.",
               "**\"Port 4723 is already in use\"**: an old Appium is still running. Close it (`lsof -i :4723` shows the process) or start on another port: `appium -p 4724`.",
               "**\"Session not created\"**: read the red lines in the Appium terminal log. The usual causes are a wrong `app` path, wrong `appPackage`/`appActivity`, a `platformVersion` that doesn't match the device, a missing `appium:` prefix, or JAVA_HOME not set. Run `appium driver doctor uiautomator2`."
             ] }
@@ -744,8 +758,8 @@ def test_login(driver):
           title: "Next, in this order",
           items: [
             "**Appium Inspector + locators**: open a session, practise finding 10 elements by accessibility id, id and xpath.",
-            "**Gestures**: scroll, swipe, long-press, drag (W3C Actions / `mobile:` gestures).",
-            "**Waits**: explicit waits (`WebDriverWait`) instead of `Thread.sleep`, so tests don't fail on slow screens.",
+            "**Gestures**: scroll, swipe, long-press, drag with W3C Actions or `mobile:` gestures (the old `TouchAction` class is gone in Appium 3).",
+            "**Waits**: explicit waits (`WebDriverWait`, from `selenium-support`) instead of `Thread.sleep`, so tests don't fail on slow screens.",
             "**Page Object Model**: one class per screen, so locators live in one place.",
             "**Test framework**: TestNG (Java) or pytest (Python) for setup/teardown, assertions, reports and data-driven tests.",
             "**Parallel runs**: several devices at once (different `udid` and ports).",
@@ -918,19 +932,19 @@ def test_login(driver):
           entries: [
             {
               date: "2026-10-09",
-              note: "A win day. Slept peacefully, woke around 6:30 and was studying by 6:45 AM. Completed the Appium section of the Udemy course (installation on Mac, plugins and drivers, desired capabilities and basic UI automation), plus the Maven project lectures, Japneet's Playwright lectures and a career coaching call, then extended the day. Appium felt confusing and I was unsure of the path, so Sarathi made the visual [Appium Notes](appium.html) page with a clear roadmap. Next (Oct 10): one 25-minute pytest block and one 25-minute AI testing block. Pending job items: referral-link applications (Barclays, Deutsche Bank, Dentsu) and the Innodata send.",
+              note: "A win day. Slept peacefully, woke around 6:30 and was studying by 6:45 AM. Completed the Appium section of the Udemy course (installation on Mac, plugins and drivers, desired capabilities and basic UI automation), plus the Maven project lectures, Japneet's Playwright lectures and a career coaching call, then extended the day. Appium felt confusing and I was unsure of the path, so Sarathi made the visual [Appium 3 Notes](appium.html) page with a clear roadmap. Next (Oct 10): one 25-minute pytest block and one 25-minute AI testing block. Pending job items: referral-link applications (Barclays, Deutsche Bank, Dentsu) and the Innodata send.",
               worked: [
                 "Good sleep and an early first move (studying by 6:45 AM).",
                 "One topic per block.",
                 "Stating the evening plan clearly.",
-                "Appium on Udemy done: installation on Mac, plugins and drivers, desired capabilities, basic UI automation ([Appium Notes](appium.html)).",
+                "Appium on Udemy done: installation on Mac, plugins and drivers, desired capabilities, basic UI automation ([Appium 3 Notes](appium.html)).",
                 "Maven project lectures done.",
                 "Japneet's Playwright lectures done.",
                 "Career coaching call done."
               ],
               didnt: [
                 "Skipped pytest and AI/LLM testing: the plan was too big for one day, and that brought guilt.",
-                "Appium felt confusing, with many moving parts and no clear sense of the path yet (now mapped in [Appium Notes](appium.html)).",
+                "Appium felt confusing, with many moving parts and no clear sense of the path yet (now mapped in [Appium 3 Notes](appium.html)).",
                 "Dead tired by 10:22 PM.",
                 "The 6 AM reminder failed, so the morning visualization came late."
               ]
