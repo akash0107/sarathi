@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 662" width="400" height="662" role="img" aria-labelledby="t">
+<title id="t">Mac installation checklist as a step flow</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8bd68"/></marker>
+<marker id="art" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2cc4b5"/></marker></defs>
+<rect width="400" height="662" rx="18" fill="#0b1233"/>
+<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">Mac setup, step by step</text>
+<text x="200.0" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">do each once · the grey line is how you check it</text>
+<line x1="44" y1="98" x2="44" y2="588" stroke="#aab1d6" stroke-opacity=".35" stroke-width="3"/>
+<circle cx="44" cy="98" r="17" fill="#0b1233" stroke="#e8bd68" stroke-width="2.5"/>
+<text x="44" y="104" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#e8bd68" text-anchor="middle">1</text>
+<rect x="72" y="74" width="304" height="56" rx="12" fill="#141c47" stroke="#e8bd68" stroke-width="1.5"/>
+<text x="86" y="95" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Node.js + npm</text>
+<text x="86" y="117" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ node -v</text>
+<circle cx="44" cy="168" r="17" fill="#0b1233" stroke="#e8bd68" stroke-width="2.5"/>
+<text x="44" y="174" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#e8bd68" text-anchor="middle">2</text>
+<rect x="72" y="144" width="304" height="56" rx="12" fill="#141c47" stroke="#e8bd68" stroke-width="1.5"/>
+<text x="86" y="165" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Appium</text>
+<text x="86" y="187" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ npm i -g appium  →  appium -v</text>
+<circle cx="44" cy="238" r="17" fill="#0b1233" stroke="#2cc4b5" stroke-width="2.5"/>
+<text x="44" y="244" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="middle">3</text>
+<rect x="72" y="214" width="304" height="56" rx="12" fill="#141c47" stroke="#2cc4b5" stroke-width="1.5"/>
+<text x="86" y="235" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Java JDK + JAVA_HOME</text>
+<text x="86" y="257" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ java -version</text>
+<circle cx="44" cy="308" r="17" fill="#0b1233" stroke="#2cc4b5" stroke-width="2.5"/>
+<text x="44" y="314" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="middle">4</text>
+<rect x="72" y="284" width="304" height="56" rx="12" fill="#141c47" stroke="#2cc4b5" stroke-width="1.5"/>
+<text x="86" y="305" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Android Studio + SDK</text>
+<text x="86" y="327" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ echo $ANDROID_HOME</text>
+<circle cx="44" cy="378" r="17" fill="#0b1233" stroke="#2cc4b5" stroke-width="2.5"/>
+<text x="44" y="384" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="middle">5</text>
+<rect x="72" y="354" width="304" height="56" rx="12" fill="#141c47" stroke="#2cc4b5" stroke-width="1.5"/>
+<text x="86" y="375" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">platform-tools in PATH</text>
+<text x="86" y="397" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ adb devices</text>
+<circle cx="44" cy="448" r="17" fill="#0b1233" stroke="#1f8fd1" stroke-width="2.5"/>
+<text x="44" y="454" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f8fd1" text-anchor="middle">6</text>
+<rect x="72" y="424" width="304" height="56" rx="12" fill="#141c47" stroke="#1f8fd1" stroke-width="1.5"/>
+<text x="86" y="445" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Emulator running</text>
+<text x="86" y="467" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ emulator -list-avds</text>
+<circle cx="44" cy="518" r="17" fill="#0b1233" stroke="#b79cff" stroke-width="2.5"/>
+<text x="44" y="524" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#b79cff" text-anchor="middle">7</text>
+<rect x="72" y="494" width="304" height="56" rx="12" fill="#141c47" stroke="#b79cff" stroke-width="1.5"/>
+<text x="86" y="515" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Xcode (iOS only)</text>
+<text x="86" y="537" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ xcode-select --install</text>
+<circle cx="44" cy="588" r="17" fill="#0b1233" stroke="#f08a9b" stroke-width="2.5"/>
+<text x="44" y="594" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#f08a9b" text-anchor="middle">8</text>
+<rect x="72" y="564" width="304" height="56" rx="12" fill="#141c47" stroke="#f08a9b" stroke-width="1.5"/>
+<text x="86" y="585" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#eceefb" text-anchor="start">Driver + doctor</text>
+<text x="86" y="607" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">$ appium driver install uiautomator2</text>
+<text x="200.0" y="644" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#2cc4b5" text-anchor="middle">✓ appium driver doctor uiautomator2 → all green = ready</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 724" width="400" height="724" role="img" aria-labelledby="t">
+<title id="t">Appium learning path roadmap as a timeline</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8bd68"/></marker>
+<marker id="art" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2cc4b5"/></marker></defs>
+<rect width="400" height="724" rx="18" fill="#0b1233"/>
+<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">Your Appium road</text>
+<text x="200.0" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">one stop per block · you are here ➜</text>
+<rect x="24" y="84" width="352" height="144" rx="14" fill="#0f2a3a" stroke="#2cc4b5" stroke-width="2"/>
+<text x="40" y="110" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#2cc4b5" text-anchor="start">✅ DONE TODAY · Oct 9</text>
+<text x="48" y="136" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#eceefb" text-anchor="start">✓  Install on Mac</text>
+<text x="48" y="162" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#eceefb" text-anchor="start">✓  Drivers + plugins</text>
+<text x="48" y="188" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#eceefb" text-anchor="start">✓  Desired capabilities</text>
+<text x="48" y="214" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#eceefb" text-anchor="start">✓  Basic UI automation</text>
+<text x="200.0" y="250" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#e8bd68" text-anchor="middle">📍 YOU ARE HERE</text>
+<line x1="48" y1="276" x2="48" y2="648" stroke="#e8bd68" stroke-opacity=".5" stroke-width="3" stroke-dasharray="6 6"/>
+<circle cx="48" cy="276" r="13" fill="#0b1233" stroke="#e8bd68" stroke-width="3"/>
+<text x="48" y="281" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#e8bd68" text-anchor="middle">1</text>
+<text x="76" y="276" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#e8bd68" text-anchor="start">Inspector + locators</text>
+<text x="76" y="296" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">find 10 elements</text>
+<circle cx="48" cy="338" r="13" fill="#0b1233" stroke="#e8bd68" stroke-width="3"/>
+<text x="48" y="343" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#e8bd68" text-anchor="middle">2</text>
+<text x="76" y="338" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#e8bd68" text-anchor="start">Gestures</text>
+<text x="76" y="358" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">scroll · swipe · long-press</text>
+<circle cx="48" cy="400" r="13" fill="#0b1233" stroke="#2cc4b5" stroke-width="3"/>
+<text x="48" y="405" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#2cc4b5" text-anchor="middle">3</text>
+<text x="76" y="400" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="start">Waits</text>
+<text x="76" y="420" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">WebDriverWait, no sleep</text>
+<circle cx="48" cy="462" r="13" fill="#0b1233" stroke="#2cc4b5" stroke-width="3"/>
+<text x="48" y="467" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#2cc4b5" text-anchor="middle">4</text>
+<text x="76" y="462" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#2cc4b5" text-anchor="start">Page Object Model</text>
+<text x="76" y="482" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">one class per screen</text>
+<circle cx="48" cy="524" r="13" fill="#0b1233" stroke="#1f8fd1" stroke-width="3"/>
+<text x="48" y="529" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#1f8fd1" text-anchor="middle">5</text>
+<text x="76" y="524" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f8fd1" text-anchor="start">TestNG / pytest</text>
+<text x="76" y="544" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">setup · asserts · reports</text>
+<circle cx="48" cy="586" r="13" fill="#0b1233" stroke="#b79cff" stroke-width="3"/>
+<text x="48" y="591" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#b79cff" text-anchor="middle">6</text>
+<text x="76" y="586" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#b79cff" text-anchor="start">Parallel runs</text>
+<text x="76" y="606" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">many devices · udid + ports</text>
+<circle cx="48" cy="648" r="13" fill="#0b1233" stroke="#f08a9b" stroke-width="3"/>
+<text x="48" y="653" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="800" fill="#f08a9b" text-anchor="middle">7</text>
+<text x="76" y="648" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#f08a9b" text-anchor="start">CI</text>
+<text x="76" y="668" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#aab1d6" text-anchor="start">GitHub Actions / Azure DevOps</text>
+<text x="200.0" y="704" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#f6d999" text-anchor="middle">🏁 job-ready mobile automation</text>
+</svg>

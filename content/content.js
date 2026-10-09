@@ -26,7 +26,7 @@
        checklist -> { type, title, id, note, groups: [{ title, items: [...] }] }  (tick boxes, saved in this browser)
        vision    -> { type, title, image, fallback, full, width, height, alt, caption, placeholder, help }  (image "" = placeholder)
        goals     -> { type, title, theme: [...], phases: [{ title, period, items: [{ goal, detail }] }], motto }
-       lesson    -> { type, title, blocks: [{ text: "..." } | { code: `...`, lang: "python" } | { list: ["...", ...] }] }
+       lesson    -> { type, title, blocks: [{ text: "..." } | { code: `...`, lang: "python" } | { list: ["...", ...] } | { img, width, height, alt, caption }] }
                     (learning notes; code goes in backtick strings so line breaks and indentation are kept)
    - A page may set nav: "Short name" to use a shorter label in the top navigation.
    ===================================================================== */
@@ -473,6 +473,296 @@ markers =
       ]
     },
 
+    /* ------------------------------------------------------------- 4c */
+    {
+      id: "appium",
+      file: "appium.html",
+      title: "Appium Notes (Oct 9, 2026)",
+      nav: "Appium Notes",
+      subtitle: "Appium explained simply: everyday picture first, then tiny code, every piece explained",
+      icon: "code",
+      accent: "teal",
+      sections: [
+        {
+          type: "callout",
+          tone: "teal",
+          title: "Feeling confused is normal here",
+          body: [
+            "Appium has many moving parts (Node, Java, Android SDK, server, drivers, capabilities, locators), and each one has to line up before your first test runs. Feeling lost at this stage doesn't mean you're bad at it. It means you're at the start. You already did the hardest, most boring part today: the setup.",
+            "One piece per block. Read one section, try one command, and stop there. The map at the bottom (section 9) shows where you are and where you're heading."
+          ]
+        },
+        {
+          type: "lesson",
+          title: "1. What Appium is",
+          blocks: [
+            { text: "**Everyday picture:** your test speaks \"code\", and the phone only understands taps and swipes. Appium is the **translator in the middle**, like a TV remote. You press a button on the remote (your code), and the TV (the phone) does it." },
+            { text: "There are 4 pieces, passed along like a relay race:" },
+            { img: "assets/img/appium/architecture.svg", width: 400, height: 614, alt: "Diagram: your test code sends an HTTP command to the Appium server on port 4723, which hands it to a driver (UiAutomator2 for Android, XCUITest for iOS), which taps the button on the device.", caption: "The relay race: test code → Appium server → driver → device. Tap to open full size." },
+            { text: "The same flow as plain text (handy to copy into your own notes):" },
+            { lang: "text", code: `Your test code (Java / Python)        -> "click the Login button"
+        |  sends a command over HTTP
+        v
+Appium server (runs on your Mac)      -> receives it on port 4723
+        |  hands it to the right driver
+        v
+Driver (UiAutomator2 = Android,       -> knows how to talk to that kind of phone
+        XCUITest = iPhone)
+        |
+        v
+Device (emulator / simulator / real phone) -> the button actually gets tapped` },
+            { list: [
+              "**Client** = your test code, using an Appium client library (`java-client` for Java, `Appium-Python-Client` for Python).",
+              "**Server** = the `appium` program you start in the terminal. It just listens and passes messages on.",
+              "**Driver** = the plug-in that speaks one phone's language. Android uses **UiAutomator2**, iOS uses **XCUITest**.",
+              "**Device** = where the app really runs."
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "2. Mac installation checklist",
+          blocks: [
+            { text: "**Everyday picture:** before cooking, you lay out every ingredient. Same here: tick each item once and you never repeat it." },
+            { img: "assets/img/appium/install-flow.svg", width: 400, height: 662, alt: "Diagram: 8 setup steps in order, each with the command that checks it: Node and npm, Appium, Java JDK and JAVA_HOME, Android Studio and SDK, platform-tools in PATH, emulator, Xcode for iOS, and the driver plus doctor.", caption: "Setup in order. The grey command under each step is how you check it worked." },
+            { list: [
+              "**Node.js + npm**: Appium is written in Node. Install the LTS version (Node 20 or 22) from nodejs.org or `brew install node`.",
+              "**Appium itself**: `npm i -g appium` (`-g` means \"install globally\", so the `appium` command works in any folder).",
+              "**Java JDK + JAVA_HOME**: Android tools and the Java client need Java. `JAVA_HOME` tells programs where Java lives.",
+              "**Android Studio + SDK + ANDROID_HOME**: gives you the Android SDK, `adb` (in `platform-tools`) and the emulator. `ANDROID_HOME` tells Appium where the SDK lives.",
+              "**An emulator**: create one in Android Studio (Device Manager), e.g. a Pixel with a recent Android version.",
+              "**Xcode** (only for iOS testing): install from the App Store, then run `xcode-select --install`."
+            ] },
+            { text: "Add the paths to your shell file once. On a Mac that is `~/.zshrc`:" },
+            { lang: "bash", code: `# ~/.zshrc
+export JAVA_HOME=$(/usr/libexec/java_home)          # where Java lives
+export ANDROID_HOME=$HOME/Library/Android/sdk        # where the Android SDK lives
+export PATH=$PATH:$ANDROID_HOME/platform-tools       # so "adb" works
+export PATH=$PATH:$ANDROID_HOME/emulator             # so "emulator" works` },
+            { text: "Then reload and check that everything answers:" },
+            { lang: "bash", code: `source ~/.zshrc        # reload the file (or open a new terminal)
+node -v                # Node version
+appium -v              # Appium version
+java -version          # Java version
+echo $ANDROID_HOME     # should print .../Library/Android/sdk
+adb devices            # lists connected phones/emulators` },
+            { text: "`adb devices` should show something like `emulator-5554   device`. If the list is empty, start the emulator first (from Android Studio or `emulator -avd <name>`; see the names with `emulator -list-avds`)." },
+            { text: "*Version note:* `npm i -g appium` installs the newest Appium (3.x right now). Everything on this page is the same in Appium 2.x, which your course uses; Appium 3 just needs Node 20.19 or newer." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "3. Drivers vs plugins",
+          blocks: [
+            { text: "**Everyday picture:** Appium is like a phone charger with no plug. A **driver** is the plug for one type of phone (Android plug, iPhone plug): without it nothing works. A **plugin** is an optional extra, like a car charger attachment: nice to have, not required." },
+            { img: "assets/img/appium/drivers-plugins.svg", width: 400, height: 494, alt: "Diagram: the Appium server connects to required drivers (UiAutomator2 for Android, XCUITest for iOS) and optional plugins (such as images), with the install commands below.", caption: "Drivers are required (one per platform). Plugins are optional extras you switch on with --use-plugins." },
+            { text: "Since Appium 2, drivers are **not** bundled, so you install the ones you need:" },
+            { lang: "bash", code: `appium driver install uiautomator2    # Android driver
+appium driver install xcuitest        # iOS driver (Mac + Xcode only)
+appium driver list --installed        # see what you have
+appium driver update uiautomator2     # update a driver later` },
+            { text: "Plugins are installed the same way, but you must also **switch them on** when starting the server:" },
+            { lang: "bash", code: `appium plugin install images          # e.g. find elements by image
+appium plugin list --installed
+appium --use-plugins=images           # start the server WITH the plugin` },
+            { text: "**Doctor** checks your setup and tells you what's missing (JAVA_HOME, ANDROID_HOME, adb, etc.):" },
+            { lang: "bash", code: `appium driver doctor uiautomator2     # built in since Appium 2.4
+appium driver doctor xcuitest
+
+# older standalone tool (the old "appium-doctor" package is deprecated):
+npm i -g @appium/doctor
+appium-doctor --android` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "4. Starting the server",
+          blocks: [
+            { text: "**Everyday picture:** the server is a shop. Your test can't buy anything if the shop is closed. So: open the shop first (start Appium), then send your test." },
+            { lang: "bash", code: `appium                     # starts on http://127.0.0.1:4723
+appium -p 4724             # use another port if 4723 is busy
+appium --base-path /wd/hub # only if an old tutorial/client expects /wd/hub` },
+            { list: [
+              "Keep this terminal open. It shows a live log, the best place to read errors.",
+              "Default port is **4723**.",
+              "**Base path:** in Appium 1 the address was `http://127.0.0.1:4723/wd/hub`. In Appium 2+ it is just `http://127.0.0.1:4723`. If an old tutorial uses `/wd/hub` and you get a 404 or \"resource could not be found\", remove `/wd/hub` from your code (or start the server with `--base-path /wd/hub`)."
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "5. Desired capabilities",
+          blocks: [
+            { text: "**Everyday picture:** capabilities are the **order slip** you hand a waiter: which kitchen (platform), which chef (driver), which table (device), which dish (app). The server reads the slip and starts a *session* for you." },
+            { img: "assets/img/appium/capabilities-card.svg", width: 400, height: 600, alt: "Diagram: an ID card listing each capability with an example value and a one-line meaning; the appium: prefix is highlighted.", caption: "Your session ID card. Every key except platformName needs the appium: prefix." },
+            { list: [
+              "`platformName`: `Android` or `iOS`. The only standard W3C key, so it has no prefix.",
+              "`appium:automationName`: which driver to use: `UiAutomator2` (Android) or `XCUITest` (iOS).",
+              "`appium:deviceName`: a name for the device, e.g. `emulator-5554` or `Pixel 7`. On Android it is mostly a label.",
+              "`appium:platformVersion`: the Android/iOS version, e.g. `14`. Optional on Android, but must match the device if you set it.",
+              "`appium:app`: full path (or URL) to the `.apk` / `.app` file. Appium installs and opens it.",
+              "`appium:appPackage` + `appium:appActivity`: open an app that is **already installed** instead of giving a file. Package = the app's ID, activity = which screen to open.",
+              "`appium:noReset`: `true` keeps the app's data (stay logged in) between sessions. `false` (default) gives a cleaner start.",
+              "`appium:udid`: the exact device ID from `adb devices`. Needed when more than one device is connected."
+            ] },
+            { text: "**Why `appium:`?** The W3C WebDriver standard says any key that isn't a standard one must have a *vendor prefix*. Appium's own keys use `appium:`. Without it, Appium 2+ rejects the capability or ignores it." },
+            { lang: "json", code: `{
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2",
+  "appium:deviceName": "emulator-5554",
+  "appium:platformVersion": "14",
+  "appium:app": "/Users/akash/apps/demo.apk",
+  "appium:noReset": true
+}` },
+            { text: "Already-installed app instead of an `.apk` (the built-in Settings app is a good practice target):" },
+            { lang: "json", code: `{
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2",
+  "appium:deviceName": "emulator-5554",
+  "appium:appPackage": "com.android.settings",
+  "appium:appActivity": ".Settings"
+}` },
+            { text: "**Appium Inspector** is a separate desktop app (free, from the appium-inspector GitHub releases). Start the Appium server, open Inspector, set host `127.0.0.1`, port `4723`, path `/`, paste the JSON above and click *Start Session*. You'll see the phone screen; click any element to read its accessibility id, id and xpath. That's where locators come from." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "6. First UI test (Java + Maven, and Python + pytest)",
+          blocks: [
+            { text: "**Everyday picture:** a test is a short recipe: open the app, find a box, type, find a button, tap, close the app. Always close at the end (`quit`), like turning off the stove." },
+            { text: "**Step 1: add the client to `pom.xml`** (Maven downloads it for you):" },
+            { lang: "xml", code: `<dependency>
+    <groupId>io.appium</groupId>
+    <artifactId>java-client</artifactId>
+    <version>9.4.0</version>  <!-- use the version your course uses; newer ones exist -->
+</dependency>` },
+            { text: "**Step 2: the test.** The locator values below are examples; replace them with the real ones you see in Appium Inspector." },
+            { lang: "java", code: `import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import java.net.URL;
+
+public class FirstAppiumTest {
+    public static void main(String[] args) throws Exception {
+        // 1. The order slip (capabilities). UiAutomator2Options already sets
+        //    platformName=Android and automationName=UiAutomator2 for you.
+        UiAutomator2Options options = new UiAutomator2Options()
+                .setDeviceName("emulator-5554")
+                .setApp("/Users/akash/apps/demo.apk");
+
+        // 2. Connect to the Appium server (no /wd/hub in Appium 2+)
+        AndroidDriver driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+
+        try {
+            // 3. Find elements and act on them
+            driver.findElement(AppiumBy.accessibilityId("username")).sendKeys("akash");
+            driver.findElement(AppiumBy.id("com.example.app:id/password")).sendKeys("secret123");
+            driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Login']")).click();
+        } finally {
+            // 4. Always close the session, even if a step fails
+            driver.quit();
+        }
+    }
+}` },
+            { list: [
+              "`UiAutomator2Options` = the capabilities, written as Java code instead of JSON.",
+              "`new AndroidDriver(url, options)` = \"hand the order slip to the shop at this address\". This starts the session and opens the app.",
+              "`findElement(AppiumBy....)` = \"find the thing with this address\". `sendKeys` types, `click` taps.",
+              "`try / finally` + `driver.quit()` = always clean up, even when something fails."
+            ] },
+            { text: "**The same test in Python with a pytest fixture** (`pip install Appium-Python-Client pytest`). The fixture is the helper who sets the table (starts the driver) and clears it afterwards (quits):" },
+            { lang: "python", code: `# test_login_app.py
+import pytest
+from appium import webdriver
+from appium.options.android import UiAutomator2Options
+from appium.webdriver.common.appiumby import AppiumBy
+
+@pytest.fixture
+def driver():
+    options = UiAutomator2Options()
+    options.device_name = "emulator-5554"
+    options.app = "/Users/akash/apps/demo.apk"
+    drv = webdriver.Remote("http://127.0.0.1:4723", options=options)
+    yield drv          # the test runs here
+    drv.quit()         # cleanup after the test
+
+def test_login(driver):
+    driver.find_element(AppiumBy.ACCESSIBILITY_ID, "username").send_keys("akash")
+    driver.find_element(AppiumBy.ID, "com.example.app:id/password").send_keys("secret123")
+    driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='Login']").click()` },
+            { text: "Run it with the server already started: `pytest -v test_login_app.py`." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "7. Locator strategies: which one first?",
+          blocks: [
+            { text: "**Everyday picture:** finding a friend in a crowd. Calling their **name** works best (accessibility id). Their **seat number** is good too (id). Giving **long directions** (\"third row, after the pillar, left of the man in blue\") is xpath: it works, but breaks as soon as anyone moves." },
+            { img: "assets/img/appium/locator-ladder.svg", width: 400, height: 436, alt: "Diagram: a ladder with three rungs: 1 accessibility id (best), 2 id (good), 3 xpath (last resort), each with a code example.", caption: "Climb from the top: accessibility id first, id second, xpath only as a last resort." },
+            { list: [
+              "**1. Accessibility id** (`AppiumBy.accessibilityId`): fast, stable, works on Android and iOS. Android calls it *content-desc*. Use it first.",
+              "**2. id** (`AppiumBy.id`): Android *resource-id*, like `com.example.app:id/password`. Stable and fast.",
+              "**3. xpath** (`AppiumBy.xpath`): the last resort. Slow, and it breaks when the screen layout changes. Use it only when nothing else exists, and keep it short (e.g. by `@text`)."
+            ] },
+            { text: "If an app has no accessibility ids, ask the developers to add them. It helps testing and real users with screen readers." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "8. Common errors and fixes",
+          blocks: [
+            { list: [
+              "**\"ANDROID_HOME / ANDROID_SDK_ROOT is not set\"**: add the exports from section 2 to `~/.zshrc`, run `source ~/.zshrc`, then restart Appium **from that same terminal** (Appium only sees variables that existed when it started).",
+              "**`adb devices` shows nothing, or \"unauthorized\"**: start the emulator first. For a real phone, turn on USB debugging and tap *Allow* on the phone. Still stuck: `adb kill-server && adb start-server`.",
+              "**\"Could not find a driver for automationName 'UiAutomator2'\"**: the driver isn't installed: `appium driver install uiautomator2`, then check `appium driver list --installed`.",
+              "**\"Connection refused\" / \"ECONNREFUSED\"**: the server isn't running or the port is different. Start `appium` and use the same port in your code (4723).",
+              "**404 / \"The requested resource could not be found\"**: you used `/wd/hub` with Appium 2+. Remove it from the URL.",
+              "**\"Port 4723 is already in use\"**: an old Appium is still running. Close it (`lsof -i :4723` shows the process) or start on another port: `appium -p 4724`.",
+              "**\"Session not created\"**: read the red lines in the Appium terminal log. The usual causes are a wrong `app` path, wrong `appPackage`/`appActivity`, a `platformVersion` that doesn't match the device, a missing `appium:` prefix, or JAVA_HOME not set. Run `appium driver doctor uiautomator2`."
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "9. Your learning path",
+          blocks: [
+            { img: "assets/img/appium/roadmap.svg", width: 400, height: 724, alt: "Diagram: a timeline. Done today: install on Mac, drivers and plugins, desired capabilities, basic UI automation. Next: 1 Inspector and locators, 2 gestures, 3 waits, 4 Page Object Model, 5 TestNG or pytest, 6 parallel runs, 7 CI.", caption: "You are here. Each stop is a few focused blocks, not one day." },
+          ]
+        },
+        {
+          type: "list",
+          title: "Done today",
+          items: [
+            "✅ Appium installation on Mac",
+            "✅ Drivers and plugins",
+            "✅ Desired capabilities",
+            "✅ Basic UI automation (find, click, type)"
+          ]
+        },
+        {
+          type: "steps",
+          title: "Next, in this order",
+          items: [
+            "**Appium Inspector + locators**: open a session, practise finding 10 elements by accessibility id, id and xpath.",
+            "**Gestures**: scroll, swipe, long-press, drag (W3C Actions / `mobile:` gestures).",
+            "**Waits**: explicit waits (`WebDriverWait`) instead of `Thread.sleep`, so tests don't fail on slow screens.",
+            "**Page Object Model**: one class per screen, so locators live in one place.",
+            "**Test framework**: TestNG (Java) or pytest (Python) for setup/teardown, assertions, reports and data-driven tests.",
+            "**Parallel runs**: several devices at once (different `udid` and ports).",
+            "**CI**: run the suite automatically (GitHub Actions / Azure DevOps, with cloud devices like BrowserStack)."
+          ]
+        },
+        {
+          type: "callout",
+          tone: "gold",
+          title: "One piece per block",
+          body: [
+            "You don't need to understand all of Appium today. Pick the next single step above, give it one 25-minute block, and stop. Abhyasa means steady practice, a little every day, not everything at once."
+          ]
+        }
+      ]
+    },
+
     /* ---------------------------------------------------- Dubai Dream */
     {
       id: "dubai",
@@ -628,17 +918,19 @@ markers =
           entries: [
             {
               date: "2026-10-09",
-              note: "A win day. Slept peacefully, woke around 6:30 and was studying by 6:45 AM. Did the Appium setup on the Mac and the Maven project lectures, Japneet's Playwright lectures and a career coaching call, then extended the day. Next (Oct 10): one 25-minute pytest block and one 25-minute AI testing block. Pending job items: referral-link applications (Barclays, Deutsche Bank, Dentsu) and the Innodata send.",
+              note: "A win day. Slept peacefully, woke around 6:30 and was studying by 6:45 AM. Completed the Appium section of the Udemy course (installation on Mac, plugins and drivers, desired capabilities and basic UI automation), plus the Maven project lectures, Japneet's Playwright lectures and a career coaching call, then extended the day. Appium felt confusing and I was unsure of the path, so Sarathi made the visual [Appium Notes](appium.html) page with a clear roadmap. Next (Oct 10): one 25-minute pytest block and one 25-minute AI testing block. Pending job items: referral-link applications (Barclays, Deutsche Bank, Dentsu) and the Innodata send.",
               worked: [
                 "Good sleep and an early first move (studying by 6:45 AM).",
                 "One topic per block.",
                 "Stating the evening plan clearly.",
-                "Appium setup on Mac and the Maven project lectures done.",
+                "Appium on Udemy done: installation on Mac, plugins and drivers, desired capabilities, basic UI automation ([Appium Notes](appium.html)).",
+                "Maven project lectures done.",
                 "Japneet's Playwright lectures done.",
                 "Career coaching call done."
               ],
               didnt: [
                 "Skipped pytest and AI/LLM testing: the plan was too big for one day, and that brought guilt.",
+                "Appium felt confusing, with many moving parts and no clear sense of the path yet (now mapped in [Appium Notes](appium.html)).",
                 "Dead tired by 10:22 PM.",
                 "The 6 AM reminder failed, so the morning visualization came late."
               ]

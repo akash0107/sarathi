@@ -287,6 +287,12 @@
           '<button type="button" class="code-copy" aria-label="Copy code">Copy</button></div>' +
           '<pre tabindex="0"><code>' + esc(code) + "</code></pre></div>";
       }
+      if (b.img) {
+        var dims = (b.width ? ' width="' + esc(b.width) + '"' : "") + (b.height ? ' height="' + esc(b.height) + '"' : "");
+        return '<figure class="diagram"><a href="' + esc(b.img) + '" target="_blank" rel="noopener" aria-label="Open diagram full size">' +
+          '<img src="' + esc(b.img) + '" alt="' + esc(b.alt || "") + '"' + dims + ' loading="lazy" decoding="async"></a>' +
+          (b.caption ? '<figcaption>' + md(b.caption) + "</figcaption>" : "") + "</figure>";
+      }
       if (b.list) return '<ul class="list">' + b.list.map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>";
       return "<p>" + md(b.text) + "</p>";
     }).join("") + "</section>";

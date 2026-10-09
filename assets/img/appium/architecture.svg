@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 614" width="400" height="614" role="img" aria-labelledby="t">
+<title id="t">Appium architecture: test code to Appium server to driver to device</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8bd68"/></marker>
+<marker id="art" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2cc4b5"/></marker></defs>
+<rect width="400" height="614" rx="18" fill="#0b1233"/>
+<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">How Appium works</text>
+<text x="200.0" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">a relay race: each piece passes the message on</text>
+<rect x="24" y="76" width="352" height="92" rx="14" fill="#141c47" stroke="#e8bd68" stroke-width="2"/>
+<text x="48" y="128" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="400" fill="#eceefb" text-anchor="start">🧑‍💻</text>
+<text x="96" y="108" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#e8bd68" text-anchor="start">Your test code</text>
+<text x="96" y="130" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#eceefb" text-anchor="start">Java (java-client) / Python</text>
+<text x="96" y="150" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">&quot;tap the Login button&quot;</text>
+<line x1="200.0" y1="170" x2="200.0" y2="204" stroke="#e8bd68" stroke-width="2.5" marker-end="url(#ar)"/>
+<text x="212.0" y="192" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#e8bd68" text-anchor="start">HTTP request (W3C WebDriver)</text>
+<rect x="24" y="204" width="352" height="92" rx="14" fill="#141c47" stroke="#2cc4b5" stroke-width="2"/>
+<text x="48" y="256" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="400" fill="#eceefb" text-anchor="start">🛰️</text>
+<text x="96" y="236" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#2cc4b5" text-anchor="start">Appium server</text>
+<text x="96" y="258" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#eceefb" text-anchor="start">runs on your Mac · port 4723</text>
+<text x="96" y="278" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">receives the command, picks a driver</text>
+<line x1="200.0" y1="298" x2="200.0" y2="332" stroke="#e8bd68" stroke-width="2.5" marker-end="url(#ar)"/>
+<text x="212.0" y="320" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#e8bd68" text-anchor="start">picks the right driver</text>
+<rect x="24" y="332" width="352" height="92" rx="14" fill="#141c47" stroke="#1f8fd1" stroke-width="2"/>
+<text x="48" y="384" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="400" fill="#eceefb" text-anchor="start">🔌</text>
+<text x="96" y="364" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#1f8fd1" text-anchor="start">Driver</text>
+<text x="96" y="386" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#eceefb" text-anchor="start">UiAutomator2 (Android) · XCUITest (iOS)</text>
+<text x="96" y="406" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">speaks that phone&#x27;s language</text>
+<line x1="200.0" y1="426" x2="200.0" y2="460" stroke="#e8bd68" stroke-width="2.5" marker-end="url(#ar)"/>
+<text x="212.0" y="448" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#e8bd68" text-anchor="start">taps &amp; types on the device</text>
+<rect x="24" y="460" width="352" height="92" rx="14" fill="#141c47" stroke="#f08a9b" stroke-width="2"/>
+<text x="48" y="512" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="30" font-weight="400" fill="#eceefb" text-anchor="start">📱</text>
+<text x="96" y="492" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#f08a9b" text-anchor="start">Device</text>
+<text x="96" y="514" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#eceefb" text-anchor="start">emulator · simulator · real phone</text>
+<text x="96" y="534" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">the button really gets tapped</text>
+<text x="200.0" y="596" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">The answer travels back up the same way ↑</text>
+</svg>

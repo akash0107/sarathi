@@ -337,6 +337,11 @@ p:last-child { margin-bottom: 0; }
 .code-block pre:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
 .code-block code { display: block; font: 0.84rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; white-space: pre; background: none; padding: 0; border-radius: 0; color: #e7eaff; }
 
+.diagram { margin: 10px auto 16px; max-width: 460px; text-align: center; }
+.diagram a { display: block; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35); border: 1px solid var(--border); }
+.diagram img { display: block; width: 100%; height: auto; background: #0b1233; }
+.diagram figcaption { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+
 /* ---------- larger screens ---------- */
 @media (min-width: 640px) {
   main { padding: 28px 24px 56px; }

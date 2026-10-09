@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 436" width="400" height="436" role="img" aria-labelledby="t">
+<title id="t">Locator priority ladder: accessibility id, then id, then xpath</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8bd68"/></marker>
+<marker id="art" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2cc4b5"/></marker></defs>
+<rect width="400" height="436" rx="18" fill="#0b1233"/>
+<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">Locator ladder: climb from the top</text>
+<text x="200.0" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">top rung = most stable · bottom = last resort</text>
+<line x1="40" y1="76" x2="40" y2="400" stroke="#aab1d6" stroke-width="5" stroke-linecap="round"/>
+<line x1="360" y1="76" x2="360" y2="400" stroke="#aab1d6" stroke-width="5" stroke-linecap="round"/>
+<rect x="28" y="86" width="344" height="96" rx="14" fill="#141c47" stroke="#2cc4b5" stroke-width="2.5"/>
+<circle cx="62" cy="116" r="16" fill="#2cc4b5"/>
+<text x="62" y="122" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#0b1233" text-anchor="middle">1</text>
+<text x="88" y="114" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#2cc4b5" text-anchor="start">Accessibility id</text>
+<text x="356" y="114" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#2cc4b5" text-anchor="end">★ best</text>
+<text x="88" y="136" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#eceefb" text-anchor="start">&quot;name tag&quot;: fast, stable, Android + iOS</text>
+<text x="44" y="164" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start">AppiumBy.accessibilityId(&quot;login&quot;)</text>
+<rect x="28" y="192" width="344" height="96" rx="14" fill="#141c47" stroke="#e8bd68" stroke-width="2.5"/>
+<circle cx="62" cy="222" r="16" fill="#e8bd68"/>
+<text x="62" y="228" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#0b1233" text-anchor="middle">2</text>
+<text x="88" y="220" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e8bd68" text-anchor="start">id (resource-id)</text>
+<text x="356" y="220" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#e8bd68" text-anchor="end">good</text>
+<text x="88" y="242" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#eceefb" text-anchor="start">&quot;seat number&quot;: stable, fast on Android</text>
+<text x="44" y="270" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start">AppiumBy.id(&quot;com.app:id/login&quot;)</text>
+<rect x="28" y="298" width="344" height="96" rx="14" fill="#141c47" stroke="#f08a9b" stroke-width="2.5"/>
+<circle cx="62" cy="328" r="16" fill="#f08a9b"/>
+<text x="62" y="334" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#0b1233" text-anchor="middle">3</text>
+<text x="88" y="326" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#f08a9b" text-anchor="start">xpath</text>
+<text x="356" y="326" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#f08a9b" text-anchor="end">last resort</text>
+<text x="88" y="348" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#eceefb" text-anchor="start">&quot;long directions&quot;: slow, breaks easily</text>
+<text x="44" y="376" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start">AppiumBy.xpath(&quot;//*[@text=&#x27;Login&#x27;]&quot;)</text>
+<text x="200.0" y="418" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">No accessibility ids? Ask devs to add them.</text>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600" role="img" aria-labelledby="t">
+<title id="t">Desired capabilities shown as an ID card</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e8bd68"/></marker>
+<marker id="art" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2cc4b5"/></marker></defs>
+<rect width="400" height="600" rx="18" fill="#0b1233"/>
+<text x="200.0" y="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f6d999" text-anchor="middle">Capabilities = the order slip</text>
+<text x="200.0" y="56" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#aab1d6" text-anchor="middle">you hand it to the server; it starts a session</text>
+<rect x="18" y="72" width="364" height="484" rx="16" fill="#141c47" stroke="#e8bd68" stroke-width="2"/>
+<rect x="18" y="72" width="364" height="46" rx="16" fill="#e8bd68"/>
+<rect x="18" y="102" width="364" height="16" fill="#e8bd68"/>
+<text x="36" y="102" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="800" fill="#0b1233" text-anchor="start">🪪  SESSION ID CARD</text>
+<text x="364" y="102" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#0b1233" text-anchor="end">W3C</text>
+<text x="36" y="142" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5"></tspan><tspan fill="#f6d999" font-weight="700">platformName</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">Android</tspan></text>
+<text x="36" y="160" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">which kitchen (no prefix: W3C standard)</text>
+<line x1="36" y1="170" x2="364" y2="170" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="188" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">automationName</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">UiAutomator2</tspan></text>
+<text x="36" y="206" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">which chef / driver</text>
+<line x1="36" y1="216" x2="364" y2="216" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="234" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">deviceName</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">emulator-5554</tspan></text>
+<text x="36" y="252" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">name of the table / device</text>
+<line x1="36" y1="262" x2="364" y2="262" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="280" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">platformVersion</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">14</tspan></text>
+<text x="36" y="298" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">Android version (must match)</text>
+<line x1="36" y1="308" x2="364" y2="308" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="326" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">app</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">/Users/akash/apps/demo.apk</tspan></text>
+<text x="36" y="344" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">dish from a file (.apk / .app)</text>
+<line x1="36" y1="354" x2="364" y2="354" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="372" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">appPackage</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">com.android.settings</tspan></text>
+<text x="36" y="390" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">…or an installed app</text>
+<line x1="36" y1="400" x2="364" y2="400" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="418" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">appActivity</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">.Settings</tspan></text>
+<text x="36" y="436" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">which screen to open</text>
+<line x1="36" y1="446" x2="364" y2="446" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="464" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">noReset</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">true</tspan></text>
+<text x="36" y="482" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">keep app data between runs</text>
+<line x1="36" y1="492" x2="364" y2="492" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="36" y="510" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13"><tspan fill="#2cc4b5">appium:</tspan><tspan fill="#f6d999" font-weight="700">udid</tspan><tspan fill="#aab1d6"> = </tspan><tspan fill="#eceefb">emulator-5554</tspan></text>
+<text x="36" y="528" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#aab1d6" text-anchor="start" font-style="italic">exact device (from adb devices)</text>
+<line x1="36" y1="538" x2="364" y2="538" stroke="#aab1d6" stroke-opacity=".18"/>
+<text x="200.0" y="582" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#2cc4b5" text-anchor="middle">teal &quot;appium:&quot; = vendor prefix · required in Appium 2+</text>
+</svg>
