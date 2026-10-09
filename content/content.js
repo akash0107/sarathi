@@ -36,8 +36,8 @@ window.SARATHI = {
     name: "Sarathi Hub",
     owner: "Akash Debnath",
     tagline: "Your steady charioteer for mind, work and the road ahead.",
-    lastUpdated: "2026-10-08",          // YYYY-MM-DD (IST)
-    lastUpdatedLabel: "Oct 8, 2026 (IST)",
+    lastUpdated: "2026-10-09",          // YYYY-MM-DD (IST)
+    lastUpdatedLabel: "Oct 9, 2026 (IST)",
     timezone: "Asia/Kolkata"
   },
 
@@ -626,6 +626,23 @@ markers =
           title: "Log",
           help: "Add new entries at the TOP of the entries list in content.js. Fill 'worked' and 'didnt' as you learn.",
           entries: [
+            {
+              date: "2026-10-09",
+              note: "A win day. Slept peacefully, woke around 6:30 and was studying by 6:45 AM. Did the Appium setup on the Mac and the Maven project lectures, Japneet's Playwright lectures and a career coaching call, then extended the day. Next (Oct 10): one 25-minute pytest block and one 25-minute AI testing block. Pending job items: referral-link applications (Barclays, Deutsche Bank, Dentsu) and the Innodata send.",
+              worked: [
+                "Good sleep and an early first move (studying by 6:45 AM).",
+                "One topic per block.",
+                "Stating the evening plan clearly.",
+                "Appium setup on Mac and the Maven project lectures done.",
+                "Japneet's Playwright lectures done.",
+                "Career coaching call done."
+              ],
+              didnt: [
+                "Skipped pytest and AI/LLM testing: the plan was too big for one day, and that brought guilt.",
+                "Dead tired by 10:22 PM.",
+                "The 6 AM reminder failed, so the morning visualization came late."
+              ]
+            },
             {
               date: "2026-10-08",
               note: "A real win. Overslept to 9:19 AM after a restless night and woke up feeling guilty, but restarted instead of writing the day off. By 5:39 PM IST: finished the pytest test, did the internal job application, sent my learnings (now the [Pytest Notes](pytest.html) page) and completed everything I planned in Japneet's Playwright course, up to the API section and the playwright.config.ts file.",
