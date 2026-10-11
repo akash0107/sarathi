@@ -280,7 +280,7 @@
 
   // Learning notes: paragraphs, bullet lists and code blocks (whitespace preserved).
   R.lesson = function (s) {
-    return '<section class="card sec lesson">' + h2(s.title) + (s.blocks || []).map(function (b) {
+    return '<section class="card sec lesson"' + (s.anchor ? ' id="' + esc(s.anchor) + '"' : "") + '>' + h2(s.title) + (s.blocks || []).map(function (b) {
       if (b.code != null) {
         var code = String(b.code).replace(/^\n+/, "").replace(/\s+$/, "");
         return '<div class="code-block"><div class="code-head"><span class="code-lang">' + esc(b.lang || "code") + "</span>" +
@@ -293,6 +293,7 @@
           '<img src="' + esc(b.img) + '" alt="' + esc(b.alt || "") + '"' + dims + ' loading="lazy" decoding="async"></a>' +
           (b.caption ? '<figcaption>' + md(b.caption) + "</figcaption>" : "") + "</figure>";
       }
+      if (b.ol) return '<ol class="list"' + (b.start ? ' start="' + esc(b.start) + '"' : "") + ">" + b.ol.map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ol>";
       if (b.list) return '<ul class="list">' + b.list.map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>";
       return "<p>" + md(b.text) + "</p>";
     }).join("") + "</section>";

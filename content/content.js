@@ -26,7 +26,8 @@
        checklist -> { type, title, id, note, groups: [{ title, items: [...] }] }  (tick boxes, saved in this browser)
        vision    -> { type, title, image, fallback, full, width, height, alt, caption, placeholder, help }  (image "" = placeholder)
        goals     -> { type, title, theme: [...], phases: [{ title, period, items: [{ goal, detail }] }], motto }
-       lesson    -> { type, title, blocks: [{ text: "..." } | { code: `...`, lang: "python" } | { list: ["...", ...] } | { img, width, height, alt, caption }] }
+       lesson    -> { type, title, blocks: [{ text: "..." } | { code: `...`, lang: "python" } | { list: ["...", ...] } | { ol: ["...", ...], start: 7 } | { img, width, height, alt, caption }] }
+                    (optional anchor: "my-id" gives the section a #my-id link)
                     (learning notes; code goes in backtick strings so line breaks and indentation are kept)
    - A page may set nav: "Short name" to use a shorter label in the top navigation.
    ===================================================================== */
@@ -36,8 +37,8 @@ window.SARATHI = {
     name: "Sarathi Hub",
     owner: "Akash Debnath",
     tagline: "Your steady charioteer for mind, work and the road ahead.",
-    lastUpdated: "2026-10-09",          // YYYY-MM-DD (IST)
-    lastUpdatedLabel: "Oct 9, 2026 (IST)",
+    lastUpdated: "2026-10-11",          // YYYY-MM-DD (IST)
+    lastUpdatedLabel: "Oct 11, 2026 (IST)",
     timezone: "Asia/Kolkata"
   },
 
@@ -719,6 +720,33 @@ def test_login(driver):
               "**3. xpath** (`AppiumBy.xpath`): the last resort. Slow, and it breaks when the screen layout changes. Use it only when nothing else exists, and keep it short (e.g. by `@text`)."
             ] },
             { text: "If an app has no accessibility ids, ask the developers to add them. It helps testing and real users with screen readers." }
+          ]
+        },
+        {
+          type: "lesson",
+          anchor: "usb-checklist",
+          title: "Android Device USB Connection Checklist (for Appium runs)",
+          blocks: [
+            { img: "assets/img/appium/usb-checklist.svg?v=202610111845", width: 400, height: 586, alt: "Flow diagram: steps 1 to 6 on the phone (Developer options, USB debugging, Vivo settings, plug in, File Transfer mode, allow USB debugging), then steps 7 and 8 on the Mac (adb devices -l, restart adb), then fallback steps 9 and 10 (different cable or port, check ioreg).", caption: "Phone steps → Mac check → fallback. Stop as soon as the phone shows up in adb." },
+            { text: "**On the phone:**" },
+            { ol: [
+              "Settings → About phone → tap **Build number** 7 times → enables Developer Options.",
+              "Settings → Additional settings → Developer options → toggle **USB debugging** ON (separate switch from step 1).",
+              "(Vivo-specific) In Developer options, also enable **Install via USB** and disable **Verify apps over USB**, if present.",
+              "Plug phone into Mac via USB cable.",
+              "Pull down notification shade → tap the USB notification → set mode to **File Transfer (MTP)**, not \"Charging only.\"",
+              "Watch the phone screen for an **\"Allow USB debugging?\"** popup → tap **Allow** (check \"Always allow from this computer\" to skip this next time)."
+            ] },
+            { text: "**On the Mac:**" },
+            { ol: ["Run: `adb devices -l` — it should list the phone's serial number."], start: 7 },
+            { lang: "bash", code: `adb devices -l` },
+            { ol: ["If still empty, force a rescan:"], start: 8 },
+            { lang: "bash", code: `adb kill-server && adb start-server && adb devices -l` },
+            { text: "**If it still doesn't show up:**" },
+            { ol: ["Try a different USB cable/port (some cables are charge-only)."], start: 9 },
+            { ol: ["Check if macOS even sees the phone as a USB device:"], start: 10 },
+            { lang: "bash", code: `ioreg -p IOUSB -l -w 0 | grep -E "\\+-o|USB Vendor Name"` },
+            { text: "If the phone doesn't appear here at all, it's a cable/port/hardware issue, not an Android settings issue." }
           ]
         },
         {

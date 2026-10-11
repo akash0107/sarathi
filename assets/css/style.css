@@ -327,6 +327,8 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- lesson / code blocks ---------- */
 .lesson .list { margin: 0 0 12px; }
+.lesson ol.list li::marker { font-weight: 700; }
+.lesson[id] { scroll-margin-top: 120px; }
 .code-block { margin: 8px 0 14px; border: 1px solid rgba(44, 196, 181, 0.28); border-radius: 12px; background: #04071a; overflow: hidden; }
 .code-block:last-child { margin-bottom: 0; }
 .code-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 6px 4px 14px; background: rgba(44, 196, 181, 0.09); border-bottom: 1px solid rgba(44, 196, 181, 0.18); }
