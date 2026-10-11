@@ -379,3 +379,14 @@ p:last-child { margin-bottom: 0; }
   .verses { columns: 2; column-gap: 16px; }
   .verses .verse { break-inside: avoid; display: inline-block; width: 100%; }
 }
+
+/* ---------- tables & flashcards (lesson) ---------- */
+.table-wrap { overflow-x: auto; margin: 8px 0 14px; }
+.notes-table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+.notes-table th, .notes-table td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid rgba(44, 196, 181, 0.22); }
+.notes-table th { color: var(--gold); font-weight: 700; }
+.flashcards { display: grid; gap: 8px; margin: 8px 0 14px; }
+.flashcard { border: 1px solid rgba(44, 196, 181, 0.28); border-radius: 12px; padding: 10px 14px; background: rgba(4, 7, 26, 0.5); }
+.flashcard summary { cursor: pointer; font-weight: 600; }
+.flashcard[open] summary { margin-bottom: 6px; color: var(--gold); }
+.flashcard p { margin: 0; }

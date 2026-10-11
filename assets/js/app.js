@@ -293,6 +293,9 @@
           '<img src="' + esc(b.img) + '" alt="' + esc(b.alt || "") + '"' + dims + ' loading="lazy" decoding="async"></a>' +
           (b.caption ? '<figcaption>' + md(b.caption) + "</figcaption>" : "") + "</figure>";
       }
+      if (b.table) return '<div class="table-wrap"><table class="notes-table"><thead><tr>' + b.table.head.map(function (h) { return "<th>" + md(h) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+        b.table.rows.map(function (r) { return "<tr>" + r.map(function (c) { return "<td>" + md(c) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
+      if (b.qa) return '<div class="flashcards">' + b.qa.map(function (q) { return '<details class="flashcard"><summary>' + md(q.q) + "</summary><p>" + md(q.a) + "</p></details>"; }).join("") + "</div>";
       if (b.ol) return '<ol class="list"' + (b.start ? ' start="' + esc(b.start) + '"' : "") + ">" + b.ol.map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ol>";
       if (b.list) return '<ul class="list">' + b.list.map(function (i) { return "<li>" + md(i) + "</li>"; }).join("") + "</ul>";
       return "<p>" + md(b.text) + "</p>";

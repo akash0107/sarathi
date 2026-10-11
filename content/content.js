@@ -805,6 +805,232 @@ def test_login(driver):
       ]
     },
 
+    /* ------------------------------------------------------------- 4d */
+    {
+      id: "deepeval",
+      file: "deepeval.html",
+      title: "DeepEval Notes (Oct 11, 2026)",
+      nav: "DeepEval Notes",
+      subtitle: "Testing LLM answers with DeepEval and a free local Ollama judge, explained simply (Karthik KK course, sections 1-4)",
+      icon: "code",
+      accent: "teal",
+      sections: [
+        {
+          type: "lesson",
+          title: "TL;DR (read this first)",
+          blocks: [
+            { list: [
+              "An LLM gives a **different answer every time**, so `assert answer == \"Paris\"` breaks. Instead we ask **another LLM (the judge)** to score the answer from 0 to 1.",
+              "In DeepEval: put the question and answer in an `LLMTestCase`, pick a **metric** (like `AnswerRelevancyMetric`), and run `evaluate()`. Score ≥ **threshold** means pass.",
+              "The judge can run **free on my laptop** with Ollama (`qwen3:8b`). No API key, no cost.",
+              "Thinking models print their reasoning, which can break DeepEval's JSON parsing. My `OllamaNoThink` class turns thinking off.",
+              "My first result: **Answer Relevancy 1.00** (threshold 0.5), judge `qwen3:8b`, run took 43.74s, published to Confident AI."
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "1. What LLM evaluation is (and why normal asserts don't work)",
+          blocks: [
+            { text: "**Everyday picture:** a maths exam has one right answer, so a machine can mark it. An essay exam doesn't. Two good essays use different words, so a **teacher** reads each one and gives marks. LLM answers are essays, and DeepEval brings in a teacher (the judge LLM)." },
+            { list: [
+              "Ask \"What is the capital of France?\" and you may get `Paris`, `Paris.` or `The capital of France is Paris.` All are correct, yet `==` passes only one of them.",
+              "So we stop checking **exact text** and start checking **qualities**: is it relevant, is it faithful to the documents, is it correct?",
+              "Each quality is a **metric**, and each metric gives a **score from 0 to 1** plus a **reason**."
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "2. Key DeepEval concepts",
+          blocks: [
+            { text: "**`LLMTestCase`** = one exam paper. It holds what went in and what came out:" },
+            { table: { head: ["Field", "What it is", "Example"], rows: [
+              ["`input`", "The question the user asked", "\"What is the capital of France?\""],
+              ["`actual_output`", "What **my** LLM app answered", "\"Paris\""],
+              ["`expected_output`", "The ideal answer (optional, some metrics need it)", "\"Paris is the capital.\""],
+              ["`retrieval_context`", "Chunks my RAG app **actually fetched** at runtime (list of strings)", "[\"Paris is France's capital...\"]"],
+              ["`context`", "The **ideal / ground-truth** facts (list of strings), written by me", "[\"France's capital is Paris.\"]"]
+            ] } },
+            { list: [
+              "**Metric** = what the teacher marks for (relevancy, faithfulness, ...). Each metric needs certain fields. `AnswerRelevancyMetric` needs only `input` and `actual_output`.",
+              "**Threshold** = the pass mark. Default is `0.5`. Score ≥ threshold → pass.",
+              "**LLM-as-a-judge** = an LLM reads the test case and does the marking. The judge is set with the metric's `model=` argument.",
+              "Easy mix-up: `retrieval_context` = what the app **found**; `context` = what it **should** have found."
+            ] },
+            { text: "**Two ways to run tests:**" },
+            { table: { head: ["Style", "How", "When"], rows: [
+              ["`evaluate()`", "Plain Python script: `evaluate(test_cases=[...], metrics=[...])`, run with `python file.py`", "Quick experiments, notebooks (what I used)"],
+              ["pytest style", "`assert_test(test_case, [metric])` inside a `test_` function, run with `deepeval test run test_file.py`", "Real test suites and CI pipelines"]
+            ] } },
+            { lang: "python", code: `# pytest style (file: test_capital.py)
+from deepeval import assert_test
+from deepeval.metrics import AnswerRelevancyMetric
+from deepeval.test_case import LLMTestCase
+
+def test_capital():
+    test_case = LLMTestCase(input="What is the capital of France?", actual_output="Paris")
+    assert_test(test_case, [AnswerRelevancyMetric(threshold=0.5)])` },
+            { lang: "bash", code: `deepeval test run test_capital.py` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "3. AnswerRelevancyMetric: how the score is made",
+          blocks: [
+            { text: "**Question it answers:** does the answer stay on topic for the question? (It does **not** check facts. A wrong but on-topic answer can still score high; Faithfulness catches that.)" },
+            { ol: [
+              "The judge **splits** `actual_output` into small statements.",
+              "For each statement the judge gives a **verdict**: `yes` (relevant), `no` (off-topic) or `idk` (unsure; counted as relevant).",
+              "**Score = relevant statements ÷ total statements.**"
+            ] },
+            { text: "Example: answer \"Paris. Also, I love pizza.\" → 2 statements, 1 relevant → score **0.5**. My answer \"Paris\" → 1 statement, verdict `yes` → score **1.0**." },
+            { text: "Tip: set `verbose_mode=True` on any metric to print the statements and verdicts in the terminal." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "4. A free local judge with Ollama",
+          blocks: [
+            { text: "**Everyday picture:** instead of paying an outside teacher (OpenAI), I hire a teacher who lives in my house (a model running on my laptop)." },
+            { ol: [
+              "Install Ollama from [ollama.com](https://ollama.com) (on Mac: download the app, or `brew install ollama`).",
+              "Download the judge model: `ollama pull qwen3:8b`",
+              "Start the server (the app does this for you): `ollama serve`. It listens on `http://localhost:11434`.",
+              "Put settings in `.env` in the project folder:"
+            ] },
+            { lang: "bash", code: `# .env
+OLLAMA_MODEL_NAME=qwen3:8b
+LOCAL_MODEL_BASE_URL=http://localhost:11434` },
+            { text: "Then in code: `OllamaModel(model=..., base_url=...)` and pass it to the metric with `model=ollama_model`." },
+            { text: "**Alternative (no code change):** make Ollama the default judge for every metric through the CLI:" },
+            { lang: "bash", code: `deepeval set-ollama --model=qwen3:8b --base-url="http://localhost:11434"
+deepeval unset-ollama   # go back to the default provider` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "5. The thinking-model gotcha and my OllamaNoThink fix",
+          blocks: [
+            { text: "**Problem:** models like Qwen3 and DeepSeek-R1 \"think out loud\" first. DeepEval expects clean JSON back from the judge, and the extra thinking text can break parsing. It's also slower." },
+            { text: "**Fix:** a tiny subclass that always sends `think=False` to Ollama's `chat` call." },
+            { list: [
+              "`class OllamaNoThink(OllamaModel)` = \"same as `OllamaModel`, with one change\".",
+              "`load_model()` builds the Ollama client. I call the parent's version with `super()`, then change it.",
+              "`partial(client.chat, think=False)` = a copy of `chat` with `think=False` already filled in, so every call gets it.",
+              "`async_mode=False` and `AsyncConfig(run_async=False)` = run one step at a time. Slower but simpler and easier to debug on a laptop."
+            ] },
+            { lang: "python", code: `import os
+from functools import partial
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv(usecwd=True), override=True)
+from deepeval import evaluate
+from deepeval.evaluate import AsyncConfig
+from deepeval.metrics import AnswerRelevancyMetric
+from deepeval.models import OllamaModel
+from deepeval.test_case import LLMTestCase
+
+class OllamaNoThink(OllamaModel):
+    """Forward think=False to Ollama for sync and async calls."""
+    def load_model(self, *args, **kwargs):
+        client = super().load_model(*args, **kwargs)
+        client.chat = partial(client.chat, think=False)
+        return client
+
+ollama_model = OllamaNoThink(model=os.environ["OLLAMA_MODEL_NAME"], base_url=os.environ["LOCAL_MODEL_BASE_URL"])
+test_case = LLMTestCase(input="What is the capital of France?", actual_output="Paris")
+result = evaluate([test_case], metrics=[AnswerRelevancyMetric(model=ollama_model, async_mode=False)], async_config=AsyncConfig(run_async=False))` },
+            { text: "I also have a `think=True` version (class `OllamaThink`). Instead of two files, one flag can switch them:" },
+            { lang: "python", code: `THINK = os.getenv("OLLAMA_THINK", "false").lower() == "true"
+
+class OllamaJudge(OllamaModel):
+    def load_model(self, *args, **kwargs):
+        client = super().load_model(*args, **kwargs)
+        client.chat = partial(client.chat, think=THINK)
+        return client` },
+            { text: "Run with `OLLAMA_THINK=true python file.py` to turn thinking on; leave it out for off." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "6. Publishing results to Confident AI",
+          blocks: [
+            { text: "**Confident AI** is DeepEval's website for saving and viewing test runs (like a report portal)." },
+            { ol: [
+              "Run `deepeval login` and paste the API key from the Confident AI dashboard.",
+              "Run tests as usual. Each `evaluate()` / `deepeval test run` is uploaded as a **test run**.",
+              "Open the test run to see score, pass/fail, the reason, and the **verbose logs** (statements + verdicts)."
+            ] },
+            { text: "**My real run:** Answer Relevancy **1.00** vs threshold **0.5** → PASS. Judge `qwen3:8b` via Ollama. Run time **43.74s**. Verbose log: Statements `[\"Paris\"]`, verdict `yes`." },
+            { img: "assets/img/deepeval/confident_ai_result.png", width: 1437, height: 900, alt: "Confident AI test run: Answer Relevancy score 1.00 against threshold 0.5, judge qwen3:8b via Ollama, verbose logs showing the statement Paris with verdict yes.", caption: "My first DeepEval run on Confident AI. Tap to open full size." }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "7. Common errors and fixes",
+          blocks: [
+            { table: { head: ["What I see", "Why", "Fix"], rows: [
+              ["`KeyError: 'OLLAMA_MODEL_NAME'`", "`.env` not loaded or variable missing", "Check `.env` is in the project folder; keep `load_dotenv(...)` **before** reading `os.environ`"],
+              ["Connection refused on `localhost:11434`", "Ollama server not running", "Open the Ollama app or run `ollama serve`; test with `ollama list`"],
+              ["`model not found`", "Model not downloaded / name typo", "`ollama pull qwen3:8b`; name must match `ollama list` exactly"],
+              ["JSON / parsing error from the metric", "Thinking text or a weak model broke the JSON", "Use `OllamaNoThink`, or a bigger model"],
+              ["Very slow runs", "Big model on a laptop, thinking on", "Turn thinking off; try a smaller model; it's normal for a first run (mine: 43.74s)"],
+              ["Asks for an OpenAI API key", "No `model=` given, so default OpenAI judge is used", "Pass `model=ollama_model` to every metric, or run `deepeval set-ollama`"],
+              ["Results don't show on Confident AI", "Not logged in", "`deepeval login` with the key from the dashboard"]
+            ] } }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "8. Quick revision: flashcards",
+          blocks: [
+            { text: "Try to answer first, then tap to check." },
+            { qa: [
+              { q: "Why can't I use `assert answer == expected` for LLMs?", a: "The answer's wording changes every run, so exact match fails on correct answers. We score qualities (0 to 1) with a judge instead." },
+              { q: "What is LLM-as-a-judge?", a: "Another LLM reads the test case and gives a score with a reason, like a teacher marking an essay." },
+              { q: "Which two fields does `AnswerRelevancyMetric` need?", a: "`input` and `actual_output`." },
+              { q: "How is Answer Relevancy calculated?", a: "Split the output into statements, mark each yes / no / idk, score = relevant statements ÷ total." },
+              { q: "`retrieval_context` vs `context`?", a: "`retrieval_context` = chunks the app actually fetched. `context` = ideal ground-truth facts I provide." },
+              { q: "Default threshold and what it means?", a: "`0.5`. Score ≥ threshold → the test passes." },
+              { q: "`evaluate()` vs `assert_test()`?", a: "`evaluate()` for scripts and experiments; `assert_test()` inside pytest functions, run with `deepeval test run`." },
+              { q: "Which two env vars does my local judge use?", a: "`OLLAMA_MODEL_NAME` (e.g. `qwen3:8b`) and `LOCAL_MODEL_BASE_URL` (`http://localhost:11434`)." },
+              { q: "Why did I write `OllamaNoThink`?", a: "Thinking models add reasoning text that can break DeepEval's JSON parsing and slow things down. It forces `think=False`." },
+              { q: "What does `partial(client.chat, think=False)` do?", a: "Makes a copy of `chat` with `think=False` pre-filled, so every call sends it automatically." }
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "9. Cheat sheet",
+          blocks: [
+            { lang: "bash", code: `pip install -U deepeval python-dotenv   # install
+ollama pull qwen3:8b                     # download judge model
+ollama serve                             # start Ollama (port 11434)
+ollama list                              # see downloaded models
+deepeval set-ollama --model=qwen3:8b     # make Ollama the default judge
+deepeval unset-ollama                    # undo
+deepeval login                           # connect to Confident AI
+python first_test.py                     # run an evaluate() script
+deepeval test run test_file.py           # run pytest-style DeepEval tests` }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "10. Next up",
+          blocks: [
+            { list: [
+              "**Faithfulness**: is every claim in the answer backed by `retrieval_context`? (catches hallucinations)",
+              "**Contextual Precision**: are the relevant chunks ranked at the top?",
+              "**Contextual Recall**: did retrieval fetch everything needed for `expected_output`?",
+              "**Contextual Relevancy**: how much of the fetched text is actually relevant to the input?",
+              "**G-Eval**: write my own criteria in plain English and let the judge score them.",
+              "**Goldens**: a saved dataset of inputs (plus expected outputs) that I reuse for every test run."
+            ] }
+          ]
+        }
+      ]
+    },
+
     /* ---------------------------------------------------- Dubai Dream */
     {
       id: "dubai",
