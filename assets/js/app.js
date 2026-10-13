@@ -308,6 +308,51 @@
     return '<section class="card sec lesson"' + (s.anchor ? ' id="' + esc(s.anchor) + '"' : "") + ">" + h2(s.title) + lessonBlocks(s.blocks) + "</section>";
   };
 
+  // Big number cards.
+  R.stats = function (s) {
+    return '<section class="sec stats-sec">' + h2(s.title) + (s.note ? '<p class="muted stats-note">' + md(s.note) + "</p>" : "") +
+      '<div class="stats">' + (s.items || []).map(function (it) {
+        return '<div class="stat tone-' + esc(it.tone || "gold") + (it.big ? " is-big" : "") + '"><span class="stat-v">' + esc(it.value) + "</span>" +
+          '<span class="stat-l">' + esc(it.label) + "</span>" + (it.sub ? '<span class="stat-s">' + esc(it.sub) + "</span>" : "") + "</div>";
+      }).join("") + "</div></section>";
+  };
+
+  // Horizontal comparison bars.
+  R.bars = function (s) {
+    var max = s.max || Math.max.apply(null, (s.items || []).map(function (i) { return i.value; }));
+    return '<section class="card sec bars-sec">' + h2(s.title) + (s.note ? '<p class="muted">' + md(s.note) + "</p>" : "") +
+      '<ul class="bars">' + (s.items || []).map(function (it) {
+        var pct = Math.max(4, Math.round(100 * it.value / max));
+        return '<li class="bar-row tone-' + esc(it.tone || "gold") + '"><div class="bar-top"><span>' + esc(it.label) + "</span><strong>" + esc(it.display || it.value) + "</strong></div>" +
+          '<div class="bar-track"><span class="bar-fill" style="width:' + pct + '%"></span></div>' + (it.sub ? '<span class="bar-sub muted small">' + esc(it.sub) + "</span>" : "") + "</li>";
+      }).join("") + "</ul>" + (s.footer ? '<p class="bars-foot">' + md(s.footer) + "</p>" : "") + "</section>";
+  };
+
+  // Hour's-worth calculator (runs only in this browser).
+  R.calc = function (s) {
+    var id = "calc-" + esc(s.id || "c");
+    function field(name, label, val, extra) {
+      return '<label class="calc-f"><span>' + label + '</span><input type="number" inputmode="decimal" min="0" data-f="' + name + '" value="' + esc(val) + '"' + (extra || "") + "></label>";
+    }
+    return '<section class="card sec calc" id="' + id + '" data-calc>' + h2(s.title) + (s.note ? '<p class="muted small">' + md(s.note) + "</p>" : "") +
+      '<div class="calc-mode" role="radiogroup" aria-label="Input type">' +
+      '<label><input type="radio" name="' + id + '-mode" value="inhand" checked> Monthly take-home</label>' +
+      '<label><input type="radio" name="' + id + '-mode" value="ctc"> Yearly CTC</label></div>' +
+      '<div class="calc-grid">' +
+      '<div class="calc-in" data-show="inhand">' + field("monthly", "Take-home per month (₹)", s.monthly || 0, ' step="1000"') + "</div>" +
+      '<div class="calc-in" data-show="ctc" hidden>' + field("ctc", "CTC per year (₹)", s.ctc || 0, ' step="50000"') + field("basic", "Basic as % of CTC", s.basicPct || 40, ' max="100" step="5"') + field("pt", "Professional tax / year (₹)", 2500, ' step="100"') + "</div>" +
+      field("days", "Working days / month", s.days || 22, ' max="31"') + field("hours", "Hours / day", s.hours || 8, ' max="24" step="0.5"') +
+      "</div>" +
+      '<div class="stats calc-out" aria-live="polite">' +
+      '<div class="stat tone-gold is-big"><span class="stat-v" data-o="hour">–</span><span class="stat-l">per hour</span></div>' +
+      '<div class="stat tone-teal"><span class="stat-v" data-o="day">–</span><span class="stat-l">per day</span></div>' +
+      '<div class="stat tone-rose"><span class="stat-v" data-o="min">–</span><span class="stat-l">per minute</span></div>' +
+      "</div>" +
+      '<p class="calc-extra" data-o="extra"></p>' +
+      '<details class="more calc-break" hidden><summary>Deduction breakdown (estimate)</summary><div class="more-body"><table class="notes-table"><tbody data-o="break"></tbody></table></div></details>' +
+      "</section>";
+  };
+
   // Table of contents with in-page anchor links.
   R.toc = function (s) {
     return '<nav class="card sec toc" aria-label="' + esc(s.title || "On this page") + '">' + (s.title ? '<h2 class="toc-title">' + esc(s.title) + "</h2>" : "") +
@@ -445,6 +490,44 @@
     });
   }
 
+  // New tax regime FY 2026-27: slabs, Rs 75k standard deduction, 87A rebate (income up to 12L) with marginal relief, 4% cess.
+  function newRegimeTax(taxable) {
+    var slabs = [[400000, 0], [800000, 0.05], [1200000, 0.10], [1600000, 0.15], [2000000, 0.20], [2400000, 0.25], [Infinity, 0.30]];
+    var t = 0, prev = 0;
+    slabs.forEach(function (sl) { if (taxable > prev) t += (Math.min(taxable, sl[0]) - prev) * sl[1]; prev = sl[0]; });
+    if (taxable <= 1200000) t = 0; else t = Math.min(t, taxable - 1200000);   // rebate + marginal relief
+    // Surcharge (above 50L) is not modelled; flagged in the UI.
+    return { tax: t, cess: t * 0.04 };
+  }
+  function inr(n, dp) {
+    if (!isFinite(n)) return "–";
+    return "₹" + Number(n).toLocaleString("en-IN", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 });
+  }
+  function wireCalc() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-calc]"), function (el) {
+      function v(n) { var i = el.querySelector('[data-f="' + n + '"]'); return i ? parseFloat(i.value) || 0 : 0; }
+      function o(n) { return el.querySelector('[data-o="' + n + '"]'); }
+      function mode() { var r = el.querySelector('input[type=radio]:checked'); return r ? r.value : "inhand"; }
+      function update() {
+        var m = mode(), monthly, rows = null, warn = "";
+        Array.prototype.forEach.call(el.querySelectorAll("[data-show]"), function (b) { b.hidden = b.getAttribute("data-show") !== m; });
+        if (m === "ctc") {
+          var ctc = v("ctc"), basic = ctc * v("basic") / 100, pf = basic * 0.12, gross = ctc - pf, taxable = Math.max(0, gross - 75000);
+          var t = newRegimeTax(taxable), pt = v("pt"), take = gross - pf - t.tax - t.cess - pt;
+          monthly = take / 12;
+          if (taxable > 5000000) warn = " Taxable income is above ₹50 lakh, so surcharge applies and real take-home will be lower.";
+          rows = [["Gross (CTC − employer PF)", gross], ["Income tax", -t.tax], ["Cess 4%", -t.cess], ["Employee PF", -pf], ["Professional tax", -pt], ["Take-home / year", take], ["Take-home / month", monthly]];
+        } else monthly = v("monthly");
+        var hrs = v("days") * v("hours"), hour = hrs ? monthly / hrs : NaN, day = v("days") ? monthly / v("days") : NaN;
+        o("hour").textContent = inr(hour); o("day").textContent = inr(day); o("min").textContent = inr(hour / 60, 1);
+        o("extra").textContent = isFinite(hour) ? "Take-home " + inr(monthly) + "/month · " + hrs + " hours. A 30-minute scroll costs " + inr(hour / 2) + "." + warn : "Enter your numbers above.";
+        var br = el.querySelector(".calc-break"); br.hidden = !rows;
+        if (rows) o("break").innerHTML = rows.map(function (r) { return "<tr><td>" + esc(r[0]) + "</td><td>" + (r[1] < 0 ? "− " : "") + esc(inr(Math.abs(r[1]))) + "</td></tr>"; }).join("");
+      }
+      el.addEventListener("input", update); el.addEventListener("change", update); update();
+    });
+  }
+
   function wireCode() {
     Array.prototype.forEach.call(document.querySelectorAll(".code-copy"), function (btn) {
       btn.addEventListener("click", function () {
@@ -472,4 +555,5 @@
   wirePrompts();
   wireChecklists();
   wireCode();
+  wireCalc();
 })();

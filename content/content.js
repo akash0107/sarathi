@@ -25,6 +25,9 @@
        chips     -> { type, title, items: ["...", ...] }
        checklist -> { type, title, id, note, groups: [{ title, items: [...] }] }  (tick boxes, saved in this browser)
        vision    -> { type, title, image, fallback, full, width, height, alt, caption, placeholder, help }  (image "" = placeholder)
+       stats     -> { type, title, note, items: [{ value, label, sub, tone, big }] }  (big number cards)
+       bars      -> { type, title, note, max, items: [{ label, value, display, sub, tone }], footer }
+       calc      -> { type, id, title, note, monthly, ctc, basicPct, days, hours }  (hour's-worth calculator, new tax regime)
        goals     -> { type, title, theme: [...], phases: [{ title, period, items: [{ goal, detail }] }], motto }
        lesson    -> { type, title, blocks: [{ text: "..." } | { code: `...`, lang: "python" } | { list: ["...", ...] } | { ol: ["...", ...], start: 7 } | { img, width, height, alt, caption }] }
                     (optional anchor: "my-id" gives the section a #my-id link)
@@ -37,8 +40,8 @@ window.SARATHI = {
     name: "Sarathi Hub",
     owner: "Akash Debnath",
     tagline: "Your steady charioteer for mind, work and the road ahead.",
-    lastUpdated: "2026-10-11",          // YYYY-MM-DD (IST)
-    lastUpdatedLabel: "Oct 11, 2026 (IST)",
+    lastUpdated: "2026-10-13",          // YYYY-MM-DD (IST)
+    lastUpdatedLabel: "Oct 13, 2026 (IST)",
     timezone: "Asia/Kolkata"
   },
 
@@ -963,6 +966,130 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
             ] }
           ]
         }
+      ]
+    },
+
+    /* ------------------------------------------------------------- 4e */
+    {
+      id: "worth",
+      file: "worth.html",
+      title: "My Hour's Worth",
+      nav: "My Hour's Worth",
+      subtitle: "Open this when you're doom scrolling or don't feel like working. This is your push.",
+      icon: "sun",
+      accent: "gold",
+      sections: [
+        {
+          type: "stats",
+          title: "Right now, every hour you work is worth",
+          note: "Based on **₹2,13,000/month take-home** (already in-hand, after tax and PF) ÷ 22 working days ÷ 8 hours = **176 hours a month**.",
+          items: [
+            { value: "₹1,210", label: "per hour", tone: "gold", big: true },
+            { value: "₹9,682", label: "per day", sub: "8 hours", tone: "teal" },
+            { value: "₹20", label: "per minute", sub: "every single minute", tone: "rose" }
+          ]
+        },
+        {
+          type: "bars",
+          title: "What doom scrolling really costs",
+          note: "Money you were paid for, spent on nothing. At ₹20 a minute:",
+          max: 1210,
+          items: [
+            { label: "15 min scroll", value: 303, display: "₹303", tone: "gold" },
+            { label: "30 min scroll", value: 605, display: "₹605", tone: "rose" },
+            { label: "60 min scroll", value: 1210, display: "₹1,210", sub: "a full hour's pay", tone: "rose" }
+          ],
+          footer: "Two 30-minute scrolls a day × 22 days = **₹26,625 a month**, about one-eighth of your salary."
+        },
+        {
+          type: "stats",
+          title: "At your ₹45 LPA target",
+          note: "**Estimated** take-home after income tax, cess, PF and professional tax (new tax regime, FY 2026-27): **≈ ₹2.58–2.66 lakh/month**. At the same 176 hours:",
+          items: [
+            { value: "≈ ₹1,500", label: "per hour", sub: "₹1,467 – ₹1,510", tone: "gold", big: true },
+            { value: "≈ ₹12,000", label: "per day", sub: "₹11,735 – ₹12,080", tone: "teal" },
+            { value: "≈ ₹25", label: "per minute", sub: "₹24.4 – ₹25.2", tone: "rose" }
+          ]
+        },
+        {
+          type: "lesson",
+          anchor: "breakdown",
+          title: "₹45 LPA: full deduction breakdown (new regime)",
+          blocks: [
+            { table: {
+              head: ["Yearly (₹)", "Basic = 40% of CTC", "Basic = 50% of CTC"],
+              rows: [
+                ["CTC", "45,00,000", "45,00,000"],
+                ["Basic salary", "18,00,000", "22,50,000"],
+                ["Employer PF (12% of basic, inside CTC)", "− 2,16,000", "− 2,70,000"],
+                ["**Gross salary**", "**42,84,000**", "**42,30,000**"],
+                ["Standard deduction", "− 75,000", "− 75,000"],
+                ["**Taxable income**", "**42,09,000**", "**41,55,000**"],
+                ["Income tax (slabs)", "8,42,700", "8,26,500"],
+                ["Health & education cess (4%)", "33,708", "33,060"],
+                ["Employee PF (12% of basic)", "2,16,000", "2,70,000"],
+                ["Professional tax (West Bengal)", "2,500", "2,500"],
+                ["**Total deductions from gross**", "**10,94,908**", "**11,32,060**"],
+                ["**Take-home per year**", "**31,89,092**", "**30,97,940**"],
+                ["**Take-home per month**", "**2,65,758**", "**2,58,162**"],
+                ["Per hour (÷ 176)", "1,510", "1,467"],
+                ["Per day (÷ 22)", "12,080", "11,735"],
+                ["Per minute", "25.2", "24.4"]
+              ]
+            } },
+            { text: "Tax on ₹42,09,000: ₹0 on the first 4L, then ₹20k (4–8L at 5%) + ₹40k (8–12L at 10%) + ₹60k (12–16L at 15%) + ₹80k (16–20L at 20%) + ₹1L (20–24L at 25%) = **₹3,00,000** up to 24L, plus 30% of the remaining ₹18,09,000 = ₹5,42,700. Total **₹8,42,700**, plus 4% cess." },
+            { details: "Assumptions (this is an estimate, not payroll advice)", blocks: [
+              { list: [
+                "**New tax regime only**, FY 2026-27. Slabs checked against the Income-tax rates for 2026 (Budget 2026 left them unchanged): 0–4L nil · 4–8L 5% · 8–12L 10% · 12–16L 15% · 16–20L 20% · 20–24L 25% · above 24L 30%.",
+                "₹75,000 standard deduction; 4% health & education cess on tax. No surcharge, because taxable income stays below ₹50 lakh.",
+                "CTC = gross salary + employer PF. Employer PF and employee PF are each 12% of basic, with basic at 40% or 50% of CTC and **no** ₹15,000 wage-ceiling cap. If your PF is capped, take-home is higher.",
+                "Professional tax ₹2,500/year (West Bengal) is deducted from pay. Under the new regime it does **not** reduce taxable income.",
+                "No variable pay, bonus split, gratuity, NPS, insurance or other deductions. Real offers differ, so check the actual salary breakup.",
+                "Hours: 22 working days × 8 hours = 176 hours/month. Current ₹2,13,000 is treated as already in-hand."
+              ] }
+            ] }
+          ]
+        },
+        {
+          type: "lesson",
+          title: "Side by side",
+          blocks: [
+            { table: {
+              head: ["", "Now", "At ₹45 LPA (est.)"],
+              rows: [
+                ["Take-home / month", "₹2,13,000", "₹2,58,162 – ₹2,65,758"],
+                ["Per day (8 h)", "₹9,682", "₹11,735 – ₹12,080"],
+                ["Per hour", "₹1,210", "₹1,467 – ₹1,510"],
+                ["Per minute", "₹20", "₹24.4 – ₹25.2"],
+                ["30 min doom scroll", "₹605", "₹733 – ₹755"]
+              ]
+            } }
+          ]
+        },
+        {
+          type: "calc",
+          id: "worth",
+          title: "Calculator: what is my hour worth?",
+          note: "Works on this phone, nothing is sent anywhere. Enter take-home directly, or estimate it from CTC (new regime, same assumptions as above).",
+          monthly: 213000,
+          ctc: 4500000,
+          basicPct: 40,
+          days: 22,
+          hours: 8
+        },
+        {
+          type: "callout",
+          tone: "rose",
+          title: "This is your push.",
+          body: [
+            "This page is for doom scrolling moments, for when you don't feel like working. This is your push.",
+            "**You are paid ₹1,210 for every hour.** So every hour you must deliver at least ₹1,210 of value: a test written, a bug found, a lesson finished, an application sent. Give less, and sooner or later nobody gives you importance, or a chance. Give more, and the ₹1,500 hour comes to you.",
+            "**Value is the ultimate thing.** Not the title, not the hours you sat at the desk. The value you create.",
+            "Put the phone face down. Pick one small task. Start the 25-minute timer. Now."
+          ]
+        },
+        { type: "verse", ref: "3.8", note: "Inaction costs ₹20 a minute. Action builds the life you are working for." },
+        { type: "verse", ref: "2.47", note: "Your part is the hour of honest work. The rewards follow; don't stand still waiting for them." }
       ]
     },
 
