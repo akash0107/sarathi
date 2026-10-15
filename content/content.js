@@ -1108,13 +1108,89 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "tone": "teal",
           "title": "Interview tomorrow? Breathe.",
           "body": [
-            "You already know most of this. Read the **pictures and tables first**, then open the code. Practise by saying each answer out loud in one line."
+            "You already know most of this. Each section goes: **💡 Simple idea** (an everyday example) → **🧠 Remember this** (say it in the interview) → a **tiny example** with a comment on every line. Longer code hides under **Full example (optional)**."
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "quick",
+          "title": "Read this first: 10-minute quick revision",
+          "blocks": [
+            {
+              "note": "idea",
+              "title": "📋 How to use this",
+              "text": "One line per topic. Read it out loud. If a line feels fuzzy, tap its section in the list below."
+            },
+            {
+              "list": [
+                "**Architecture: why Playwright is fast:** One open connection + auto-wait + retrying assertions = fast and less flaky.",
+                "**Browser → Context → Page:** Browser → Context (isolated session) → Page (tab). New context per test = no leaks.",
+                "**Popups, dialogs, frames, many tabs:** Start waitForEvent('popup') before the click; register page.on('dialog') before the action.",
+                "**Custom fixtures:** test.extend creates fixtures: code before use() = setup, after = teardown.",
+                "**Log in once: storageState + setup project:** A setup project logs in once and saves storageState; other projects load it.",
+                "**localStorage & sessionStorage:** storageState saves cookies + localStorage, NOT sessionStorage.",
+                "**API testing:** The request fixture (APIRequestContext) sends HTTP calls; check with expect(res).toBeOK().",
+                "**Network mocking: page.route & HAR:** page.route + fulfill / abort / continue / fetch; routeFromHAR replays recorded traffic.",
+                "**Assertions cheat sheet:** await expect(locator) retries; expect(value) checks once. Use expect.soft to keep going.",
+                "**Geolocation & emulation:** Set geolocation + permissions on the context; devices['iPhone 15'] for phones.",
+                "**Data-driven tests:** Loop over an array and create one test per row, with unique titles.",
+                "**Test data from files & .env:** JSON via import, CSV via csv-parse, Excel via xlsx, secrets via .env + process.env.",
+                "**Run commands cheat sheet:** -g filters by title, --grep @tag by tag, --ui to explore, --debug to step through.",
+                "**Reporters:** list/line/dot for console, html for people, junit/json for CI tools.",
+                "**playwright.config.ts walkthrough:** defineConfig: testDir, timeout, retries, workers, reporter, use, projects, webServer.",
+                "**Parallelism & sharding:** Workers = processes on one machine (default half the CPU cores); shards = split across machines.",
+                "**CI/CD: Jenkins + artifacts:** npm ci → npx playwright install --with-deps → npx playwright test → upload report.",
+                "**Allure report:** allure-playwright reporter → allure-results/ → allure generate → allure open.",
+                "**Framework structure:** Tests → fixtures → page objects → utils/data → config; tests only describe steps.",
+                "**CLI & test agents:** codegen records; show-trace replays; init-agents adds planner, generator, healer.",
+                "**Claude Code & Copilot agent mode:** init-agents writes the agent files + an MCP config; you pick the agent and give a goal.",
+                "**Playwright MCP setup:** Playwright MCP = npx @playwright/mcp@latest, added to your AI app's MCP config.",
+                "**GitHub & Bitbucket MCP:** GitHub MCP: remote https://api.githubcopilot.com/mcp/ or Docker with a PAT; Bitbucket MCP is community-made.",
+                "**Agent workflow: Jira → PR:** Story → plan → tests → heal → PR, with a human review at the end."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "analogies",
+          "title": "Analogy cheat sheet",
+          "blocks": [
+            {
+              "list": [
+                "[**Architecture**](#arch): Selenium is sending a **post card** for every instruction; Playwright is **one WhatsApp call kept open** with the browser. → *One live connection, so commands are fast and nothing gets lost between steps.*",
+                "[**Auto-wait**](#arch): An **auto-rickshaw driver waits** till the passenger is fully seated before moving. → *Playwright waits until an element is visible, enabled and stable before it acts.*",
+                "[**Browser / Context / Page**](#contexts): A **housing society** (browser) → each **flat** with its own lock (context) → **rooms** in the flat (pages). → *Contexts are isolated: cookies of one flat never reach another.*",
+                "[**Fixture**](#fixtures): A **restaurant waiter** lays the plate before you eat and clears it after. → *Setup before `use()`, teardown after; the test just asks for what it needs.*",
+                "[**Test vs worker scope**](#fixtures): A **fresh plate per customer** (test scope) vs **one water jug per table** for the whole meal (worker scope). → *Test scope = new each test; worker scope = created once per worker process.*",
+                "[**storageState**](#auth): A **hotel key card**: check in once at reception, then just tap the card at your door. → *Log in once in a setup project, save the state file, reuse it in every test.*",
+                "[**localStorage vs sessionStorage**](#storage): **localStorage** = your **Aadhaar card** in the wallet (stays). **sessionStorage** = a **platform ticket** (valid only for this visit, this tab). → *storageState saves cookies + localStorage, not sessionStorage.*",
+                "[**page.route mocking**](#mock): A **society security guard** checks every delivery: lets it in, sends it back, or swaps the parcel. → *Intercept requests: fulfill (fake reply), abort (block), continue/fetch (change).*",
+                "[**HAR replay**](#mock): A **recorded cricket match** on replay: the same balls, same shots, no live players needed. → *Record real network traffic once into a .har file, replay it so tests do not need the server.*",
+                "[**Web-first vs generic**](#assertions): A **third umpire** who keeps replaying till the decision is clear (web-first) vs a **scoreboard** you read once (generic). → *`await expect(locator)` retries until timeout; `expect(value)` checks once.*",
+                "[**Soft assertion**](#assertions): A **teacher marks all mistakes** in the paper instead of stopping at the first one. → *`expect.soft` records the failure and the test keeps going.*",
+                "[**expect.poll / toPass**](#assertions): Calling the **railway enquiry** again and again till it says \"train arrived\" (poll); retrying a **whole recipe** till the dish comes out right (toPass). → *poll retries one value; toPass retries a whole block of code.*",
+                "[**Workers vs shards**](#parallel): **Workers** = several **billing counters in one D-Mart**; **shards** = splitting customers across **different D-Mart branches**. → *Workers = processes on one machine; shards = split tests across machines.*",
+                "[**Reporters**](#reporters): The **same match** shown as live score SMS (line), ball-by-ball dots (dot), or a full newspaper report (html). → *Reporters only change how results are shown, not the tests.*",
+                "[**Allure**](#allure): A **wedding photo album**: Playwright clicks the raw photos, Allure makes the album with captions. → *allure-results (raw) → allure generate → a rich HTML report.*",
+                "[**MCP**](#mcp): A **universal travel adapter**: one plug lets the AI use any tool (browser, GitHub, Jira). → *MCP is a standard way for AI apps to call tools.*",
+                "[**Agents: planner / generator / healer**](#cli): Building a house: the **architect** draws the plan, the **mistri** builds it, the **plumber-electrician** fixes leaks later. → *Planner writes the plan, generator writes tests, healer fixes failing tests.*"
+              ]
+            }
           ]
         },
         {
           "type": "toc",
           "title": "On this page",
           "items": [
+            {
+              "anchor": "quick",
+              "label": "Read this first: 10-minute quick revision"
+            },
+            {
+              "anchor": "analogies",
+              "label": "Analogy cheat sheet"
+            },
             {
               "anchor": "arch",
               "label": "1. Architecture: why Playwright is fast"
@@ -1223,10 +1299,27 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "1. Architecture: why Playwright is fast",
           "blocks": [
             {
-              "text": "**Picture:** Selenium sends a letter for every command (one HTTP request each). Playwright keeps **one phone line open** to the browser and talks continuously."
+              "note": "idea",
+              "text": "Playwright keeps **one phone call open** with the browser and talks the whole time. Selenium sends **a new letter for every step** and waits for a reply. Playwright also **waits on its own** until a button is ready, like a polite person waiting for the door to open before walking in."
             },
             {
-              "img": "assets/img/playwright/architecture.svg?v=202610151418",
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Architecture:** Selenium is sending a **post card** for every instruction; Playwright is **one WhatsApp call kept open** with the browser. **Auto-wait:** An **auto-rickshaw driver waits** till the passenger is fully seated before moving."
+            },
+            {
+              "note": "remember",
+              "text": "One open connection + auto-wait + retrying assertions = fast and less flaky."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// open the website\nawait page.goto('https://shop.com');\n// find the \"Buy\" button; Playwright WAITS until it is clickable, then clicks\nawait page.getByRole('button', { name: 'Buy' }).click();\n// keep checking (up to 5 s) until \"Thanks!\" shows\nawait expect(page.getByText('Thanks!')).toBeVisible();",
+              "lang": "ts"
+            },
+            {
+              "img": "assets/img/playwright/architecture.svg?v=202610151449",
               "width": 400,
               "height": 586,
               "alt": "Diagram: test code calls the Playwright server (Node driver), which speaks CDP to Chromium or patched protocols to Firefox and WebKit, which drives the browser.",
@@ -1269,14 +1362,22 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "list": [
-                "In **Node**, client and server run in the same process. **Python/Java/.NET** start a Node driver and talk over a pipe.",
-                "Remote browsers (`connect`, cloud grids) use a **WebSocket**."
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Picture:** Selenium sends a letter for every command (one HTTP request each). Playwright keeps **one phone line open** to the browser and talks continuously."
+                },
+                {
+                  "list": [
+                    "In **Node**, client and server run in the same process. **Python/Java/.NET** start a Node driver and talk over a pipe.",
+                    "Remote browsers (`connect`, cloud grids) use a **WebSocket**."
+                  ]
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('auto-wait + web-first assertion', async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n\n  // fill() / click() wait until the element is visible, enabled and stable.\n  // No sleep, no manual wait.\n  await page.getByPlaceholder('What needs to be done?').fill('Buy milk');\n  await page.keyboard.press('Enter');\n\n  // Web-first assertion: retries until it passes (default timeout 5s)\n  await expect(page.getByTestId('todo-title')).toHaveText('Buy milk');\n});",
+                  "lang": "ts"
+                }
               ]
-            },
-            {
-              "code": "import { test, expect } from '@playwright/test';\n\ntest('auto-wait + web-first assertion', async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n\n  // fill() / click() wait until the element is visible, enabled and stable.\n  // No sleep, no manual wait.\n  await page.getByPlaceholder('What needs to be done?').fill('Buy milk');\n  await page.keyboard.press('Enter');\n\n  // Web-first assertion: retries until it passes (default timeout 5s)\n  await expect(page.getByTestId('todo-title')).toHaveText('Buy milk');\n});",
-              "lang": "ts"
             }
           ]
         },
@@ -1286,10 +1387,27 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "2. Browser → Context → Page",
           "blocks": [
             {
-              "text": "**Picture:** a building (Browser), flats (Contexts, each with its own keys = cookies), and rooms (Pages = tabs)."
+              "note": "idea",
+              "text": "The **browser** is the app. A **context** is a fresh **incognito window**: its own cookies, nobody else's. A **page** is one **tab** inside that window."
             },
             {
-              "img": "assets/img/playwright/hierarchy.svg?v=202610151418",
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Browser / Context / Page:** A **housing society** (browser) → each **flat** with its own lock (context) → **rooms** in the flat (pages)."
+            },
+            {
+              "note": "remember",
+              "text": "Browser → Context (isolated session) → Page (tab). New context per test = no leaks."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// open a brand-new incognito window\nconst context = await browser.newContext();\n// open one tab in it\nconst page = await context.newPage();\n// use the tab\nawait page.goto('https://shop.com');\n// close the window; its cookies are thrown away\nawait context.close();",
+              "lang": "ts"
+            },
+            {
+              "img": "assets/img/playwright/hierarchy.svg?v=202610151449",
               "width": 400,
               "height": 414,
               "alt": "Diagram: one browser contains Context A and Context B; each context has its own cookies and two pages.",
@@ -1322,8 +1440,16 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\n\n// One browser, two isolated \"incognito windows\" = two users at once\ntest('admin and user chat in parallel', async ({ browser }) => {\n  const adminContext = await browser.newContext();   // own cookies + storage\n  const userContext = await browser.newContext();    // completely separate\n\n  const adminPage = await adminContext.newPage();    // a tab inside context 1\n  const userPage = await userContext.newPage();      // a tab inside context 2\n\n  await adminPage.goto('https://example.com/chat');\n  await userPage.goto('https://example.com/chat');\n  // ...admin sends a message, user sees it...\n  await expect(userPage.getByText('Hello from admin')).toBeVisible();\n\n  await adminContext.close();                        // closes its pages too\n  await userContext.close();\n});",
-              "lang": "ts"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Picture:** a building (Browser), flats (Contexts, each with its own keys = cookies), and rooms (Pages = tabs)."
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\n// One browser, two isolated \"incognito windows\" = two users at once\ntest('admin and user chat in parallel', async ({ browser }) => {\n  const adminContext = await browser.newContext();   // own cookies + storage\n  const userContext = await browser.newContext();    // completely separate\n\n  const adminPage = await adminContext.newPage();    // a tab inside context 1\n  const userPage = await userContext.newPage();      // a tab inside context 2\n\n  await adminPage.goto('https://example.com/chat');\n  await userPage.goto('https://example.com/chat');\n  // ...admin sends a message, user sees it...\n  await expect(userPage.getByText('Hello from admin')).toBeVisible();\n\n  await adminContext.close();                        // closes its pages too\n  await userContext.close();\n});",
+                  "lang": "ts"
+                }
+              ]
             }
           ]
         },
@@ -1333,15 +1459,35 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "3. Popups, dialogs, frames, many tabs",
           "blocks": [
             {
-              "list": [
-                "**Popup / new tab:** start waiting *before* the click: `const p = page.waitForEvent('popup')`.",
-                "**Dialogs** (alert/confirm/prompt) are auto-dismissed unless you add `page.on('dialog')` first.",
-                "**Frames:** `page.frameLocator('#id')` or `locator.contentFrame()`."
-              ]
+              "note": "idea",
+              "text": "Some clicks open a **new tab** or show a **pop-up message**. Tell Playwright **\"get ready to catch it\"** *before* you click, like holding out your hands before someone throws a ball."
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\n\ntest('popup / new tab', async ({ page }) => {\n  // 1. Start waiting BEFORE the click (otherwise you can miss the event)\n  const popupPromise = page.waitForEvent('popup');\n  await page.getByRole('link', { name: 'Open terms' }).click();\n  const popup = await popupPromise;                  // 2. the new Page\n\n  await popup.waitForLoadState();\n  await expect(popup).toHaveTitle(/Terms/);\n  await popup.close();\n  await page.bringToFront();                         // back to the first tab\n});\n\ntest('any new page in the context', async ({ page, context }) => {\n  const newPagePromise = context.waitForEvent('page'); // catches window.open, target=_blank...\n  await page.getByText('Open report').click();\n  const report = await newPagePromise;\n  console.log(context.pages().length);               // all open tabs\n  await expect(report).toHaveURL(/report/);\n});\n\ntest('dialogs: alert / confirm / prompt', async ({ page }) => {\n  // Register the handler BEFORE the action. Playwright auto-dismisses if you don't.\n  page.once('dialog', async (dialog) => {\n    console.log(dialog.type(), dialog.message());    // \"confirm\", \"Are you sure?\"\n    await dialog.accept();                           // or dialog.dismiss()\n  });\n  await page.getByRole('button', { name: 'Delete' }).click();\n});\n\ntest('iframes', async ({ page }) => {\n  // frameLocator: find inside the iframe like a normal page\n  const payment = page.frameLocator('iframe[title=\"Payment\"]');\n  await payment.getByLabel('Card number').fill('4242 4242 4242 4242');\n\n  // or get a Frame-like locator from the iframe element\n  const frame = page.locator('#chat-widget').contentFrame();\n  await frame.getByRole('button', { name: 'Send' }).click();\n});",
+              "note": "remember",
+              "text": "Start waitForEvent('popup') before the click; register page.on('dialog') before the action."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// 1. get ready to catch the new tab (don't await yet)\nconst popupPromise = page.waitForEvent('popup');\n// 2. click the link that opens it\nawait page.getByText('Open help').click();\n// 3. now catch it: popup is the new tab\nconst popup = await popupPromise;\n// for alert/confirm boxes: press \"OK\" automatically\npage.on('dialog', d => d.accept());",
               "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "list": [
+                    "**Popup / new tab:** start waiting *before* the click: `const p = page.waitForEvent('popup')`.",
+                    "**Dialogs** (alert/confirm/prompt) are auto-dismissed unless you add `page.on('dialog')` first.",
+                    "**Frames:** `page.frameLocator('#id')` or `locator.contentFrame()`."
+                  ]
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('popup / new tab', async ({ page }) => {\n  // 1. Start waiting BEFORE the click (otherwise you can miss the event)\n  const popupPromise = page.waitForEvent('popup');\n  await page.getByRole('link', { name: 'Open terms' }).click();\n  const popup = await popupPromise;                  // 2. the new Page\n\n  await popup.waitForLoadState();\n  await expect(popup).toHaveTitle(/Terms/);\n  await popup.close();\n  await page.bringToFront();                         // back to the first tab\n});\n\ntest('any new page in the context', async ({ page, context }) => {\n  const newPagePromise = context.waitForEvent('page'); // catches window.open, target=_blank...\n  await page.getByText('Open report').click();\n  const report = await newPagePromise;\n  console.log(context.pages().length);               // all open tabs\n  await expect(report).toHaveURL(/report/);\n});\n\ntest('dialogs: alert / confirm / prompt', async ({ page }) => {\n  // Register the handler BEFORE the action. Playwright auto-dismisses if you don't.\n  page.once('dialog', async (dialog) => {\n    console.log(dialog.type(), dialog.message());    // \"confirm\", \"Are you sure?\"\n    await dialog.accept();                           // or dialog.dismiss()\n  });\n  await page.getByRole('button', { name: 'Delete' }).click();\n});\n\ntest('iframes', async ({ page }) => {\n  // frameLocator: find inside the iframe like a normal page\n  const payment = page.frameLocator('iframe[title=\"Payment\"]');\n  await payment.getByLabel('Card number').fill('4242 4242 4242 4242');\n\n  // or get a Frame-like locator from the iframe element\n  const frame = page.locator('#chat-widget').contentFrame();\n  await frame.getByRole('button', { name: 'Send' }).click();\n});",
+                  "lang": "ts"
+                }
+              ]
             }
           ]
         },
@@ -1351,7 +1497,24 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "4. Custom fixtures",
           "blocks": [
             {
-              "text": "**Picture:** fixtures are a waiter who brings the plate ready (setup), and clears it after (teardown). Code before `use()` = setup, after = teardown."
+              "note": "idea",
+              "text": "A **fixture** is a **waiter**: he sets the table before you eat (setup), hands you the plate (`use`), and clears the table after (teardown). Your test just says \"I want a plate\"."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Fixture:** A **restaurant waiter** lays the plate before you eat and clears it after. **Test vs worker scope:** A **fresh plate per customer** (test scope) vs **one water jug per table** for the whole meal (worker scope)."
+            },
+            {
+              "note": "remember",
+              "text": "test.extend creates fixtures: code before use() = setup, after = teardown."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// make my own \"test\" with an extra fixture\nconst test = base.extend<{ loginPage: LoginPage }>({\n  // this fixture needs the normal page\n  loginPage: async ({ page }, use) => {\n    // hand a ready LoginPage to the test\n    await use(new LoginPage(page));\n  // (code after use() would run after the test = cleanup)\n  },\n});",
+              "lang": "ts"
             },
             {
               "table": {
@@ -1380,12 +1543,20 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "code": "// fixtures.ts — build your own \"helpers\" that tests can ask for by name\nimport { test as base, expect, type Page } from '@playwright/test';\n\nexport class LoginPage {\n  constructor(private readonly page: Page) {}\n  async goto() { await this.page.goto('/login'); }\n  async login(user: string, pass: string) {\n    await this.page.getByLabel('Username').fill(user);\n    await this.page.getByLabel('Password').fill(pass);\n    await this.page.getByRole('button', { name: 'Sign in' }).click();\n  }\n}\n\ntype TestFixtures = { loginPage: LoginPage; logConsole: void };\ntype WorkerFixtures = { workerUser: { name: string; pass: string } };\n\nexport const test = base.extend<TestFixtures, WorkerFixtures>({\n  // WORKER scope: created once per worker process, shared by all its tests\n  workerUser: [async ({}, use, workerInfo) => {\n    const user = { name: `user${workerInfo.workerIndex}`, pass: 'secret' };\n    await use(user);                 // tests run here\n  }, { scope: 'worker' }],\n\n  // TEST scope (default): a fresh one for every test\n  loginPage: async ({ page }, use) => {\n    const loginPage = new LoginPage(page);\n    await loginPage.goto();          // setup\n    await use(loginPage);            // hand it to the test\n    // teardown goes here (runs after the test)\n  },\n\n  // AUTO fixture: runs for every test, even if no test asks for it\n  logConsole: [async ({ page }, use) => {\n    page.on('console', (msg) => console.log(`[browser] ${msg.text()}`));\n    await use();\n  }, { auto: true }],\n});\n\nexport { expect };",
-              "lang": "ts"
-            },
-            {
-              "code": "// login.spec.ts — import test/expect from YOUR fixtures file\nimport { test, expect } from './fixtures';\n\ntest('user can log in', async ({ loginPage, workerUser, page }) => {\n  await loginPage.login(workerUser.name, workerUser.pass);\n  await expect(page).toHaveURL(/dashboard/);\n});",
-              "lang": "ts"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Picture:** fixtures are a waiter who brings the plate ready (setup), and clears it after (teardown). Code before `use()` = setup, after = teardown."
+                },
+                {
+                  "code": "// fixtures.ts — build your own \"helpers\" that tests can ask for by name\nimport { test as base, expect, type Page } from '@playwright/test';\n\nexport class LoginPage {\n  constructor(private readonly page: Page) {}\n  async goto() { await this.page.goto('/login'); }\n  async login(user: string, pass: string) {\n    await this.page.getByLabel('Username').fill(user);\n    await this.page.getByLabel('Password').fill(pass);\n    await this.page.getByRole('button', { name: 'Sign in' }).click();\n  }\n}\n\ntype TestFixtures = { loginPage: LoginPage; logConsole: void };\ntype WorkerFixtures = { workerUser: { name: string; pass: string } };\n\nexport const test = base.extend<TestFixtures, WorkerFixtures>({\n  // WORKER scope: created once per worker process, shared by all its tests\n  workerUser: [async ({}, use, workerInfo) => {\n    const user = { name: `user${workerInfo.workerIndex}`, pass: 'secret' };\n    await use(user);                 // tests run here\n  }, { scope: 'worker' }],\n\n  // TEST scope (default): a fresh one for every test\n  loginPage: async ({ page }, use) => {\n    const loginPage = new LoginPage(page);\n    await loginPage.goto();          // setup\n    await use(loginPage);            // hand it to the test\n    // teardown goes here (runs after the test)\n  },\n\n  // AUTO fixture: runs for every test, even if no test asks for it\n  logConsole: [async ({ page }, use) => {\n    page.on('console', (msg) => console.log(`[browser] ${msg.text()}`));\n    await use();\n  }, { auto: true }],\n});\n\nexport { expect };",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// login.spec.ts — import test/expect from YOUR fixtures file\nimport { test, expect } from './fixtures';\n\ntest('user can log in', async ({ loginPage, workerUser, page }) => {\n  await loginPage.login(workerUser.name, workerUser.pass);\n  await expect(page).toHaveURL(/dashboard/);\n});",
+                  "lang": "ts"
+                }
+              ]
             }
           ]
         },
@@ -1395,30 +1566,53 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "5. Log in once: storageState + setup project",
           "blocks": [
             {
-              "ol": [
-                "A **setup project** logs in and saves cookies + localStorage to a JSON file.",
-                "Other projects depend on it and load that file via `storageState`.",
-                "Every test starts already logged in, no UI login each time."
+              "note": "idea",
+              "text": "**storageState** is like a **hotel key card**. You check in once at the front desk (log in), get a card (a saved file), and every test just taps the card instead of checking in again."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**storageState:** A **hotel key card**: check in once at reception, then just tap the card at your door."
+            },
+            {
+              "note": "remember",
+              "text": "A setup project logs in once and saves storageState; other projects load it."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// log in once, like a user\nawait page.getByLabel('Email').fill('me@test.com');\n// password from env, not code\nawait page.getByLabel('Password').fill(process.env.PASS!);\n// press sign in\nawait page.getByRole('button', { name: 'Sign in' }).click();\n// save the \"key card\" file\nawait page.context().storageState({ path: 'playwright/.auth/user.json' });\n// config: use: { storageState: 'playwright/.auth/user.json' }      // every test starts logged in",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "ol": [
+                    "A **setup project** logs in and saves cookies + localStorage to a JSON file.",
+                    "Other projects depend on it and load that file via `storageState`.",
+                    "Every test starts already logged in, no UI login each time."
+                  ]
+                },
+                {
+                  "code": "// tests/auth.setup.ts — log in ONCE, save the session to a file\nimport { test as setup, expect } from '@playwright/test';\n\nconst authFile = 'playwright/.auth/user.json';      // add playwright/.auth to .gitignore\n\nsetup('authenticate', async ({ page }) => {\n  await page.goto('/login');\n  await page.getByLabel('Username').fill(process.env.APP_USER!);\n  await page.getByLabel('Password').fill(process.env.APP_PASS!);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n\n  // Wait until we are REALLY logged in before saving\n  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();\n\n  // Saves cookies + localStorage (add { indexedDB: true } to include IndexedDB)\n  await page.context().storageState({ path: authFile });\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// playwright.config.ts\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  testDir: './tests',\n  fullyParallel: true,\n  retries: process.env.CI ? 2 : 0,                  // retry only on CI\n  workers: process.env.CI ? 2 : undefined,\n  reporter: process.env.CI ? [['blob'], ['junit', { outputFile: 'results.xml' }]] : 'html',\n  use: {\n    baseURL: 'https://app.example.com',\n    trace: 'on-first-retry',                         // trace.zip when a test is retried\n    screenshot: 'only-on-failure',\n    video: 'retain-on-failure',\n  },\n  projects: [\n    // 1. runs first: logs in and writes playwright/.auth/user.json\n    { name: 'setup', testMatch: /.*\\.setup\\.ts/ },\n    // 2. every test starts already logged in\n    {\n      name: 'chromium',\n      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],\n    },\n  ],\n});",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Need a logged-out test?",
+                  "blocks": [
+                    {
+                      "code": "import { test, expect } from '@playwright/test';\n\n// Need a logged-OUT test inside a logged-in project? Reset the state:\ntest.use({ storageState: { cookies: [], origins: [] } });\n\ntest('shows login page', async ({ page }) => {\n  await page.goto('/');\n  await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();\n});",
+                      "lang": "ts"
+                    }
+                  ]
+                }
               ]
-            },
-            {
-              "code": "// tests/auth.setup.ts — log in ONCE, save the session to a file\nimport { test as setup, expect } from '@playwright/test';\n\nconst authFile = 'playwright/.auth/user.json';      // add playwright/.auth to .gitignore\n\nsetup('authenticate', async ({ page }) => {\n  await page.goto('/login');\n  await page.getByLabel('Username').fill(process.env.APP_USER!);\n  await page.getByLabel('Password').fill(process.env.APP_PASS!);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n\n  // Wait until we are REALLY logged in before saving\n  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();\n\n  // Saves cookies + localStorage (add { indexedDB: true } to include IndexedDB)\n  await page.context().storageState({ path: authFile });\n});",
-              "lang": "ts"
-            },
-            {
-              "code": "// playwright.config.ts\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  testDir: './tests',\n  fullyParallel: true,\n  retries: process.env.CI ? 2 : 0,                  // retry only on CI\n  workers: process.env.CI ? 2 : undefined,\n  reporter: process.env.CI ? [['blob'], ['junit', { outputFile: 'results.xml' }]] : 'html',\n  use: {\n    baseURL: 'https://app.example.com',\n    trace: 'on-first-retry',                         // trace.zip when a test is retried\n    screenshot: 'only-on-failure',\n    video: 'retain-on-failure',\n  },\n  projects: [\n    // 1. runs first: logs in and writes playwright/.auth/user.json\n    { name: 'setup', testMatch: /.*\\.setup\\.ts/ },\n    // 2. every test starts already logged in\n    {\n      name: 'chromium',\n      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],\n    },\n  ],\n});",
-              "lang": "ts"
-            },
-            {
-              "details": {
-                "summary": "Need a logged-out test?",
-                "blocks": [
-                  {
-                    "code": "import { test, expect } from '@playwright/test';\n\n// Need a logged-OUT test inside a logged-in project? Reset the state:\ntest.use({ storageState: { cookies: [], origins: [] } });\n\ntest('shows login page', async ({ page }) => {\n  await page.goto('/');\n  await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();\n});",
-                    "lang": "ts"
-                  }
-                ]
-              }
             }
           ]
         },
@@ -1428,22 +1622,45 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "6. localStorage & sessionStorage",
           "blocks": [
             {
-              "text": "**Remember:** `storageState` saves **cookies + localStorage** (and optionally IndexedDB), **not sessionStorage**. Save/restore sessionStorage yourself with `evaluate` + `addInitScript`."
+              "note": "idea",
+              "text": "**localStorage** is a notebook the website keeps in the browser, and it stays. **sessionStorage** is a sticky note that disappears when the tab closes. The \"key card\" saves the notebook, **not** the sticky note."
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\n\ntest('localStorage + sessionStorage', async ({ page, context }) => {\n  // addInitScript runs BEFORE the page's own scripts, on every navigation\n  await context.addInitScript(() => {\n    window.localStorage.setItem('theme', 'dark');\n    window.sessionStorage.setItem('onboardingSeen', 'true');\n  });\n  await page.goto('/');\n\n  // READ: page.evaluate runs code inside the browser and returns the result\n  const theme = await page.evaluate(() => localStorage.getItem('theme'));\n  expect(theme).toBe('dark');\n\n  // SET after load (pass values in as an argument)\n  await page.evaluate(([key, value]) => sessionStorage.setItem(key, value), ['cart', '3']);\n\n  // Dump everything\n  const session = await page.evaluate(() => JSON.stringify(sessionStorage));\n  console.log(session);                     // {\"onboardingSeen\":\"true\",\"cart\":\"3\"}\n});",
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**localStorage vs sessionStorage:** **localStorage** = your **Aadhaar card** in the wallet (stays). **sessionStorage** = a **platform ticket** (valid only for this visit, this tab)."
+            },
+            {
+              "note": "remember",
+              "text": "storageState saves cookies + localStorage, NOT sessionStorage."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// run code INSIDE the page: write to its notebook\nawait page.evaluate(() => localStorage.setItem('theme', 'dark'));\n// read it back -> 'dark'\nconst t = await page.evaluate(() => localStorage.getItem('theme'));\n// run BEFORE the site's own code, on every load\nawait page.addInitScript(() => sessionStorage.setItem('cart', '2'));",
               "lang": "ts"
             },
             {
-              "details": {
-                "summary": "Save & restore sessionStorage",
-                "blocks": [
-                  {
-                    "code": "// sessionStorage is NOT in storageState. Save and restore it yourself:\nimport fs from 'node:fs';\nimport type { Page, BrowserContext } from '@playwright/test';\n\nexport async function saveSession(page: Page) {\n  const data = await page.evaluate(() => JSON.stringify(sessionStorage));\n  fs.writeFileSync('playwright/.auth/session.json', data, 'utf-8');\n}\n\nexport async function restoreSession(context: BrowserContext, origin: string) {\n  const data = JSON.parse(fs.readFileSync('playwright/.auth/session.json', 'utf-8'));\n  await context.addInitScript(({ data, origin }) => {\n    if (window.location.origin === origin) {            // only on your app's origin\n      for (const [key, value] of Object.entries(data)) {\n        window.sessionStorage.setItem(key, value as string);\n      }\n    }\n  }, { data, origin });\n}",
-                    "lang": "ts"
-                  }
-                ]
-              }
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Remember:** `storageState` saves **cookies + localStorage** (and optionally IndexedDB), **not sessionStorage**. Save/restore sessionStorage yourself with `evaluate` + `addInitScript`."
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('localStorage + sessionStorage', async ({ page, context }) => {\n  // addInitScript runs BEFORE the page's own scripts, on every navigation\n  await context.addInitScript(() => {\n    window.localStorage.setItem('theme', 'dark');\n    window.sessionStorage.setItem('onboardingSeen', 'true');\n  });\n  await page.goto('/');\n\n  // READ: page.evaluate runs code inside the browser and returns the result\n  const theme = await page.evaluate(() => localStorage.getItem('theme'));\n  expect(theme).toBe('dark');\n\n  // SET after load (pass values in as an argument)\n  await page.evaluate(([key, value]) => sessionStorage.setItem(key, value), ['cart', '3']);\n\n  // Dump everything\n  const session = await page.evaluate(() => JSON.stringify(sessionStorage));\n  console.log(session);                     // {\"onboardingSeen\":\"true\",\"cart\":\"3\"}\n});",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Save & restore sessionStorage",
+                  "blocks": [
+                    {
+                      "code": "// sessionStorage is NOT in storageState. Save and restore it yourself:\nimport fs from 'node:fs';\nimport type { Page, BrowserContext } from '@playwright/test';\n\nexport async function saveSession(page: Page) {\n  const data = await page.evaluate(() => JSON.stringify(sessionStorage));\n  fs.writeFileSync('playwright/.auth/session.json', data, 'utf-8');\n}\n\nexport async function restoreSession(context: BrowserContext, origin: string) {\n  const data = JSON.parse(fs.readFileSync('playwright/.auth/session.json', 'utf-8'));\n  await context.addInitScript(({ data, origin }) => {\n    if (window.location.origin === origin) {            // only on your app's origin\n      for (const [key, value] of Object.entries(data)) {\n        window.sessionStorage.setItem(key, value as string);\n      }\n    }\n  }, { data, origin });\n}",
+                      "lang": "ts"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1453,29 +1670,47 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "7. API testing",
           "blocks": [
             {
-              "text": "The `request` fixture is an **APIRequestContext**: send HTTP without a browser. It shares `baseURL` and, via `page.request`, the page's cookies."
+              "note": "idea",
+              "text": "Sometimes you don't need to open the shop window; you just **phone the shop** and ask. The `request` fixture talks to the server directly, with no browser, so it is very fast."
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\n\ntest.use({\n  baseURL: 'https://api.example.com',\n  extraHTTPHeaders: { Authorization: `Bearer ${process.env.API_TOKEN}` },  // token from env, never hard-coded\n});\n\ntest('users CRUD', async ({ request }) => {\n  // CREATE\n  const created = await request.post('/users', { data: { name: 'Akash', job: 'SDET' } });\n  expect(created.status()).toBe(201);\n  const { id } = await created.json();\n\n  // READ\n  const read = await request.get(`/users/${id}`);\n  await expect(read).toBeOK();                       // status 200-299\n  expect(await read.json()).toMatchObject({ name: 'Akash' });\n\n  // UPDATE\n  const updated = await request.put(`/users/${id}`, { data: { job: 'Lead SDET' } });\n  await expect(updated).toBeOK();\n\n  // DELETE\n  const deleted = await request.delete(`/users/${id}`);\n  expect(deleted.status()).toBe(204);\n});",
+              "note": "remember",
+              "text": "The request fixture (APIRequestContext) sends HTTP calls; check with expect(res).toBeOK()."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// ask the server to create a user\nconst res = await request.post('/api/users', { data: { name: 'Akash' } });\n// status is 200-299 = success\nawait expect(res).toBeOK();\n// read the reply as a JS object\nconst user = await res.json();\n// check what came back\nexpect(user.name).toBe('Akash');",
               "lang": "ts"
             },
             {
-              "details": {
-                "summary": "Own APIRequestContext (token, base URL)",
-                "blocks": [
-                  {
-                    "code": "// A standalone APIRequestContext (e.g. in globalSetup or a helper)\nimport { request } from '@playwright/test';\n\nexport async function createUser(name: string) {\n  const api = await request.newContext({\n    baseURL: 'https://api.example.com',\n    extraHTTPHeaders: { Authorization: `Bearer ${process.env.API_TOKEN}` },\n  });\n  const res = await api.post('/users', { data: { name } });\n  const user = await res.json();\n  await api.dispose();                               // always clean up\n  return user;\n}",
-                    "lang": "ts"
-                  }
-                ]
-              }
-            },
-            {
-              "text": "**Mix UI + API:** create data by API (fast), check it in the UI."
-            },
-            {
-              "code": "import { test, expect } from '@playwright/test';\n\n// Fast setup through the API, then check the UI\ntest('order created by API shows in UI', async ({ page }) => {\n  // page.request shares cookies with the page's context (same logged-in user)\n  const res = await page.request.post('/api/orders', { data: { item: 'Laptop', qty: 1 } });\n  const order = await res.json();\n\n  await page.goto(`/orders/${order.id}`);\n  await expect(page.getByRole('heading', { name: 'Laptop' })).toBeVisible();\n});",
-              "lang": "ts"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "The `request` fixture is an **APIRequestContext**: send HTTP without a browser. It shares `baseURL` and, via `page.request`, the page's cookies."
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest.use({\n  baseURL: 'https://api.example.com',\n  extraHTTPHeaders: { Authorization: `Bearer ${process.env.API_TOKEN}` },  // token from env, never hard-coded\n});\n\ntest('users CRUD', async ({ request }) => {\n  // CREATE\n  const created = await request.post('/users', { data: { name: 'Akash', job: 'SDET' } });\n  expect(created.status()).toBe(201);\n  const { id } = await created.json();\n\n  // READ\n  const read = await request.get(`/users/${id}`);\n  await expect(read).toBeOK();                       // status 200-299\n  expect(await read.json()).toMatchObject({ name: 'Akash' });\n\n  // UPDATE\n  const updated = await request.put(`/users/${id}`, { data: { job: 'Lead SDET' } });\n  await expect(updated).toBeOK();\n\n  // DELETE\n  const deleted = await request.delete(`/users/${id}`);\n  expect(deleted.status()).toBe(204);\n});",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Own APIRequestContext (token, base URL)",
+                  "blocks": [
+                    {
+                      "code": "// A standalone APIRequestContext (e.g. in globalSetup or a helper)\nimport { request } from '@playwright/test';\n\nexport async function createUser(name: string) {\n  const api = await request.newContext({\n    baseURL: 'https://api.example.com',\n    extraHTTPHeaders: { Authorization: `Bearer ${process.env.API_TOKEN}` },\n  });\n  const res = await api.post('/users', { data: { name } });\n  const user = await res.json();\n  await api.dispose();                               // always clean up\n  return user;\n}",
+                      "lang": "ts"
+                    }
+                  ]
+                },
+                {
+                  "text": "**Mix UI + API:** create data by API (fast), check it in the UI."
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\n// Fast setup through the API, then check the UI\ntest('order created by API shows in UI', async ({ page }) => {\n  // page.request shares cookies with the page's context (same logged-in user)\n  const res = await page.request.post('/api/orders', { data: { item: 'Laptop', qty: 1 } });\n  const order = await res.json();\n\n  await page.goto(`/orders/${order.id}`);\n  await expect(page.getByRole('heading', { name: 'Laptop' })).toBeVisible();\n});",
+                  "lang": "ts"
+                }
+              ]
             }
           ]
         },
@@ -1484,6 +1719,26 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "anchor": "mock",
           "title": "8. Network mocking: page.route & HAR",
           "blocks": [
+            {
+              "note": "idea",
+              "text": "`page.route` is a **post-office clerk** who opens the website's letters. He can hand back a **fake reply** (fulfill), **throw it away** (abort), or **change** the real reply before it arrives."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**page.route mocking:** A **society security guard** checks every delivery: lets it in, sends it back, or swaps the parcel. **HAR replay:** A **recorded cricket match** on replay: the same balls, same shots, no live players needed."
+            },
+            {
+              "note": "remember",
+              "text": "page.route + fulfill / abort / continue / fetch; routeFromHAR replays recorded traffic."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// catch every request to /api/products\nawait page.route('**/api/products', route =>\n  // answer with my fake data; the real server is never asked\n  route.fulfill({ json: [{ name: 'Fake Mug' }] })\n);\n// block all images (faster tests)\nawait page.route('**/*.png', route => route.abort());",
+              "lang": "ts"
+            },
             {
               "table": {
                 "head": [
@@ -1515,8 +1770,13 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\n\ntest('mocking with page.route', async ({ page }) => {\n  // 1. FULFILL: return fake data, the real server is never called\n  await page.route('**/api/users', (route) =>\n    route.fulfill({ status: 200, json: [{ id: 1, name: 'Mocked user' }] }));\n\n  // 2. ABORT: block images to speed tests up\n  await page.route(/\\.(png|jpe?g|gif)$/, (route) => route.abort());\n\n  // 3. MODIFY: call the real server, change part of the answer\n  await page.route('**/api/profile', async (route) => {\n    const response = await route.fetch();            // real response\n    const json = await response.json();\n    json.plan = 'PREMIUM';                           // patch one field\n    await route.fulfill({ response, json });\n  });\n\n  await page.goto('/users');\n  await expect(page.getByText('Mocked user')).toBeVisible();\n});\n\ntest('HAR replay', async ({ page }) => {\n  // update: true records a fresh HAR on the first run; false replays it\n  await page.routeFromHAR('hars/api.har', { url: '**/api/**', update: false });\n  await page.goto('/dashboard');\n  await expect(page.getByText('Total orders')).toBeVisible();\n});",
-              "lang": "ts"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('mocking with page.route', async ({ page }) => {\n  // 1. FULFILL: return fake data, the real server is never called\n  await page.route('**/api/users', (route) =>\n    route.fulfill({ status: 200, json: [{ id: 1, name: 'Mocked user' }] }));\n\n  // 2. ABORT: block images to speed tests up\n  await page.route(/\\.(png|jpe?g|gif)$/, (route) => route.abort());\n\n  // 3. MODIFY: call the real server, change part of the answer\n  await page.route('**/api/profile', async (route) => {\n    const response = await route.fetch();            // real response\n    const json = await response.json();\n    json.plan = 'PREMIUM';                           // patch one field\n    await route.fulfill({ response, json });\n  });\n\n  await page.goto('/users');\n  await expect(page.getByText('Mocked user')).toBeVisible();\n});\n\ntest('HAR replay', async ({ page }) => {\n  // update: true records a fresh HAR on the first run; false replays it\n  await page.routeFromHAR('hars/api.har', { url: '**/api/**', update: false });\n  await page.goto('/dashboard');\n  await expect(page.getByText('Total orders')).toBeVisible();\n});",
+                  "lang": "ts"
+                }
+              ]
             }
           ]
         },
@@ -1525,6 +1785,26 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "anchor": "assertions",
           "title": "9. Assertions cheat sheet",
           "blocks": [
+            {
+              "note": "idea",
+              "text": "Two kinds of checks. **Web-first** checks are **patient**: they keep looking until it's true (up to 5 s), like waiting for toast to pop. **Normal** checks look **once**, like reading a number on paper."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Web-first vs generic:** A **third umpire** who keeps replaying till the decision is clear (web-first) vs a **scoreboard** you read once (generic). **Soft assertion:** A **teacher marks all mistakes** in the paper instead of stopping at the first one. **expect.poll / toPass:** Calling the **railway enquiry** again and again till it says \"train arrived\" (poll); retrying a **whole recipe** till the dish comes out right (toPass)."
+            },
+            {
+              "note": "remember",
+              "text": "await expect(locator) retries; expect(value) checks once. Use expect.soft to keep going."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// patient: keeps checking until \"Saved\" appears\nawait expect(page.getByText('Saved')).toBeVisible();\n// patient: waits until the address has \"dashboard\"\nawait expect(page).toHaveURL(/dashboard/);\n// once: plain values need no await\nexpect(2 + 2).toBe(4);\n// soft: note the failure but don't stop the test\nawait expect.soft(page.getByText('Hi')).toBeVisible();",
+              "lang": "ts"
+            },
             {
               "table": {
                 "head": [
@@ -1577,22 +1857,25 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "text": "**Rule:** `await` + locator = retries. Plain value = no retry. Never `expect(await loc.isVisible()).toBe(true)`; use `await expect(loc).toBeVisible()`."
-            },
-            {
-              "code": "import { test, expect } from '@playwright/test';\n\ntest('assertion types', async ({ page, request }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n  const input = page.getByPlaceholder('What needs to be done?');\n\n  // 1) WEB-FIRST: await + locator -> retries until true (default 5s)\n  await expect(page).toHaveURL(/todomvc/);\n  await expect(page).toHaveTitle(/TodoMVC/);\n  await expect(input).toBeVisible();\n  await expect(input).toBeEnabled();\n  await expect(input).toHaveAttribute('placeholder', 'What needs to be done?');\n  await input.fill('Milk');\n  await expect(input).toHaveValue('Milk');\n  await input.press('Enter');\n  await expect(page.getByTestId('todo-title')).toHaveText(['Milk']);\n  await expect(page.getByTestId('todo-item')).toHaveCount(1);\n  await expect(page.getByTestId('todo-title')).toContainText('Mil');\n\n  // 2) NEGATION: .not also retries (waits until it's NOT true)\n  await expect(page.getByText('Bread')).not.toBeVisible();\n\n  // 3) CUSTOM TIMEOUT for one slow check\n  await expect(page.getByTestId('todo-count')).toBeVisible({ timeout: 10_000 });\n\n  // 4) GENERIC: plain values, checked ONCE, no await needed\n  const items = await page.getByTestId('todo-title').allTextContents();\n  expect(items.length).toBe(1);               // === for primitives\n  expect(items).toEqual(['Milk']);            // deep equality for arrays/objects\n  expect(items).toContain('Milk');\n  expect({ id: 1, name: 'x' }).toMatchObject({ id: 1 }); // partial match\n\n  // 5) SOFT: records the failure but keeps going; test fails at the end\n  await expect.soft(page.getByTestId('todo-count')).toContainText('1 item');\n  expect.soft(items).toHaveLength(1);\n\n  // 6) POLL: retry ANY async function until its value matches\n  await expect.poll(async () => {\n    const r = await request.get('https://api.example.com/job/42');\n    return (await r.json()).status;\n  }, { timeout: 30_000, intervals: [1_000, 2_000, 5_000] }).toBe('done');\n\n  // 7) toPass: retry a whole BLOCK until nothing inside throws\n  await expect(async () => {\n    const r = await request.get('https://api.example.com/health');\n    expect(r.status()).toBe(200);\n  }).toPass({ timeout: 20_000 });\n\n  // 8) API response: status 200-299\n  const res = await request.get('https://api.example.com/users');\n  await expect(res).toBeOK();\n\n  // 9) VISUAL: compare with a saved PNG (first run creates it; update with -u)\n  await expect(page).toHaveScreenshot('home.png', { maxDiffPixels: 100 });\n  await expect(input).toHaveScreenshot();\n});",
-              "lang": "ts"
-            },
-            {
-              "details": {
-                "summary": "Custom matcher with expect.extend",
-                "blocks": [
-                  {
-                    "code": "// matchers.ts — your own assertion: expect(locator).toHaveAmount(499)\nimport { expect as base, type Locator } from '@playwright/test';\n\nexport const expect = base.extend({\n  async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {\n    let actual: number | undefined;\n    let pass = false;\n    try {\n      // reuse a web-first assertion so it retries\n      await base(async () => {\n        actual = Number((await locator.innerText()).replace(/[^\\d.]/g, ''));\n        base(actual).toBe(expected);\n      }).toPass({ timeout: options?.timeout ?? 5_000 });\n      pass = true;\n    } catch { pass = false; }\n    return {\n      pass,\n      name: 'toHaveAmount',\n      message: () => `expected amount ${expected}, got ${actual}`,\n    };\n  },\n});\n// usage: import { expect } from './matchers';  await expect(page.getByTestId('total')).toHaveAmount(499);",
-                    "lang": "ts"
-                  }
-                ]
-              }
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Rule:** `await` + locator = retries. Plain value = no retry. Never `expect(await loc.isVisible()).toBe(true)`; use `await expect(loc).toBeVisible()`."
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('assertion types', async ({ page, request }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n  const input = page.getByPlaceholder('What needs to be done?');\n\n  // 1) WEB-FIRST: await + locator -> retries until true (default 5s)\n  await expect(page).toHaveURL(/todomvc/);\n  await expect(page).toHaveTitle(/TodoMVC/);\n  await expect(input).toBeVisible();\n  await expect(input).toBeEnabled();\n  await expect(input).toHaveAttribute('placeholder', 'What needs to be done?');\n  await input.fill('Milk');\n  await expect(input).toHaveValue('Milk');\n  await input.press('Enter');\n  await expect(page.getByTestId('todo-title')).toHaveText(['Milk']);\n  await expect(page.getByTestId('todo-item')).toHaveCount(1);\n  await expect(page.getByTestId('todo-title')).toContainText('Mil');\n\n  // 2) NEGATION: .not also retries (waits until it's NOT true)\n  await expect(page.getByText('Bread')).not.toBeVisible();\n\n  // 3) CUSTOM TIMEOUT for one slow check\n  await expect(page.getByTestId('todo-count')).toBeVisible({ timeout: 10_000 });\n\n  // 4) GENERIC: plain values, checked ONCE, no await needed\n  const items = await page.getByTestId('todo-title').allTextContents();\n  expect(items.length).toBe(1);               // === for primitives\n  expect(items).toEqual(['Milk']);            // deep equality for arrays/objects\n  expect(items).toContain('Milk');\n  expect({ id: 1, name: 'x' }).toMatchObject({ id: 1 }); // partial match\n\n  // 5) SOFT: records the failure but keeps going; test fails at the end\n  await expect.soft(page.getByTestId('todo-count')).toContainText('1 item');\n  expect.soft(items).toHaveLength(1);\n\n  // 6) POLL: retry ANY async function until its value matches\n  await expect.poll(async () => {\n    const r = await request.get('https://api.example.com/job/42');\n    return (await r.json()).status;\n  }, { timeout: 30_000, intervals: [1_000, 2_000, 5_000] }).toBe('done');\n\n  // 7) toPass: retry a whole BLOCK until nothing inside throws\n  await expect(async () => {\n    const r = await request.get('https://api.example.com/health');\n    expect(r.status()).toBe(200);\n  }).toPass({ timeout: 20_000 });\n\n  // 8) API response: status 200-299\n  const res = await request.get('https://api.example.com/users');\n  await expect(res).toBeOK();\n\n  // 9) VISUAL: compare with a saved PNG (first run creates it; update with -u)\n  await expect(page).toHaveScreenshot('home.png', { maxDiffPixels: 100 });\n  await expect(input).toHaveScreenshot();\n});",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Custom matcher with expect.extend",
+                  "blocks": [
+                    {
+                      "code": "// matchers.ts — your own assertion: expect(locator).toHaveAmount(499)\nimport { expect as base, type Locator } from '@playwright/test';\n\nexport const expect = base.extend({\n  async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {\n    let actual: number | undefined;\n    let pass = false;\n    try {\n      // reuse a web-first assertion so it retries\n      await base(async () => {\n        actual = Number((await locator.innerText()).replace(/[^\\d.]/g, ''));\n        base(actual).toBe(expected);\n      }).toPass({ timeout: options?.timeout ?? 5_000 });\n      pass = true;\n    } catch { pass = false; }\n    return {\n      pass,\n      name: 'toHaveAmount',\n      message: () => `expected amount ${expected}, got ${actual}`,\n    };\n  },\n});\n// usage: import { expect } from './matchers';  await expect(page.getByTestId('total')).toHaveAmount(499);",
+                      "lang": "ts"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1602,19 +1885,37 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "10. Geolocation & emulation",
           "blocks": [
             {
-              "code": "import { test, expect, devices } from '@playwright/test';\n\n// Per file: pretend to be in Dubai, in Arabic/English, Dubai time\ntest.use({\n  geolocation: { latitude: 25.2048, longitude: 55.2708 },  // Dubai\n  permissions: ['geolocation'],         // without this, the site's location request is denied\n  locale: 'en-AE',                      // navigator.language, number/date formats\n  timezoneId: 'Asia/Dubai',             // Date() inside the page uses Dubai time\n});\n\ntest('shows nearest store', async ({ page, context }) => {\n  await page.goto('https://example.com/stores');\n  await expect(page.getByText('Dubai Mall')).toBeVisible();\n\n  // Move the \"phone\" mid-test\n  await context.setGeolocation({ latitude: 22.5726, longitude: 88.3639 });  // Kolkata\n  await page.getByRole('button', { name: 'Refresh location' }).click();\n  await expect(page.getByText('Park Street')).toBeVisible();\n});\n\ntest('grant permission only for one site', async ({ context }) => {\n  await context.clearPermissions();\n  await context.grantPermissions(['geolocation'], { origin: 'https://example.com' });\n});\n\n// Emulate a whole device: viewport, userAgent, touch, deviceScaleFactor\ntest.describe('on iPhone', () => {\n  test.use({ ...devices['iPhone 15'] });\n  test('mobile menu', async ({ page, isMobile }) => {\n    await page.goto('https://example.com');\n    expect(isMobile).toBe(true);\n  });\n});",
+              "note": "idea",
+              "text": "Playwright can **pretend** the browser is somewhere else: another city (geolocation), another country (locale, timezone), or another phone (devices). Like a costume for the browser."
+            },
+            {
+              "note": "remember",
+              "text": "Set geolocation + permissions on the context; devices['iPhone 15'] for phones."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "const context = await browser.newContext({\n  // pretend we are in Dubai\n  geolocation: { latitude: 25.2, longitude: 55.27 },\n  // say \"yes\" to \"allow location?\"\n  permissions: ['geolocation'],\n  // language format + clock\n  locale: 'en-IN', timezoneId: 'Asia/Kolkata',\n});",
               "lang": "ts"
             },
             {
-              "details": {
-                "summary": "Same settings in config",
-                "blocks": [
-                  {
-                    "code": "// The same emulation for a whole project in playwright.config.ts\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  projects: [\n    { name: 'desktop-india', use: { ...devices['Desktop Chrome'], locale: 'en-IN', timezoneId: 'Asia/Kolkata' } },\n    {\n      name: 'mobile-dubai',\n      use: {\n        ...devices['Pixel 7'],\n        locale: 'en-AE',\n        timezoneId: 'Asia/Dubai',\n        geolocation: { latitude: 25.2048, longitude: 55.2708 },\n        permissions: ['geolocation'],\n        colorScheme: 'dark',            // also: offline: true, javaScriptEnabled: false ...\n      },\n    },\n  ],\n});",
-                    "lang": "ts"
-                  }
-                ]
-              }
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect, devices } from '@playwright/test';\n\n// Per file: pretend to be in Dubai, in Arabic/English, Dubai time\ntest.use({\n  geolocation: { latitude: 25.2048, longitude: 55.2708 },  // Dubai\n  permissions: ['geolocation'],         // without this, the site's location request is denied\n  locale: 'en-AE',                      // navigator.language, number/date formats\n  timezoneId: 'Asia/Dubai',             // Date() inside the page uses Dubai time\n});\n\ntest('shows nearest store', async ({ page, context }) => {\n  await page.goto('https://example.com/stores');\n  await expect(page.getByText('Dubai Mall')).toBeVisible();\n\n  // Move the \"phone\" mid-test\n  await context.setGeolocation({ latitude: 22.5726, longitude: 88.3639 });  // Kolkata\n  await page.getByRole('button', { name: 'Refresh location' }).click();\n  await expect(page.getByText('Park Street')).toBeVisible();\n});\n\ntest('grant permission only for one site', async ({ context }) => {\n  await context.clearPermissions();\n  await context.grantPermissions(['geolocation'], { origin: 'https://example.com' });\n});\n\n// Emulate a whole device: viewport, userAgent, touch, deviceScaleFactor\ntest.describe('on iPhone', () => {\n  test.use({ ...devices['iPhone 15'] });\n  test('mobile menu', async ({ page, isMobile }) => {\n    await page.goto('https://example.com');\n    expect(isMobile).toBe(true);\n  });\n});",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Same settings in config",
+                  "blocks": [
+                    {
+                      "code": "// The same emulation for a whole project in playwright.config.ts\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  projects: [\n    { name: 'desktop-india', use: { ...devices['Desktop Chrome'], locale: 'en-IN', timezoneId: 'Asia/Kolkata' } },\n    {\n      name: 'mobile-dubai',\n      use: {\n        ...devices['Pixel 7'],\n        locale: 'en-AE',\n        timezoneId: 'Asia/Dubai',\n        geolocation: { latitude: 25.2048, longitude: 55.2708 },\n        permissions: ['geolocation'],\n        colorScheme: 'dark',            // also: offline: true, javaScriptEnabled: false ...\n      },\n    },\n  ],\n});",
+                      "lang": "ts"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1624,34 +1925,52 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "11. Data-driven tests",
           "blocks": [
             {
-              "list": [
-                "**Loop** over an array: one test per row, titles must be unique.",
-                "**`test.describe`** per dataset to group.",
-                "**Parameterized projects**: an option fixture `{ option: true }` set per project."
-              ]
+              "note": "idea",
+              "text": "**Same recipe, different ingredients.** Write the test once and run it for every row of data, like a teacher using one question paper for every student."
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\n\n// 1. A data array -> one test per row (names must be unique!)\nconst logins = [\n  { user: 'admin', pass: 'admin123', ok: true },\n  { user: 'admin', pass: 'wrong', ok: false },\n  { user: '', pass: 'admin123', ok: false },\n];\n\nfor (const { user, pass, ok } of logins) {\n  test(`login \"${user || '(empty)'}\" / \"${pass}\" -> ${ok ? 'success' : 'error'}`, async ({ page }) => {\n    await page.goto('/login');\n    await page.getByLabel('Username').fill(user);\n    await page.getByLabel('Password').fill(pass);\n    await page.getByRole('button', { name: 'Sign in' }).click();\n    if (ok) await expect(page).toHaveURL(/dashboard/);\n    else await expect(page.getByRole('alert')).toBeVisible();\n  });\n}\n\n// 2. One describe block per dataset (each gets its own hooks and report group)\nconst markets = [\n  { name: 'India', currency: '₹', path: '/in' },\n  { name: 'UAE', currency: 'AED', path: '/ae' },\n];\n\nfor (const market of markets) {\n  test.describe(`checkout in ${market.name}`, () => {\n    test.beforeEach(async ({ page }) => { await page.goto(market.path); });\n\n    test('shows local currency', async ({ page }) => {\n      await expect(page.getByTestId('price').first()).toContainText(market.currency);\n    });\n  });\n}",
+              "note": "remember",
+              "text": "Loop over an array and create one test per row, with unique titles."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// the \"ingredients\"\nconst users = ['admin', 'guest'];\n// for each one...\nfor (const u of users) {\n  // ...make a test; the title must be unique\n  test(`login as ${u}`, async ({ page }) => {\n    // use the data inside the test\n    await page.goto(`/login?as=${u}`);\n  });\n}",
               "lang": "ts"
             },
             {
-              "details": {
-                "summary": "Parameterized projects",
-                "blocks": [
-                  {
-                    "code": "// options.ts — 3. Parameterized PROJECTS: one option, a different value per project\nimport { test as base } from '@playwright/test';\n\nexport type TestOptions = { userRole: string };\n\nexport const test = base.extend<TestOptions>({\n  userRole: ['viewer', { option: true }],   // default value, overridable in config\n});\nexport { expect } from '@playwright/test';",
-                    "lang": "ts"
-                  },
-                  {
-                    "code": "// playwright.config.ts — the SAME tests run once per role\nimport { defineConfig } from '@playwright/test';\nimport type { TestOptions } from './options';\n\nexport default defineConfig<TestOptions>({\n  projects: [\n    { name: 'as-admin', use: { userRole: 'admin' } },\n    { name: 'as-viewer', use: { userRole: 'viewer' } },\n  ],\n});",
-                    "lang": "ts"
-                  },
-                  {
-                    "code": "import { test, expect } from './options';\n\ntest('menu matches the role', async ({ page, userRole }) => {\n  await page.goto(`/login-as/${userRole}`);\n  const settings = page.getByRole('link', { name: 'Settings' });\n  if (userRole === 'admin') await expect(settings).toBeVisible();\n  else await expect(settings).toBeHidden();\n});",
-                    "lang": "ts"
-                  }
-                ]
-              }
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "list": [
+                    "**Loop** over an array: one test per row, titles must be unique.",
+                    "**`test.describe`** per dataset to group.",
+                    "**Parameterized projects**: an option fixture `{ option: true }` set per project."
+                  ]
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\n// 1. A data array -> one test per row (names must be unique!)\nconst logins = [\n  { user: 'admin', pass: 'admin123', ok: true },\n  { user: 'admin', pass: 'wrong', ok: false },\n  { user: '', pass: 'admin123', ok: false },\n];\n\nfor (const { user, pass, ok } of logins) {\n  test(`login \"${user || '(empty)'}\" / \"${pass}\" -> ${ok ? 'success' : 'error'}`, async ({ page }) => {\n    await page.goto('/login');\n    await page.getByLabel('Username').fill(user);\n    await page.getByLabel('Password').fill(pass);\n    await page.getByRole('button', { name: 'Sign in' }).click();\n    if (ok) await expect(page).toHaveURL(/dashboard/);\n    else await expect(page.getByRole('alert')).toBeVisible();\n  });\n}\n\n// 2. One describe block per dataset (each gets its own hooks and report group)\nconst markets = [\n  { name: 'India', currency: '₹', path: '/in' },\n  { name: 'UAE', currency: 'AED', path: '/ae' },\n];\n\nfor (const market of markets) {\n  test.describe(`checkout in ${market.name}`, () => {\n    test.beforeEach(async ({ page }) => { await page.goto(market.path); });\n\n    test('shows local currency', async ({ page }) => {\n      await expect(page.getByTestId('price').first()).toContainText(market.currency);\n    });\n  });\n}",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Parameterized projects",
+                  "blocks": [
+                    {
+                      "code": "// options.ts — 3. Parameterized PROJECTS: one option, a different value per project\nimport { test as base } from '@playwright/test';\n\nexport type TestOptions = { userRole: string };\n\nexport const test = base.extend<TestOptions>({\n  userRole: ['viewer', { option: true }],   // default value, overridable in config\n});\nexport { expect } from '@playwright/test';",
+                      "lang": "ts"
+                    },
+                    {
+                      "code": "// playwright.config.ts — the SAME tests run once per role\nimport { defineConfig } from '@playwright/test';\nimport type { TestOptions } from './options';\n\nexport default defineConfig<TestOptions>({\n  projects: [\n    { name: 'as-admin', use: { userRole: 'admin' } },\n    { name: 'as-viewer', use: { userRole: 'viewer' } },\n  ],\n});",
+                      "lang": "ts"
+                    },
+                    {
+                      "code": "import { test, expect } from './options';\n\ntest('menu matches the role', async ({ page, userRole }) => {\n  await page.goto(`/login-as/${userRole}`);\n  const settings = page.getByRole('link', { name: 'Settings' });\n  if (userRole === 'admin') await expect(settings).toBeVisible();\n  else await expect(settings).toBeHidden();\n});",
+                      "lang": "ts"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1660,6 +1979,21 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "anchor": "files",
           "title": "12. Test data from files & .env",
           "blocks": [
+            {
+              "note": "idea",
+              "text": "Keep test data **outside the code**, in files, like keeping recipes in a recipe book instead of memorising them. Passwords live in a **.env** file that is never shared."
+            },
+            {
+              "note": "remember",
+              "text": "JSON via import, CSV via csv-parse, Excel via xlsx, secrets via .env + process.env."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// read JSON like a normal JS file\nimport users from './data/users.json';\n// load the .env file into process.env\nimport 'dotenv/config';\n// read a secret from the environment\nconst pass = process.env.APP_PASS;\n// use the data\nconsole.log(users[0].username, !!pass);",
+              "lang": "ts"
+            },
             {
               "table": {
                 "head": [
@@ -1687,27 +2021,30 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "code": "import { test, expect } from '@playwright/test';\nimport fs from 'node:fs';\nimport path from 'node:path';\nimport { parse } from 'csv-parse/sync';               // npm i -D csv-parse\nimport * as XLSX from 'xlsx';                          // npm i -D xlsx (SheetJS)\nimport users from './data/users.json';                // needs \"resolveJsonModule\": true\n\ntype User = { username: string; password: string; role: string };\n\n// 1. JSON: import it directly (typed, checked at compile time)\nfor (const u of users as User[]) {\n  test(`json: ${u.username} can log in`, async ({ page }) => {\n    await page.goto('/login');\n    await page.getByLabel('Username').fill(u.username);\n  });\n}\n\n// 2. CSV: read the file, turn rows into objects using the header line\nconst csvRows: User[] = parse(fs.readFileSync(path.join(__dirname, 'data/users.csv')), {\n  columns: true,                 // first line = keys\n  skip_empty_lines: true,\n  trim: true,\n});\nfor (const row of csvRows) {\n  test(`csv: ${row.username} has role ${row.role}`, async ({ request }) => {\n    const res = await request.get(`/api/users/${row.username}`);\n    expect((await res.json()).role).toBe(row.role);\n  });\n}\n\n// 3. Excel: first sheet -> array of objects (header row = keys)\nconst workbook = XLSX.readFile(path.join(__dirname, 'data/users.xlsx'));\nconst sheet = workbook.Sheets[workbook.SheetNames[0]];\nconst excelRows = XLSX.utils.sheet_to_json<User>(sheet);\nfor (const row of excelRows) {\n  test(`excel: ${row.username}`, async ({ page }) => {\n    await page.goto(`/profile/${row.username}`);\n  });\n}",
-              "lang": "ts"
-            },
-            {
-              "code": "// playwright.config.ts — 4. .env files + one config for every environment\nimport { defineConfig } from '@playwright/test';\nimport dotenv from 'dotenv';                           // npm i -D dotenv\nimport path from 'node:path';\n\n// TEST_ENV=qa npx playwright test   -> loads .env.qa\nconst env = process.env.TEST_ENV ?? 'qa';\ndotenv.config({ path: path.resolve(__dirname, `.env.${env}`) });\n\nexport default defineConfig({\n  use: {\n    baseURL: process.env.BASE_URL,                     // from .env.qa / .env.staging\n    extraHTTPHeaders: { 'x-api-key': process.env.API_KEY ?? '' },\n  },\n});\n\n/* .env.qa   (add .env* to .gitignore, never commit secrets)\nBASE_URL=https://qa.example.com\nAPP_USER=qa_user\nAPP_PASS=<qa-password>\nAPI_KEY=<qa-api-key>\n*/",
-              "lang": "ts"
-            },
-            {
-              "details": {
-                "summary": "Test-data fixture",
-                "blocks": [
-                  {
-                    "code": "// data-fixture.ts — 5. a fixture that hands each test its data\nimport { test as base } from '@playwright/test';\nimport fs from 'node:fs';\nimport path from 'node:path';\n\ntype User = { username: string; password: string; role: string };\ntype Data = { users: Record<string, User> };\n\nexport const test = base.extend<{ testData: Data; admin: User }>({\n  // read the JSON for the current environment once per test\n  testData: async ({}, use) => {\n    const env = process.env.TEST_ENV ?? 'qa';\n    const file = path.join(__dirname, `data/${env}.json`);   // data/qa.json, data/staging.json\n    await use(JSON.parse(fs.readFileSync(file, 'utf-8')));\n  },\n  // a fixture can use another fixture\n  admin: async ({ testData }, use) => {\n    await use(testData.users.admin);\n  },\n});\nexport { expect } from '@playwright/test';",
-                    "lang": "ts"
-                  },
-                  {
-                    "code": "import { test, expect } from './data-fixture';\n\ntest('admin sees settings', async ({ page, admin }) => {\n  await page.goto('/login');\n  await page.getByLabel('Username').fill(admin.username);\n  await page.getByLabel('Password').fill(admin.password);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n  await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();\n});",
-                    "lang": "ts"
-                  }
-                ]
-              }
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\nimport fs from 'node:fs';\nimport path from 'node:path';\nimport { parse } from 'csv-parse/sync';               // npm i -D csv-parse\nimport * as XLSX from 'xlsx';                          // npm i -D xlsx (SheetJS)\nimport users from './data/users.json';                // needs \"resolveJsonModule\": true\n\ntype User = { username: string; password: string; role: string };\n\n// 1. JSON: import it directly (typed, checked at compile time)\nfor (const u of users as User[]) {\n  test(`json: ${u.username} can log in`, async ({ page }) => {\n    await page.goto('/login');\n    await page.getByLabel('Username').fill(u.username);\n  });\n}\n\n// 2. CSV: read the file, turn rows into objects using the header line\nconst csvRows: User[] = parse(fs.readFileSync(path.join(__dirname, 'data/users.csv')), {\n  columns: true,                 // first line = keys\n  skip_empty_lines: true,\n  trim: true,\n});\nfor (const row of csvRows) {\n  test(`csv: ${row.username} has role ${row.role}`, async ({ request }) => {\n    const res = await request.get(`/api/users/${row.username}`);\n    expect((await res.json()).role).toBe(row.role);\n  });\n}\n\n// 3. Excel: first sheet -> array of objects (header row = keys)\nconst workbook = XLSX.readFile(path.join(__dirname, 'data/users.xlsx'));\nconst sheet = workbook.Sheets[workbook.SheetNames[0]];\nconst excelRows = XLSX.utils.sheet_to_json<User>(sheet);\nfor (const row of excelRows) {\n  test(`excel: ${row.username}`, async ({ page }) => {\n    await page.goto(`/profile/${row.username}`);\n  });\n}",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// playwright.config.ts — 4. .env files + one config for every environment\nimport { defineConfig } from '@playwright/test';\nimport dotenv from 'dotenv';                           // npm i -D dotenv\nimport path from 'node:path';\n\n// TEST_ENV=qa npx playwright test   -> loads .env.qa\nconst env = process.env.TEST_ENV ?? 'qa';\ndotenv.config({ path: path.resolve(__dirname, `.env.${env}`) });\n\nexport default defineConfig({\n  use: {\n    baseURL: process.env.BASE_URL,                     // from .env.qa / .env.staging\n    extraHTTPHeaders: { 'x-api-key': process.env.API_KEY ?? '' },\n  },\n});\n\n/* .env.qa   (add .env* to .gitignore, never commit secrets)\nBASE_URL=https://qa.example.com\nAPP_USER=qa_user\nAPP_PASS=<qa-password>\nAPI_KEY=<qa-api-key>\n*/",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Test-data fixture",
+                  "blocks": [
+                    {
+                      "code": "// data-fixture.ts — 5. a fixture that hands each test its data\nimport { test as base } from '@playwright/test';\nimport fs from 'node:fs';\nimport path from 'node:path';\n\ntype User = { username: string; password: string; role: string };\ntype Data = { users: Record<string, User> };\n\nexport const test = base.extend<{ testData: Data; admin: User }>({\n  // read the JSON for the current environment once per test\n  testData: async ({}, use) => {\n    const env = process.env.TEST_ENV ?? 'qa';\n    const file = path.join(__dirname, `data/${env}.json`);   // data/qa.json, data/staging.json\n    await use(JSON.parse(fs.readFileSync(file, 'utf-8')));\n  },\n  // a fixture can use another fixture\n  admin: async ({ testData }, use) => {\n    await use(testData.users.admin);\n  },\n});\nexport { expect } from '@playwright/test';",
+                      "lang": "ts"
+                    },
+                    {
+                      "code": "import { test, expect } from './data-fixture';\n\ntest('admin sees settings', async ({ page, admin }) => {\n  await page.goto('/login');\n  await page.getByLabel('Username').fill(admin.username);\n  await page.getByLabel('Password').fill(admin.password);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n  await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();\n});",
+                      "lang": "ts"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1717,26 +2054,44 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "13. Run commands cheat sheet",
           "blocks": [
             {
-              "code": "npx playwright test                            # run ALL tests (headless, parallel)\nnpx playwright test tests/login.spec.ts        # one file\nnpx playwright test tests/login.spec.ts:42     # the test on line 42\nnpx playwright test login cart                 # files whose path contains \"login\" or \"cart\"\nnpx playwright test -g \"add to cart\"           # titles matching text/regex (--grep)\nnpx playwright test --grep-invert \"slow\"       # everything EXCEPT matches\nnpx playwright test --grep @smoke              # by tag\nnpx playwright test --grep \"@smoke|@sanity\"    # tag A or tag B\nnpx playwright test --project=chromium         # one project (repeat flag for more)\nnpx playwright test --headed                   # see the browser\nnpx playwright test --debug                    # Inspector: step line by line\nnpx playwright test --ui                       # UI mode: watch + time travel\nnpx playwright test --workers=4                # 4 parallel processes (--workers=1 = serial)\nnpx playwright test --retries=2                # retry failures\nnpx playwright test --repeat-each=10           # run each test 10x (flaky hunt)\nnpx playwright test --shard=1/4                # part 1 of 4 (one CI machine)\nnpx playwright test --last-failed              # only last run's failures\nnpx playwright test --update-snapshots         # accept new screenshots (-u)\nnpx playwright test --list                     # list tests, don't run\nnpx playwright test --reporter=dot             # override reporter\nnpx playwright test --max-failures=5 -x        # stop after 5 failures (-x = after 1)",
+              "note": "idea",
+              "text": "These are the **buttons on the remote control**: run everything, run one file, run only the smoke tests, show the browser, slow it down to debug."
+            },
+            {
+              "note": "remember",
+              "text": "-g filters by title, --grep @tag by tag, --ui to explore, --debug to step through."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# run every test\nnpx playwright test\n# run one file\nnpx playwright test login.spec.ts\n# run only tests tagged @smoke\nnpx playwright test --grep @smoke\n# open the friendly UI mode\nnpx playwright test --ui",
               "lang": "bash"
             },
             {
-              "details": {
-                "summary": "Tags in code",
-                "blocks": [
-                  {
-                    "code": "import { test, expect } from '@playwright/test';\n\n// tag in the title ...\ntest('login works @smoke', async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n  await expect(page).toHaveTitle(/TodoMVC/);\n});\n\n// ... or with the tag option (same effect)\ntest('full order flow', { tag: ['@regression', '@slow'] }, async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n});\n// run: npx playwright test --grep @smoke\n//      npx playwright test --grep-invert @slow",
-                    "lang": "ts"
-                  }
-                ]
-              }
-            },
-            {
-              "text": "**npm scripts** so you type less:"
-            },
-            {
-              "code": "// package.json — short names for the commands you type daily\n{\n  \"scripts\": {\n    \"test\": \"playwright test\",\n    \"test:smoke\": \"playwright test --grep @smoke\",\n    \"test:headed\": \"playwright test --headed --project=chromium\",\n    \"test:ui\": \"playwright test --ui\",\n    \"test:debug\": \"playwright test --debug\",\n    \"test:qa\": \"cross-env TEST_ENV=qa playwright test\",\n    \"report\": \"playwright show-report\"\n  }\n}\n// run: npm test   |   npm run test:smoke   |   npm run test:smoke -- --headed  (extra flags after --)",
-              "lang": "json"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "npx playwright test                            # run ALL tests (headless, parallel)\nnpx playwright test tests/login.spec.ts        # one file\nnpx playwright test tests/login.spec.ts:42     # the test on line 42\nnpx playwright test login cart                 # files whose path contains \"login\" or \"cart\"\nnpx playwright test -g \"add to cart\"           # titles matching text/regex (--grep)\nnpx playwright test --grep-invert \"slow\"       # everything EXCEPT matches\nnpx playwright test --grep @smoke              # by tag\nnpx playwright test --grep \"@smoke|@sanity\"    # tag A or tag B\nnpx playwright test --project=chromium         # one project (repeat flag for more)\nnpx playwright test --headed                   # see the browser\nnpx playwright test --debug                    # Inspector: step line by line\nnpx playwright test --ui                       # UI mode: watch + time travel\nnpx playwright test --workers=4                # 4 parallel processes (--workers=1 = serial)\nnpx playwright test --retries=2                # retry failures\nnpx playwright test --repeat-each=10           # run each test 10x (flaky hunt)\nnpx playwright test --shard=1/4                # part 1 of 4 (one CI machine)\nnpx playwright test --last-failed              # only last run's failures\nnpx playwright test --update-snapshots         # accept new screenshots (-u)\nnpx playwright test --list                     # list tests, don't run\nnpx playwright test --reporter=dot             # override reporter\nnpx playwright test --max-failures=5 -x        # stop after 5 failures (-x = after 1)",
+                  "lang": "bash"
+                },
+                {
+                  "details": "Tags in code",
+                  "blocks": [
+                    {
+                      "code": "import { test, expect } from '@playwright/test';\n\n// tag in the title ...\ntest('login works @smoke', async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n  await expect(page).toHaveTitle(/TodoMVC/);\n});\n\n// ... or with the tag option (same effect)\ntest('full order flow', { tag: ['@regression', '@slow'] }, async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n});\n// run: npx playwright test --grep @smoke\n//      npx playwright test --grep-invert @slow",
+                      "lang": "ts"
+                    }
+                  ]
+                },
+                {
+                  "text": "**npm scripts** so you type less:"
+                },
+                {
+                  "code": "// package.json — short names for the commands you type daily\n{\n  \"scripts\": {\n    \"test\": \"playwright test\",\n    \"test:smoke\": \"playwright test --grep @smoke\",\n    \"test:headed\": \"playwright test --headed --project=chromium\",\n    \"test:ui\": \"playwright test --ui\",\n    \"test:debug\": \"playwright test --debug\",\n    \"test:qa\": \"cross-env TEST_ENV=qa playwright test\",\n    \"report\": \"playwright show-report\"\n  }\n}\n// run: npm test   |   npm run test:smoke   |   npm run test:smoke -- --headed  (extra flags after --)",
+                  "lang": "json"
+                }
+              ]
             }
           ]
         },
@@ -1745,6 +2100,26 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "anchor": "reporters",
           "title": "14. Reporters",
           "blocks": [
+            {
+              "note": "idea",
+              "text": "A **reporter** decides **how the results look**: a short line, a dot for each test, a web page, or a file for Jenkins. You can pick more than one, like getting the bill on screen **and** on paper."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Reporters:** The **same match** shown as live score SMS (line), ball-by-ball dots (dot), or a full newspaper report (html)."
+            },
+            {
+              "note": "remember",
+              "text": "list/line/dot for console, html for people, junit/json for CI tools."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// inside playwright.config.ts\nreporter: [\n  // print one line per test in the terminal\n  ['list'],\n  // also build a web report (don't auto-open)\n  ['html', { open: 'never' }],\n],\n// npx playwright show-report              // open that web report later",
+              "lang": "ts"
+            },
             {
               "table": {
                 "head": [
@@ -1792,12 +2167,17 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "code": "// Pick one or many reporters\nimport { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  reporter: [\n    ['list'],                                   // one line per test (default locally)\n    // ['line'],                                // one updating line (compact)\n    // ['dot'],                                 // a dot per test (default on CI)\n    ['html', { outputFolder: 'playwright-report', open: 'never' }],\n    ['json', { outputFile: 'results.json' }],   // machine-readable\n    ['junit', { outputFile: 'results.xml' }],   // CI test tabs (Jenkins, GitLab, Azure)\n  ],\n});",
-              "lang": "ts"
-            },
-            {
-              "code": "npx playwright test --reporter=list            # quick one-off switch\nnpx playwright test --reporter=line,html       # several at once\nnpx playwright show-report                     # open playwright-report/index.html\nnpx playwright show-report my-report           # a custom folder",
-              "lang": "bash"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// Pick one or many reporters\nimport { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  reporter: [\n    ['list'],                                   // one line per test (default locally)\n    // ['line'],                                // one updating line (compact)\n    // ['dot'],                                 // a dot per test (default on CI)\n    ['html', { outputFolder: 'playwright-report', open: 'never' }],\n    ['json', { outputFile: 'results.json' }],   // machine-readable\n    ['junit', { outputFile: 'results.xml' }],   // CI test tabs (Jenkins, GitLab, Azure)\n  ],\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "npx playwright test --reporter=list            # quick one-off switch\nnpx playwright test --reporter=line,html       # several at once\nnpx playwright show-report                     # open playwright-report/index.html\nnpx playwright show-report my-report           # a custom folder",
+                  "lang": "bash"
+                }
+              ]
             }
           ]
         },
@@ -1807,11 +2187,31 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "15. playwright.config.ts walkthrough",
           "blocks": [
             {
-              "text": "Read top to bottom: **where** tests are, **how long** to wait, **how many** at once, **what to output**, **defaults** for every test, **which browsers**, and **which app** to start."
+              "note": "idea",
+              "text": "`playwright.config.ts` is the **settings page** for all tests: where tests live, how long to wait, how many to run at once, which browsers, and the website address."
             },
             {
-              "code": "// playwright.config.ts — every common option, explained\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  testDir: './tests',              // where *.spec.ts files live\n  timeout: 30_000,                 // max time for ONE test (default 30s)\n  expect: {\n    timeout: 5_000,                // how long expect(...) keeps retrying (default 5s)\n  },\n  fullyParallel: true,             // run tests inside a file in parallel too\n  forbidOnly: !!process.env.CI,    // fail CI if someone left test.only\n  retries: process.env.CI ? 2 : 0, // retry flaky tests on CI only\n  workers: process.env.CI ? 2 : undefined, // undefined = half your CPU cores\n  reporter: [\n    ['list'],                                       // readable console output\n    ['html', { open: 'never' }],                    // playwright-report/\n    ['junit', { outputFile: 'results.xml' }],       // for Jenkins / Azure\n  ],\n  outputDir: 'test-results',       // traces, screenshots, videos of each test\n\n  use: {                           // defaults for EVERY test (projects can override)\n    baseURL: 'http://localhost:3000',   // lets you write page.goto('/login')\n    trace: 'on-first-retry',            // record a trace when a test is retried\n    screenshot: 'only-on-failure',      // 'on' | 'off' | 'only-on-failure'\n    video: 'retain-on-failure',         // keep video only if the test failed\n    headless: true,                     // no visible window (default)\n    viewport: { width: 1280, height: 720 },\n    actionTimeout: 10_000,              // max time for one click/fill\n  },\n\n  projects: [\n    // 1) login once, save cookies to a file\n    { name: 'setup', testMatch: /.*\\.setup\\.ts/ },\n\n    // 2) real browsers, start already logged in\n    {\n      name: 'chromium',\n      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],          // runs setup first\n    },\n    {\n      name: 'firefox',\n      use: { ...devices['Desktop Firefox'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],\n    },\n    {\n      name: 'webkit',\n      use: { ...devices['Desktop Safari'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],\n    },\n    { name: 'mobile', use: { ...devices['Pixel 7'] } }, // phone emulation\n  ],\n\n  webServer: {                     // start your app before the tests\n    command: 'npm run start',\n    url: 'http://localhost:3000',  // wait until this responds\n    reuseExistingServer: !process.env.CI, // locally reuse a running dev server\n    timeout: 120_000,\n  },\n});",
-              "lang": "ts"
+              "note": "remember",
+              "text": "defineConfig: testDir, timeout, retries, workers, reporter, use, projects, webServer."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "export default defineConfig({\n  // where the test files are\n  testDir: './tests',\n  // try a failed test once more\n  retries: 1,\n  // defaults for every test\n  use: { baseURL: 'http://localhost:3000', trace: 'on-first-retry' },\n  // which browsers\n  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],\n});",
+              "lang": "bash"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "Read top to bottom: **where** tests are, **how long** to wait, **how many** at once, **what to output**, **defaults** for every test, **which browsers**, and **which app** to start."
+                },
+                {
+                  "code": "// playwright.config.ts — every common option, explained\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  testDir: './tests',              // where *.spec.ts files live\n  timeout: 30_000,                 // max time for ONE test (default 30s)\n  expect: {\n    timeout: 5_000,                // how long expect(...) keeps retrying (default 5s)\n  },\n  fullyParallel: true,             // run tests inside a file in parallel too\n  forbidOnly: !!process.env.CI,    // fail CI if someone left test.only\n  retries: process.env.CI ? 2 : 0, // retry flaky tests on CI only\n  workers: process.env.CI ? 2 : undefined, // undefined = half your CPU cores\n  reporter: [\n    ['list'],                                       // readable console output\n    ['html', { open: 'never' }],                    // playwright-report/\n    ['junit', { outputFile: 'results.xml' }],       // for Jenkins / Azure\n  ],\n  outputDir: 'test-results',       // traces, screenshots, videos of each test\n\n  use: {                           // defaults for EVERY test (projects can override)\n    baseURL: 'http://localhost:3000',   // lets you write page.goto('/login')\n    trace: 'on-first-retry',            // record a trace when a test is retried\n    screenshot: 'only-on-failure',      // 'on' | 'off' | 'only-on-failure'\n    video: 'retain-on-failure',         // keep video only if the test failed\n    headless: true,                     // no visible window (default)\n    viewport: { width: 1280, height: 720 },\n    actionTimeout: 10_000,              // max time for one click/fill\n  },\n\n  projects: [\n    // 1) login once, save cookies to a file\n    { name: 'setup', testMatch: /.*\\.setup\\.ts/ },\n\n    // 2) real browsers, start already logged in\n    {\n      name: 'chromium',\n      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],          // runs setup first\n    },\n    {\n      name: 'firefox',\n      use: { ...devices['Desktop Firefox'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],\n    },\n    {\n      name: 'webkit',\n      use: { ...devices['Desktop Safari'], storageState: 'playwright/.auth/user.json' },\n      dependencies: ['setup'],\n    },\n    { name: 'mobile', use: { ...devices['Pixel 7'] } }, // phone emulation\n  ],\n\n  webServer: {                     // start your app before the tests\n    command: 'npm run start',\n    url: 'http://localhost:3000',  // wait until this responds\n    reuseExistingServer: !process.env.CI, // locally reuse a running dev server\n    timeout: 120_000,\n  },\n});",
+                  "lang": "ts"
+                }
+              ]
             }
           ]
         },
@@ -1821,7 +2221,27 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "16. Parallelism & sharding",
           "blocks": [
             {
-              "img": "assets/img/playwright/workers-shards.svg?v=202610151418",
+              "note": "idea",
+              "text": "**Workers are cashiers in one shop**: more cashiers = more customers served at once. **Shards are separate shops**: you split the customers across several shops (CI machines)."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Workers vs shards:** **Workers** = several **billing counters in one D-Mart**; **shards** = splitting customers across **different D-Mart branches**."
+            },
+            {
+              "note": "remember",
+              "text": "Workers = processes on one machine (default half the CPU cores); shards = split across machines."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# 4 cashiers in this shop\nnpx playwright test --workers=4\n# this shop takes the 1st third of the tests\nnpx playwright test --shard=1/3\n# then, inside a test file (TypeScript):\n// tests in this file may run at the same time\ntest.describe.configure({ mode: 'parallel' });",
+              "lang": "bash"
+            },
+            {
+              "img": "assets/img/playwright/workers-shards.svg?v=202610151449",
               "width": 400,
               "height": 456,
               "alt": "Diagram: 100 tests split by --shard across two machines; each machine runs two workers; blob reports merged into one HTML report.",
@@ -1866,18 +2286,23 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               }
             },
             {
-              "text": "**Isolation:** each worker is a separate process with its own browser. Never share state between tests; use `workerIndex` to give each worker its own test user/DB row."
-            },
-            {
-              "code": "import { test, expect } from '@playwright/test';\n\n// Tests in THIS file run at the same time, in different workers\ntest.describe.configure({ mode: 'parallel' });\n\ntest('a', async ({ page }, testInfo) => {\n  // every worker is its own process with its own browser -> no shared state\n  console.log('worker', testInfo.workerIndex, 'parallel slot', testInfo.parallelIndex);\n  await page.goto('https://demo.playwright.dev/todomvc');\n});\ntest('b', async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n  await expect(page).toHaveTitle(/TodoMVC/);\n});\n\n// Serial: one after another, same worker. If one fails, the rest are skipped.\ntest.describe('wizard', () => {\n  test.describe.configure({ mode: 'serial' });\n  test('step 1', async () => {});\n  test('step 2', async () => {});\n});",
-              "lang": "ts"
-            },
-            {
-              "text": "**Shard on GitHub Actions + merge reports** (needs `reporter: 'blob'` on CI):"
-            },
-            {
-              "code": "# .github/workflows/playwright.yml — 4 shards in parallel, then one merged HTML report\nname: Playwright Tests\non:\n  push: { branches: [main] }\n  pull_request: { branches: [main] }\n\njobs:\n  test:\n    timeout-minutes: 60\n    runs-on: ubuntu-latest\n    strategy:\n      fail-fast: false                      # let every shard finish\n      matrix:\n        shardIndex: [1, 2, 3, 4]\n        shardTotal: [4]\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with: { node-version: lts/* }\n      - run: npm ci\n      - run: npx playwright install --with-deps   # browsers + OS libraries\n      - name: Run shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}\n        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}\n        env:\n          CI: true\n          APP_USER: ${{ secrets.APP_USER }}      # secrets live in repo settings, never in code\n          APP_PASS: ${{ secrets.APP_PASS }}\n      - uses: actions/upload-artifact@v4       # blob report (+ traces) of this shard\n        if: ${{ !cancelled() }}\n        with:\n          name: blob-report-${{ matrix.shardIndex }}\n          path: blob-report\n          retention-days: 1\n\n  merge-reports:\n    if: ${{ !cancelled() }}\n    needs: [test]\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with: { node-version: lts/* }\n      - run: npm ci\n      - uses: actions/download-artifact@v4\n        with:\n          path: all-blob-reports\n          pattern: blob-report-*\n          merge-multiple: true\n      - run: npx playwright merge-reports --reporter html ./all-blob-reports\n      - uses: actions/upload-artifact@v4\n        with:\n          name: html-report--attempt-${{ github.run_attempt }}\n          path: playwright-report\n          retention-days: 14",
-              "lang": "yaml"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Isolation:** each worker is a separate process with its own browser. Never share state between tests; use `workerIndex` to give each worker its own test user/DB row."
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\n// Tests in THIS file run at the same time, in different workers\ntest.describe.configure({ mode: 'parallel' });\n\ntest('a', async ({ page }, testInfo) => {\n  // every worker is its own process with its own browser -> no shared state\n  console.log('worker', testInfo.workerIndex, 'parallel slot', testInfo.parallelIndex);\n  await page.goto('https://demo.playwright.dev/todomvc');\n});\ntest('b', async ({ page }) => {\n  await page.goto('https://demo.playwright.dev/todomvc');\n  await expect(page).toHaveTitle(/TodoMVC/);\n});\n\n// Serial: one after another, same worker. If one fails, the rest are skipped.\ntest.describe('wizard', () => {\n  test.describe.configure({ mode: 'serial' });\n  test('step 1', async () => {});\n  test('step 2', async () => {});\n});",
+                  "lang": "ts"
+                },
+                {
+                  "text": "**Shard on GitHub Actions + merge reports** (needs `reporter: 'blob'` on CI):"
+                },
+                {
+                  "code": "# .github/workflows/playwright.yml — 4 shards in parallel, then one merged HTML report\nname: Playwright Tests\non:\n  push: { branches: [main] }\n  pull_request: { branches: [main] }\n\njobs:\n  test:\n    timeout-minutes: 60\n    runs-on: ubuntu-latest\n    strategy:\n      fail-fast: false                      # let every shard finish\n      matrix:\n        shardIndex: [1, 2, 3, 4]\n        shardTotal: [4]\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with: { node-version: lts/* }\n      - run: npm ci\n      - run: npx playwright install --with-deps   # browsers + OS libraries\n      - name: Run shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}\n        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}\n        env:\n          CI: true\n          APP_USER: ${{ secrets.APP_USER }}      # secrets live in repo settings, never in code\n          APP_PASS: ${{ secrets.APP_PASS }}\n      - uses: actions/upload-artifact@v4       # blob report (+ traces) of this shard\n        if: ${{ !cancelled() }}\n        with:\n          name: blob-report-${{ matrix.shardIndex }}\n          path: blob-report\n          retention-days: 1\n\n  merge-reports:\n    if: ${{ !cancelled() }}\n    needs: [test]\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with: { node-version: lts/* }\n      - run: npm ci\n      - uses: actions/download-artifact@v4\n        with:\n          path: all-blob-reports\n          pattern: blob-report-*\n          merge-multiple: true\n      - run: npx playwright merge-reports --reporter html ./all-blob-reports\n      - uses: actions/upload-artifact@v4\n        with:\n          name: html-report--attempt-${{ github.run_attempt }}\n          path: playwright-report\n          retention-days: 14",
+                  "lang": "yaml"
+                }
+              ]
             }
           ]
         },
@@ -1887,15 +2312,35 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "17. CI/CD: Jenkins + artifacts",
           "blocks": [
             {
-              "list": [
-                "**Retries** `retries: 2` on CI; **trace** `on-first-retry` makes trace.zip.",
-                "**Artifacts:** upload `playwright-report/` and `test-results/` (traces, videos).",
-                "**Secrets** come from CI settings / Jenkins credentials, never from code."
-              ]
+              "note": "idea",
+              "text": "**CI** is a robot that runs your tests on every push. It installs everything, runs the tests, and keeps the reports so you can look later."
             },
             {
-              "code": "// Jenkinsfile — run inside the official Playwright image (browsers preinstalled)\npipeline {\n  agent {\n    docker {\n      // keep this tag equal to the @playwright/test version in package.json\n      image 'mcr.microsoft.com/playwright:v1.64.0-noble'\n      args '--ipc=host'                     // recommended for Chromium in Docker\n    }\n  }\n  environment {\n    CI = 'true'\n    APP = credentials('app-login')          // Jenkins \"username + password\" credential -> APP_USR / APP_PSW\n  }\n  stages {\n    stage('Install') { steps { sh 'npm ci' } }\n    stage('Test') {\n      steps {\n        // retries + traces come from playwright.config.ts (retries: 2, trace: 'on-first-retry')\n        // --reporter overrides the config: line for the log, junit for Jenkins, html for humans\n        sh 'APP_USER=$APP_USR APP_PASS=$APP_PSW PLAYWRIGHT_JUNIT_OUTPUT_FILE=results.xml npx playwright test --reporter=line,junit,html'\n      }\n    }\n  }\n  post {\n    always {\n      junit allowEmptyResults: true, testResults: 'results.xml'          // test trend + failures in Jenkins UI\n      archiveArtifacts artifacts: 'playwright-report/**, test-results/**', allowEmptyArchive: true  // HTML report + traces/videos\n    }\n  }\n}",
-              "lang": "groovy"
+              "note": "remember",
+              "text": "npm ci → npx playwright install --with-deps → npx playwright test → upload report."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# install exact packages from package-lock\nnpm ci\n# download browsers + the system libraries they need\nnpx playwright install --with-deps\n# run tests (retries + traces come from the config)\nnpx playwright test\n# then save playwright-report/ and test-results/ as artifacts",
+              "lang": "bash"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "list": [
+                    "**Retries** `retries: 2` on CI; **trace** `on-first-retry` makes trace.zip.",
+                    "**Artifacts:** upload `playwright-report/` and `test-results/` (traces, videos).",
+                    "**Secrets** come from CI settings / Jenkins credentials, never from code."
+                  ]
+                },
+                {
+                  "code": "// Jenkinsfile — run inside the official Playwright image (browsers preinstalled)\npipeline {\n  agent {\n    docker {\n      // keep this tag equal to the @playwright/test version in package.json\n      image 'mcr.microsoft.com/playwright:v1.64.0-noble'\n      args '--ipc=host'                     // recommended for Chromium in Docker\n    }\n  }\n  environment {\n    CI = 'true'\n    APP = credentials('app-login')          // Jenkins \"username + password\" credential -> APP_USR / APP_PSW\n  }\n  stages {\n    stage('Install') { steps { sh 'npm ci' } }\n    stage('Test') {\n      steps {\n        // retries + traces come from playwright.config.ts (retries: 2, trace: 'on-first-retry')\n        // --reporter overrides the config: line for the log, junit for Jenkins, html for humans\n        sh 'APP_USER=$APP_USR APP_PASS=$APP_PSW PLAYWRIGHT_JUNIT_OUTPUT_FILE=results.xml npx playwright test --reporter=line,junit,html'\n      }\n    }\n  }\n  post {\n    always {\n      junit allowEmptyResults: true, testResults: 'results.xml'          // test trend + failures in Jenkins UI\n      archiveArtifacts artifacts: 'playwright-report/**, test-results/**', allowEmptyArchive: true  // HTML report + traces/videos\n    }\n  }\n}",
+                  "lang": "groovy"
+                }
+              ]
             }
           ]
         },
@@ -1905,46 +2350,67 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "18. Allure report",
           "blocks": [
             {
-              "ol": [
-                "Install `allure-playwright` (reporter) + `allure-commandline` (needs Java).",
-                "Add the reporter to the config.",
-                "Run tests → `allure-results/`.",
-                "`allure generate` → `allure-report/`, then `allure open`."
-              ]
+              "note": "idea",
+              "text": "**Allure** is a **fancy photo album** for test results: graphs, steps, screenshots, history. Playwright writes raw pictures (results); Allure turns them into the album (report)."
             },
             {
-              "code": "# 1) install (allure-commandline needs Java 8+ on the machine)\nnpm i -D allure-playwright allure-js-commons allure-commandline\n\n# 2) run tests -> raw results in allure-results/\nnpx playwright test\n\n# 3) build + open the report\nnpx allure generate allure-results --clean -o allure-report   # static HTML site\nnpx allure open allure-report                                  # opens in browser\nnpx allure serve allure-results                                # or: generate to temp + open, one step",
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Allure:** A **wedding photo album**: Playwright clicks the raw photos, Allure makes the album with captions."
+            },
+            {
+              "note": "remember",
+              "text": "allure-playwright reporter → allure-results/ → allure generate → allure open."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# the reporter + the report builder (needs Java)\nnpm i -D allure-playwright allure-commandline\n# config: reporter: [['line'], ['allure-playwright']]\n# writes allure-results/\nnpx playwright test\n# build the report and open it\nnpx allure serve allure-results",
               "lang": "bash"
             },
             {
-              "code": "// playwright.config.ts — add Allure next to the normal reporters\nimport { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  reporter: [\n    ['line'],\n    ['allure-playwright', {\n      resultsDir: 'allure-results',          // raw JSON results go here\n      detail: true,                          // show Playwright steps in the report\n      suiteTitle: true,\n      environmentInfo: { env: process.env.TEST_ENV ?? 'qa', node: process.version },\n    }],\n  ],\n  use: { screenshot: 'only-on-failure', trace: 'on-first-retry' }, // attached to Allure automatically\n});",
-              "lang": "ts"
-            },
-            {
-              "code": "import { test, expect } from '@playwright/test';\nimport * as allure from 'allure-js-commons';\n\ntest('checkout as guest @smoke', async ({ page }) => {\n  // labels make the report filterable\n  await allure.epic('Shop');\n  await allure.feature('Checkout');\n  await allure.severity('critical');\n  await allure.tags('smoke', 'guest');\n\n  await allure.step('Open the shop', async () => {\n    await page.goto('https://demo.playwright.dev/todomvc');\n  });\n\n  // attachments: text/JSON ...\n  await allure.attachment('cart.json', JSON.stringify({ items: 2 }), 'application/json');\n  // ... or a screenshot (Playwright's own test.info().attach also shows up in Allure)\n  await test.info().attach('home', { body: await page.screenshot(), contentType: 'image/png' });\n\n  await expect(page).toHaveTitle(/TodoMVC/);\n});",
-              "lang": "ts"
-            },
-            {
-              "details": {
-                "summary": "Publish on GitHub Actions",
-                "blocks": [
-                  {
-                    "code": "# .github/workflows/allure.yml — publish the Allure report to GitHub Pages (gh-pages branch)\n      - run: npx playwright test\n        continue-on-error: true                # still publish when tests fail\n      - uses: actions/setup-java@v4            # allure-commandline needs Java\n        with: { distribution: temurin, java-version: '17' }\n      - run: npx allure generate allure-results --clean -o allure-report\n        if: always()\n      - uses: actions/upload-artifact@v4       # download from the run page\n        if: always()\n        with: { name: allure-report, path: allure-report }\n      - uses: peaceiris/actions-gh-pages@v4    # community action: push to gh-pages\n        if: always()\n        with:\n          github_token: ${{ secrets.GITHUB_TOKEN }}   # built-in token, nothing to create\n          publish_dir: allure-report",
-                    "lang": "yaml"
-                  }
-                ]
-              }
-            },
-            {
-              "details": {
-                "summary": "Jenkins Allure plugin",
-                "blocks": [
-                  {
-                    "code": "// Jenkins: install the \"Allure\" plugin + add an Allure Commandline tool\n// (Manage Jenkins -> Tools), then:\npost {\n  always {\n    allure includeProperties: false, results: [[path: 'allure-results']]   // \"Allure Report\" link + trend graph\n  }\n}",
-                    "lang": "groovy"
-                  }
-                ]
-              }
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "ol": [
+                    "Install `allure-playwright` (reporter) + `allure-commandline` (needs Java).",
+                    "Add the reporter to the config.",
+                    "Run tests → `allure-results/`.",
+                    "`allure generate` → `allure-report/`, then `allure open`."
+                  ]
+                },
+                {
+                  "code": "# 1) install (allure-commandline needs Java 8+ on the machine)\nnpm i -D allure-playwright allure-js-commons allure-commandline\n\n# 2) run tests -> raw results in allure-results/\nnpx playwright test\n\n# 3) build + open the report\nnpx allure generate allure-results --clean -o allure-report   # static HTML site\nnpx allure open allure-report                                  # opens in browser\nnpx allure serve allure-results                                # or: generate to temp + open, one step",
+                  "lang": "bash"
+                },
+                {
+                  "code": "// playwright.config.ts — add Allure next to the normal reporters\nimport { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  reporter: [\n    ['line'],\n    ['allure-playwright', {\n      resultsDir: 'allure-results',          // raw JSON results go here\n      detail: true,                          // show Playwright steps in the report\n      suiteTitle: true,\n      environmentInfo: { env: process.env.TEST_ENV ?? 'qa', node: process.version },\n    }],\n  ],\n  use: { screenshot: 'only-on-failure', trace: 'on-first-retry' }, // attached to Allure automatically\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\nimport * as allure from 'allure-js-commons';\n\ntest('checkout as guest @smoke', async ({ page }) => {\n  // labels make the report filterable\n  await allure.epic('Shop');\n  await allure.feature('Checkout');\n  await allure.severity('critical');\n  await allure.tags('smoke', 'guest');\n\n  await allure.step('Open the shop', async () => {\n    await page.goto('https://demo.playwright.dev/todomvc');\n  });\n\n  // attachments: text/JSON ...\n  await allure.attachment('cart.json', JSON.stringify({ items: 2 }), 'application/json');\n  // ... or a screenshot (Playwright's own test.info().attach also shows up in Allure)\n  await test.info().attach('home', { body: await page.screenshot(), contentType: 'image/png' });\n\n  await expect(page).toHaveTitle(/TodoMVC/);\n});",
+                  "lang": "ts"
+                },
+                {
+                  "details": "Publish on GitHub Actions",
+                  "blocks": [
+                    {
+                      "code": "# .github/workflows/allure.yml — publish the Allure report to GitHub Pages (gh-pages branch)\n      - run: npx playwright test\n        continue-on-error: true                # still publish when tests fail\n      - uses: actions/setup-java@v4            # allure-commandline needs Java\n        with: { distribution: temurin, java-version: '17' }\n      - run: npx allure generate allure-results --clean -o allure-report\n        if: always()\n      - uses: actions/upload-artifact@v4       # download from the run page\n        if: always()\n        with: { name: allure-report, path: allure-report }\n      - uses: peaceiris/actions-gh-pages@v4    # community action: push to gh-pages\n        if: always()\n        with:\n          github_token: ${{ secrets.GITHUB_TOKEN }}   # built-in token, nothing to create\n          publish_dir: allure-report",
+                      "lang": "yaml"
+                    }
+                  ]
+                },
+                {
+                  "details": "Jenkins Allure plugin",
+                  "blocks": [
+                    {
+                      "code": "// Jenkins: install the \"Allure\" plugin + add an Allure Commandline tool\n// (Manage Jenkins -> Tools), then:\npost {\n  always {\n    allure includeProperties: false, results: [[path: 'allure-results']]   // \"Allure Report\" link + trend graph\n  }\n}",
+                      "lang": "groovy"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -1954,35 +2420,55 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "19. Framework structure",
           "blocks": [
             {
-              "img": "assets/img/playwright/layers.svg?v=202610151418",
+              "note": "idea",
+              "text": "A framework is a **tidy house**: tests in one room, page objects in another, data in a cupboard, settings on the wall. Each thing has one place, so anyone can find it."
+            },
+            {
+              "note": "remember",
+              "text": "Tests → fixtures → page objects → utils/data → config; tests only describe steps."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// one class = one screen (Page Object)\nclass LoginPage {\n  // remember which tab to use\n  constructor(private page: Page) {}\n  // one action the screen can do\n  async login(user: string, pass: string) {\n    // the \"how\" (locators) hides in here\n    await this.page.getByLabel('Email').fill(user);\n    await this.page.getByLabel('Password').fill(pass);\n    await this.page.getByRole('button', { name: 'Sign in' }).click();\n  }\n}",
+              "lang": "ts"
+            },
+            {
+              "img": "assets/img/playwright/layers.svg?v=202610151449",
               "width": 400,
               "height": 686,
               "alt": "Diagram: tests use fixtures, fixtures use page objects, page objects use utils and test data, all configured by playwright.config.ts.",
               "caption": "Tests → fixtures → page objects → utils/data → config."
             },
             {
-              "code": "playwright-framework/\n├── tests/                    # *.spec.ts — only test steps + assertions\n│   ├── auth.setup.ts         #   logs in once, saves storageState\n│   ├── ui/cart.spec.ts\n│   └── api/users.spec.ts\n├── pages/                    # Page Object Model (one class per screen)\n│   ├── BasePage.ts\n│   ├── LoginPage.ts\n│   └── CartPage.ts\n├── fixtures/index.ts         # test.extend: POMs, users, API client\n├── utils/                    # helpers: apiClient.ts, random.ts, dates.ts\n├── test-data/                # users.json, products.csv, prices.xlsx\n├── config/                   # .env.qa, .env.staging (NOT committed) + .env.example\n├── playwright/.auth/         # saved login state (gitignored)\n├── playwright-report/        # html report   ┐\n├── test-results/             # traces/videos  ├ generated, gitignored\n├── allure-results/           # allure raw     ┘\n├── .github/workflows/playwright.yml\n├── Jenkinsfile\n├── playwright.config.ts\n├── tsconfig.json\n└── package.json",
-              "lang": "text"
-            },
-            {
-              "list": [
-                "**Config** decides env (baseURL from .env) and browsers.",
-                "**Data** files are loaded by a fixture.",
-                "**Fixtures** build POMs and hand them to tests.",
-                "**Tests** only describe steps and expectations."
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "playwright-framework/\n├── tests/                    # *.spec.ts — only test steps + assertions\n│   ├── auth.setup.ts         #   logs in once, saves storageState\n│   ├── ui/cart.spec.ts\n│   └── api/users.spec.ts\n├── pages/                    # Page Object Model (one class per screen)\n│   ├── BasePage.ts\n│   ├── LoginPage.ts\n│   └── CartPage.ts\n├── fixtures/index.ts         # test.extend: POMs, users, API client\n├── utils/                    # helpers: apiClient.ts, random.ts, dates.ts\n├── test-data/                # users.json, products.csv, prices.xlsx\n├── config/                   # .env.qa, .env.staging (NOT committed) + .env.example\n├── playwright/.auth/         # saved login state (gitignored)\n├── playwright-report/        # html report   ┐\n├── test-results/             # traces/videos  ├ generated, gitignored\n├── allure-results/           # allure raw     ┘\n├── .github/workflows/playwright.yml\n├── Jenkinsfile\n├── playwright.config.ts\n├── tsconfig.json\n└── package.json",
+                  "lang": "text"
+                },
+                {
+                  "list": [
+                    "**Config** decides env (baseURL from .env) and browsers.",
+                    "**Data** files are loaded by a fixture.",
+                    "**Fixtures** build POMs and hand them to tests.",
+                    "**Tests** only describe steps and expectations."
+                  ]
+                },
+                {
+                  "code": "// pages/BasePage.ts — shared helpers every page gets\nimport { type Page, type Locator } from '@playwright/test';\n\nexport class BasePage {\n  constructor(protected readonly page: Page) {}\n  async open(path: string) { await this.page.goto(path); }   // uses baseURL from config\n  toast(): Locator { return this.page.getByRole('status'); }\n}",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// pages/CartPage.ts — locators + actions for ONE screen. No assertions on business rules here.\nimport { type Page, type Locator, expect } from '@playwright/test';\nimport { BasePage } from './BasePage';\n\nexport class CartPage extends BasePage {\n  readonly items: Locator;\n  readonly total: Locator;\n  readonly checkoutBtn: Locator;\n\n  constructor(page: Page) {\n    super(page);\n    this.items = page.getByTestId('cart-item');\n    this.total = page.getByTestId('cart-total');\n    this.checkoutBtn = page.getByRole('button', { name: 'Checkout' });\n  }\n\n  async goto() { await this.open('/cart'); }\n\n  async remove(name: string) {\n    await this.items.filter({ hasText: name }).getByRole('button', { name: 'Remove' }).click();\n  }\n\n  async checkout() {\n    await this.checkoutBtn.click();\n    await expect(this.page).toHaveURL(/checkout/);   // \"did the page change\" is fine inside POM\n  }\n}",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// fixtures/index.ts — the glue: config gives baseURL/env, data comes from files, POMs are injected\nimport { test as base } from '@playwright/test';\nimport { CartPage } from './pages/CartPage';\nimport users from './data/users.json';\n\ntype Fixtures = { cartPage: CartPage; user: (typeof users)[number] };\n\nexport const test = base.extend<Fixtures>({\n  cartPage: async ({ page }, use) => { await use(new CartPage(page)); },\n  user: async ({}, use) => { await use(users[0]); },\n});\nexport { expect } from '@playwright/test';\n\n// tests/cart.spec.ts — the test reads like a story\ntest('remove an item', async ({ cartPage }) => {\n  await cartPage.goto();\n  await cartPage.remove('Mug');\n  await test.expect(cartPage.items).toHaveCount(1);\n});",
+                  "lang": "ts"
+                }
               ]
-            },
-            {
-              "code": "// pages/BasePage.ts — shared helpers every page gets\nimport { type Page, type Locator } from '@playwright/test';\n\nexport class BasePage {\n  constructor(protected readonly page: Page) {}\n  async open(path: string) { await this.page.goto(path); }   // uses baseURL from config\n  toast(): Locator { return this.page.getByRole('status'); }\n}",
-              "lang": "ts"
-            },
-            {
-              "code": "// pages/CartPage.ts — locators + actions for ONE screen. No assertions on business rules here.\nimport { type Page, type Locator, expect } from '@playwright/test';\nimport { BasePage } from './BasePage';\n\nexport class CartPage extends BasePage {\n  readonly items: Locator;\n  readonly total: Locator;\n  readonly checkoutBtn: Locator;\n\n  constructor(page: Page) {\n    super(page);\n    this.items = page.getByTestId('cart-item');\n    this.total = page.getByTestId('cart-total');\n    this.checkoutBtn = page.getByRole('button', { name: 'Checkout' });\n  }\n\n  async goto() { await this.open('/cart'); }\n\n  async remove(name: string) {\n    await this.items.filter({ hasText: name }).getByRole('button', { name: 'Remove' }).click();\n  }\n\n  async checkout() {\n    await this.checkoutBtn.click();\n    await expect(this.page).toHaveURL(/checkout/);   // \"did the page change\" is fine inside POM\n  }\n}",
-              "lang": "ts"
-            },
-            {
-              "code": "// fixtures/index.ts — the glue: config gives baseURL/env, data comes from files, POMs are injected\nimport { test as base } from '@playwright/test';\nimport { CartPage } from './pages/CartPage';\nimport users from './data/users.json';\n\ntype Fixtures = { cartPage: CartPage; user: (typeof users)[number] };\n\nexport const test = base.extend<Fixtures>({\n  cartPage: async ({ page }, use) => { await use(new CartPage(page)); },\n  user: async ({}, use) => { await use(users[0]); },\n});\nexport { expect } from '@playwright/test';\n\n// tests/cart.spec.ts — the test reads like a story\ntest('remove an item', async ({ cartPage }) => {\n  await cartPage.goto();\n  await cartPage.remove('Mug');\n  await test.expect(cartPage.items).toHaveCount(1);\n});",
-              "lang": "ts"
             }
           ]
         },
@@ -1992,19 +2478,44 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "20. CLI & test agents",
           "blocks": [
             {
-              "code": "# --- run ---\nnpx playwright test                          # everything, headless, in parallel\nnpx playwright test tests/login.spec.ts      # one file\nnpx playwright test -g \"checkout\"            # only titles matching \"checkout\"\nnpx playwright test --project=chromium       # one project\nnpx playwright test --headed                 # watch the browser\nnpx playwright test --ui                     # UI mode: time-travel, watch, pick tests\nnpx playwright test --debug                  # Playwright Inspector, step through\nnpx playwright test --workers=4 --retries=2  # parallelism + retries\nnpx playwright test --repeat-each=5          # hunt flaky tests\nnpx playwright test --last-failed            # re-run only what failed\nnpx playwright test --only-changed=main      # tests touched since main (git)\nnpx playwright test --trace=on               # force a trace for every test\nnpx playwright test --shard=1/4              # this machine runs part 1 of 4\n\n# --- tools ---\nnpx playwright codegen https://example.com   # record clicks -> test code\nnpx playwright show-report                   # open the last HTML report\nnpx playwright show-trace trace.zip          # open a trace (or drop it on trace.playwright.dev)\nnpx playwright install --with-deps chromium  # download browsers + OS deps\nnpx playwright --version                     # e.g. Version 1.64.1",
+              "note": "idea",
+              "text": "**codegen** is a tape recorder: you click around, it writes the test. **Test agents** are three AI helpers: a **planner** (writes the plan), a **generator** (writes tests), and a **healer** (fixes broken tests)."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Agents: planner / generator / healer:** Building a house: the **architect** draws the plan, the **mistri** builds it, the **plumber-electrician** fixes leaks later."
+            },
+            {
+              "note": "remember",
+              "text": "codegen records; show-trace replays; init-agents adds planner, generator, healer."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# click around; test code is written for you\nnpx playwright codegen https://shop.com\n# replay a failed test step by step\nnpx playwright show-trace trace.zip\n# add planner/generator/healer for Claude Code\nnpx playwright init-agents --loop=claude",
               "lang": "bash"
             },
             {
-              "text": "**Test agents** (Playwright 1.56+): 🎭 **planner** explores the app and writes a Markdown plan in `specs/`, 🎭 **generator** turns it into tests, 🎭 **healer** runs and fixes failing tests. All start from `seed.spec.ts`."
-            },
-            {
-              "code": "# Add the 3 test agents (planner, generator, healer) to your repo.\n# Re-run after every Playwright upgrade to pick up new tools.\nnpx playwright init-agents --loop=vscode     # GitHub Copilot in VS Code (needs VS Code 1.105+)\nnpx playwright init-agents --loop=claude     # Claude Code\nnpx playwright init-agents --loop=codex      # also: --loop=opencode",
-              "lang": "bash"
-            },
-            {
-              "code": "--loop=claude creates:                         --loop=vscode creates:\n  .claude/agents/playwright-test-planner.md      .github/agents/playwright-test-planner.agent.md\n  .claude/agents/playwright-test-generator.md    .github/agents/playwright-test-generator.agent.md\n  .claude/agents/playwright-test-healer.md       .github/agents/playwright-test-healer.agent.md\n  .mcp.json        (playwright-test server)      .vscode/mcp.json  (playwright-test server)\n  seed.spec.ts     (starting point)              .github/workflows/copilot-setup-steps.yml\n  specs/README.md  (plans go here)               seed.spec.ts, specs/README.md",
-              "lang": "text"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "# --- run ---\nnpx playwright test                          # everything, headless, in parallel\nnpx playwright test tests/login.spec.ts      # one file\nnpx playwright test -g \"checkout\"            # only titles matching \"checkout\"\nnpx playwright test --project=chromium       # one project\nnpx playwright test --headed                 # watch the browser\nnpx playwright test --ui                     # UI mode: time-travel, watch, pick tests\nnpx playwright test --debug                  # Playwright Inspector, step through\nnpx playwright test --workers=4 --retries=2  # parallelism + retries\nnpx playwright test --repeat-each=5          # hunt flaky tests\nnpx playwright test --last-failed            # re-run only what failed\nnpx playwright test --only-changed=main      # tests touched since main (git)\nnpx playwright test --trace=on               # force a trace for every test\nnpx playwright test --shard=1/4              # this machine runs part 1 of 4\n\n# --- tools ---\nnpx playwright codegen https://example.com   # record clicks -> test code\nnpx playwright show-report                   # open the last HTML report\nnpx playwright show-trace trace.zip          # open a trace (or drop it on trace.playwright.dev)\nnpx playwright install --with-deps chromium  # download browsers + OS deps\nnpx playwright --version                     # e.g. Version 1.64.1",
+                  "lang": "bash"
+                },
+                {
+                  "text": "**Test agents** (Playwright 1.56+): 🎭 **planner** explores the app and writes a Markdown plan in `specs/`, 🎭 **generator** turns it into tests, 🎭 **healer** runs and fixes failing tests. All start from `seed.spec.ts`."
+                },
+                {
+                  "code": "# Add the 3 test agents (planner, generator, healer) to your repo.\n# Re-run after every Playwright upgrade to pick up new tools.\nnpx playwright init-agents --loop=vscode     # GitHub Copilot in VS Code (needs VS Code 1.105+)\nnpx playwright init-agents --loop=claude     # Claude Code\nnpx playwright init-agents --loop=codex      # also: --loop=opencode",
+                  "lang": "bash"
+                },
+                {
+                  "code": "--loop=claude creates:                         --loop=vscode creates:\n  .claude/agents/playwright-test-planner.md      .github/agents/playwright-test-planner.agent.md\n  .claude/agents/playwright-test-generator.md    .github/agents/playwright-test-generator.agent.md\n  .claude/agents/playwright-test-healer.md       .github/agents/playwright-test-healer.agent.md\n  .mcp.json        (playwright-test server)      .vscode/mcp.json  (playwright-test server)\n  seed.spec.ts     (starting point)              .github/workflows/copilot-setup-steps.yml\n  specs/README.md  (plans go here)               seed.spec.ts, specs/README.md",
+                  "lang": "text"
+                }
+              ]
             }
           ]
         },
@@ -2014,19 +2525,39 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "21. Claude Code & Copilot agent mode",
           "blocks": [
             {
-              "code": "// .mcp.json (created by init-agents --loop=claude) — the test agents' MCP server\n{\n  \"mcpServers\": {\n    \"playwright-test\": {\n      \"command\": \"npx\",\n      \"args\": [\"playwright\", \"run-test-mcp-server\"]\n    }\n  }\n}",
-              "lang": "json"
+              "note": "idea",
+              "text": "The agents live in files in your repo. You **ask** Claude Code or Copilot to \"use the planner agent\", and it uses Playwright's tools to do the work. You check the result."
             },
             {
-              "code": "# In Claude Code, inside your project:\n> Use the playwright-test-planner agent: plan \"guest checkout\" using tests/seed.spec.ts\n> Use the playwright-test-generator agent on specs/guest-checkout.md\n> Use the playwright-test-healer agent to fix failing tests in tests/checkout/",
+              "note": "remember",
+              "text": "init-agents writes the agent files + an MCP config; you pick the agent and give a goal."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# 1. make a plan\n> Use the playwright-test-planner agent: plan \"guest checkout\"\n# 2. write tests from it\n> Use the playwright-test-generator agent on specs/guest-checkout.md\n# 3. repair failures\n> Use the playwright-test-healer agent to fix failing tests",
               "lang": "text"
             },
             {
-              "text": "**Copilot (VS Code agent mode):** `init-agents --loop=vscode` writes `.vscode/mcp.json` with the same `playwright-test` server (under `\"servers\"`) and the agents in `.github/agents/`. Pick the agent in the chat dropdown."
-            },
-            {
-              "code": "# Copilot Chat -> Agent mode (tools: playwright), example prompt:\nOpen https://demo.playwright.dev/todomvc, add two todos, complete one,\nthen write a Playwright TypeScript test for it in tests/todo.spec.ts\nusing getByRole/getByPlaceholder locators and web-first assertions. Run it.",
-              "lang": "text"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// .mcp.json (created by init-agents --loop=claude) — the test agents' MCP server\n{\n  \"mcpServers\": {\n    \"playwright-test\": {\n      \"command\": \"npx\",\n      \"args\": [\"playwright\", \"run-test-mcp-server\"]\n    }\n  }\n}",
+                  "lang": "json"
+                },
+                {
+                  "code": "# In Claude Code, inside your project:\n> Use the playwright-test-planner agent: plan \"guest checkout\" using tests/seed.spec.ts\n> Use the playwright-test-generator agent on specs/guest-checkout.md\n> Use the playwright-test-healer agent to fix failing tests in tests/checkout/",
+                  "lang": "text"
+                },
+                {
+                  "text": "**Copilot (VS Code agent mode):** `init-agents --loop=vscode` writes `.vscode/mcp.json` with the same `playwright-test` server (under `\"servers\"`) and the agents in `.github/agents/`. Pick the agent in the chat dropdown."
+                },
+                {
+                  "code": "# Copilot Chat -> Agent mode (tools: playwright), example prompt:\nOpen https://demo.playwright.dev/todomvc, add two todos, complete one,\nthen write a Playwright TypeScript test for it in tests/todo.spec.ts\nusing getByRole/getByPlaceholder locators and web-first assertions. Run it.",
+                  "lang": "text"
+                }
+              ]
             }
           ]
         },
@@ -2036,19 +2567,44 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "22. Playwright MCP setup",
           "blocks": [
             {
-              "text": "**Playwright MCP** gives an AI a real browser (click, type, snapshot) using the accessibility tree, not screenshots. Different from the test agents server above."
+              "note": "idea",
+              "text": "**MCP** is a **universal plug** that lets an AI use a tool. **Playwright MCP** plugs the AI into a real browser so it can click and read pages."
             },
             {
-              "code": "// .vscode/mcp.json — Playwright MCP (browser tools) for Copilot agent mode\n{\n  \"servers\": {\n    \"playwright\": {\n      \"type\": \"stdio\",\n      \"command\": \"npx\",\n      \"args\": [\"@playwright/mcp@latest\"]        // add \"--headless\" or \"--browser=firefox\" if you like\n    }\n  }\n}",
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**MCP:** A **universal travel adapter**: one plug lets the AI use any tool (browser, GitHub, Jira)."
+            },
+            {
+              "note": "remember",
+              "text": "Playwright MCP = npx @playwright/mcp@latest, added to your AI app's MCP config."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "{\n  // list of plugs for the AI\n  \"mcpServers\": {\n    // start the browser plug\n    \"playwright\": { \"command\": \"npx\", \"args\": [\"@playwright/mcp@latest\"] }\n  }\n}",
               "lang": "json"
             },
             {
-              "code": "# VS Code (one line, same as the mcp.json above)\ncode --add-mcp '{\"name\":\"playwright\",\"command\":\"npx\",\"args\":[\"@playwright/mcp@latest\"]}'\n\n# Claude Code\nclaude mcp add playwright npx @playwright/mcp@latest\nclaude mcp list                              # check it is connected",
-              "lang": "bash"
-            },
-            {
-              "code": "// ~/.copilot/mcp-config.json — GitHub Copilot CLI (or run /mcp add inside it)\n{\n  \"mcpServers\": {\n    \"playwright\": {\n      \"type\": \"local\",\n      \"command\": \"npx\",\n      \"tools\": [\"*\"],\n      \"args\": [\"@playwright/mcp@latest\"]\n    }\n  }\n}",
-              "lang": "json"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "**Playwright MCP** gives an AI a real browser (click, type, snapshot) using the accessibility tree, not screenshots. Different from the test agents server above."
+                },
+                {
+                  "code": "// .vscode/mcp.json — Playwright MCP (browser tools) for Copilot agent mode\n{\n  \"servers\": {\n    \"playwright\": {\n      \"type\": \"stdio\",\n      \"command\": \"npx\",\n      \"args\": [\"@playwright/mcp@latest\"]        // add \"--headless\" or \"--browser=firefox\" if you like\n    }\n  }\n}",
+                  "lang": "json"
+                },
+                {
+                  "code": "# VS Code (one line, same as the mcp.json above)\ncode --add-mcp '{\"name\":\"playwright\",\"command\":\"npx\",\"args\":[\"@playwright/mcp@latest\"]}'\n\n# Claude Code\nclaude mcp add playwright npx @playwright/mcp@latest\nclaude mcp list                              # check it is connected",
+                  "lang": "bash"
+                },
+                {
+                  "code": "// ~/.copilot/mcp-config.json — GitHub Copilot CLI (or run /mcp add inside it)\n{\n  \"mcpServers\": {\n    \"playwright\": {\n      \"type\": \"local\",\n      \"command\": \"npx\",\n      \"tools\": [\"*\"],\n      \"args\": [\"@playwright/mcp@latest\"]\n    }\n  }\n}",
+                  "lang": "json"
+                }
+              ]
             }
           ]
         },
@@ -2058,26 +2614,46 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "23. GitHub & Bitbucket MCP",
           "blocks": [
             {
-              "text": "🔐 **Placeholders only.** Use a fine-grained PAT with the smallest scopes, keep it in an env var or VS Code `inputs`, never commit it."
+              "note": "idea",
+              "text": "The **GitHub MCP** plug lets the AI read code and open pull requests. It needs a **token** (a password for robots). Never write a real token in a file; use a placeholder or an environment variable."
             },
             {
-              "code": "// .vscode/mcp.json — official GitHub MCP server, REMOTE (hosted by GitHub)\n{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${input:github_mcp_pat}\" }   // VS Code asks once, stores it safely\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_mcp_pat\", \"description\": \"GitHub Personal Access Token\", \"password\": true }\n  ]\n}",
-              "lang": "json"
+              "note": "remember",
+              "text": "GitHub MCP: remote https://api.githubcopilot.com/mcp/ or Docker with a PAT; Bitbucket MCP is community-made."
             },
             {
-              "code": "// .vscode/mcp.json — official GitHub MCP server, LOCAL in Docker\n{\n  \"servers\": {\n    \"github\": {\n      \"command\": \"docker\",\n      \"args\": [\"run\", \"-i\", \"--rm\", \"-e\", \"GITHUB_PERSONAL_ACCESS_TOKEN\", \"ghcr.io/github/github-mcp-server\"],\n      \"env\": { \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"${input:github_token}\" }\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_token\", \"description\": \"GitHub PAT\", \"password\": true }\n  ]\n}",
-              "lang": "json"
+              "text": "**Tiny example** (read the comment on each line):"
             },
             {
-              "code": "# Claude Code: keep the token in an env var, never paste it into files\nexport GITHUB_PAT=<your-fine-grained-token>        # placeholder\n\n# remote (hosted) server\nclaude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"\n\n# or local Docker\nclaude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server",
+              "code": "# placeholder: keep the real token outside files\nexport GITHUB_PAT=<your-token>\n# plug GitHub into Claude Code\nclaude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"",
               "lang": "bash"
             },
             {
-              "text": "**Bitbucket: unofficial community server** (`@aashari/mcp-server-atlassian-bitbucket`). Uses an Atlassian scoped API token; old app-password variables are being retired (June 2026)."
-            },
-            {
-              "code": "// Bitbucket — COMMUNITY server (unofficial): @aashari/mcp-server-atlassian-bitbucket\n// e.g. in Claude Desktop config or .mcp.json (\"servers\" + \"type\":\"stdio\" in VS Code)\n{\n  \"mcpServers\": {\n    \"bitbucket\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@aashari/mcp-server-atlassian-bitbucket\"],\n      \"env\": {\n        \"ATLASSIAN_USER_EMAIL\": \"<your.email@company.com>\",\n        \"ATLASSIAN_API_TOKEN\": \"<scoped-api-token>\"      // placeholder, keep real tokens out of git\n      }\n    }\n  }\n}",
-              "lang": "json"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "text": "🔐 **Placeholders only.** Use a fine-grained PAT with the smallest scopes, keep it in an env var or VS Code `inputs`, never commit it."
+                },
+                {
+                  "code": "// .vscode/mcp.json — official GitHub MCP server, REMOTE (hosted by GitHub)\n{\n  \"servers\": {\n    \"github\": {\n      \"type\": \"http\",\n      \"url\": \"https://api.githubcopilot.com/mcp/\",\n      \"headers\": { \"Authorization\": \"Bearer ${input:github_mcp_pat}\" }   // VS Code asks once, stores it safely\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_mcp_pat\", \"description\": \"GitHub Personal Access Token\", \"password\": true }\n  ]\n}",
+                  "lang": "json"
+                },
+                {
+                  "code": "// .vscode/mcp.json — official GitHub MCP server, LOCAL in Docker\n{\n  \"servers\": {\n    \"github\": {\n      \"command\": \"docker\",\n      \"args\": [\"run\", \"-i\", \"--rm\", \"-e\", \"GITHUB_PERSONAL_ACCESS_TOKEN\", \"ghcr.io/github/github-mcp-server\"],\n      \"env\": { \"GITHUB_PERSONAL_ACCESS_TOKEN\": \"${input:github_token}\" }\n    }\n  },\n  \"inputs\": [\n    { \"type\": \"promptString\", \"id\": \"github_token\", \"description\": \"GitHub PAT\", \"password\": true }\n  ]\n}",
+                  "lang": "json"
+                },
+                {
+                  "code": "# Claude Code: keep the token in an env var, never paste it into files\nexport GITHUB_PAT=<your-fine-grained-token>        # placeholder\n\n# remote (hosted) server\nclaude mcp add --transport http github https://api.githubcopilot.com/mcp -H \"Authorization: Bearer $GITHUB_PAT\"\n\n# or local Docker\nclaude mcp add github -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_PAT -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server",
+                  "lang": "bash"
+                },
+                {
+                  "text": "**Bitbucket: unofficial community server** (`@aashari/mcp-server-atlassian-bitbucket`). Uses an Atlassian scoped API token; old app-password variables are being retired (June 2026)."
+                },
+                {
+                  "code": "// Bitbucket — COMMUNITY server (unofficial): @aashari/mcp-server-atlassian-bitbucket\n// e.g. in Claude Desktop config or .mcp.json (\"servers\" + \"type\":\"stdio\" in VS Code)\n{\n  \"mcpServers\": {\n    \"bitbucket\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@aashari/mcp-server-atlassian-bitbucket\"],\n      \"env\": {\n        \"ATLASSIAN_USER_EMAIL\": \"<your.email@company.com>\",\n        \"ATLASSIAN_API_TOKEN\": \"<scoped-api-token>\"      // placeholder, keep real tokens out of git\n      }\n    }\n  }\n}",
+                  "lang": "json"
+                }
+              ]
             }
           ]
         },
@@ -2087,15 +2663,35 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
           "title": "24. Agent workflow: Jira → PR",
           "blocks": [
             {
-              "img": "assets/img/playwright/agent-workflow.svg?v=202610151418",
+              "note": "idea",
+              "text": "Like building a house: read the **request** (Jira story), draw the **plan**, **build** it (tests), **fix** cracks (heal), then ask for an **inspection** (pull request)."
+            },
+            {
+              "note": "remember",
+              "text": "Story → plan → tests → heal → PR, with a human review at the end."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# what should work?\n1. Read Jira story QA-123\n# plan in plain English\n2. Planner  -> specs/qa-123.md\n# real test code\n3. Generator -> tests/qa-123.spec.ts\n# a human reviews\n4. Healer fixes failures, then open a PR",
+              "lang": "text"
+            },
+            {
+              "img": "assets/img/playwright/agent-workflow.svg?v=202610151449",
               "width": 400,
               "height": 686,
               "alt": "Diagram: Jira story, then planner, generator, healer agents, then a pull request via GitHub MCP.",
               "caption": "You review each step before the PR."
             },
             {
-              "code": "# One prompt per step (Claude Code or Copilot agent mode, with Jira + Playwright + GitHub MCP)\n1. \"Read Jira story QA-123 and list its acceptance criteria.\"\n2. \"Use playwright-test-planner to plan QA-123 with tests/seed.spec.ts. Save specs/qa-123.md.\"\n3. \"Use playwright-test-generator on specs/qa-123.md.\"\n4. \"Run the new tests. Use playwright-test-healer on any failure.\"\n5. \"Create branch test/qa-123, commit the spec and tests, open a PR that links QA-123.\"",
-              "lang": "text"
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "# One prompt per step (Claude Code or Copilot agent mode, with Jira + Playwright + GitHub MCP)\n1. \"Read Jira story QA-123 and list its acceptance criteria.\"\n2. \"Use playwright-test-planner to plan QA-123 with tests/seed.spec.ts. Save specs/qa-123.md.\"\n3. \"Use playwright-test-generator on specs/qa-123.md.\"\n4. \"Run the new tests. Use playwright-test-healer on any failure.\"\n5. \"Create branch test/qa-123, commit the spec and tests, open a PR that links QA-123.\"",
+                  "lang": "text"
+                }
+              ]
             }
           ]
         },

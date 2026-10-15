@@ -287,6 +287,7 @@
           '<button type="button" class="code-copy" aria-label="Copy code">Copy</button></div>' +
           '<pre tabindex="0"><code>' + esc(code) + "</code></pre></div>";
       }
+      if (b.note) return '<div class="lesson-note note-' + esc(b.note) + '"><div class="note-title">' + md(b.title || (b.note === "remember" ? "🧠 Remember this" : "💡 Simple idea")) + '</div><p>' + md(b.text) + "</p></div>";
       if (b.details) return '<details class="more"><summary>' + md(b.details) + "</summary><div class=\"more-body\">" + lessonBlocks(b.blocks) + "</div></details>";
       if (b.img) {
         var dims = (b.width ? ' width="' + esc(b.width) + '"' : "") + (b.height ? ' height="' + esc(b.height) + '"' : "");

@@ -439,3 +439,13 @@ details.more[open] > summary::before { transform: rotate(90deg); }
 .flashcard summary { cursor: pointer; font-weight: 600; }
 .flashcard[open] summary { margin-bottom: 6px; color: var(--gold); }
 .flashcard p { margin: 0; }
+
+/* ---------- lesson notes (simple idea / remember) ---------- */
+.lesson-note { border-radius: 14px; padding: 12px 14px; margin: 10px 0 14px; border-left: 4px solid var(--teal, #2cc4b5); background: rgba(44, 196, 181, 0.10); }
+.lesson-note p { margin: 4px 0 0; line-height: 1.6; }
+.lesson-note .note-title { font-weight: 700; color: #2cc4b5; }
+.lesson-note.note-remember { border-left-color: #e8bd68; background: rgba(232, 189, 104, 0.12); }
+.lesson-note.note-remember .note-title { color: #f6d999; }
+.lesson-note.note-quick ul { margin: 6px 0 0; padding-left: 18px; }
+.lesson-note.note-analogy { border-left-color: #f08a9b; background: rgba(240, 138, 155, 0.10); }
+.lesson-note.note-analogy .note-title { color: #f08a9b; }
