@@ -1125,14 +1125,25 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "list": [
                 "**Architecture: why Playwright is fast:** One open connection + auto-wait + retrying assertions = fast and less flaky.",
                 "**Browser → Context → Page:** Browser → Context (isolated session) → Page (tab). New context per test = no leaks.",
+                "**TypeScript basics: async / await:** Every Playwright action returns a Promise; always await it. Locators themselves need no await.",
+                "**Locators: finding elements:** Prefer getByRole, getByLabel, getByText, getByTestId; CSS/XPath last. Locators are lazy, strict and auto-waiting.",
+                "**Actions: click, type, select, drag:** fill() sets the value at once; pressSequentially() types key by key (type() is deprecated). force:true skips checks: last resort.",
+                "**Navigation & waits:** Use goto/reload/goBack, toHaveURL or waitForURL, waitForResponse for API calls; avoid waitForTimeout and networkidle.",
                 "**Popups, dialogs, frames, many tabs:** Start waitForEvent('popup') before the click; register page.on('dialog') before the action.",
+                "**Tabs & windows recap:** context.waitForEvent('page') before the click; context.pages() lists tabs; page.close() closes one.",
+                "**File upload & download:** setInputFiles for upload (filechooser if no input); waitForEvent('download') before the click, then saveAs.",
+                "**iframes, alerts & shadow DOM:** frameLocator for iframes; page.on/once('dialog') before the action (default: dismiss); locators pierce open shadow DOM, XPath does not.",
+                "**Hooks, describe, annotations, steps & timeouts:** beforeAll/afterAll once per worker, beforeEach/afterEach per test; skip/fixme/fail/slow/only; default test timeout 30 s, expect 5 s.",
+                "**Screenshots, video, trace & debugging tools:** Trace viewer is the #1 debug tool (trace: on-first-retry, show-trace); --debug or page.pause() opens the Inspector; --ui for UI mode; codegen records.",
                 "**Custom fixtures:** test.extend creates fixtures: code before use() = setup, after = teardown.",
+                "**Page Object Model (POM) recap:** POM = one class per page with locators + actions; tests keep the business assertions; inject POMs via fixtures.",
                 "**Log in once: storageState + setup project:** A setup project logs in once and saves storageState; other projects load it.",
                 "**localStorage & sessionStorage:** storageState saves cookies + localStorage, NOT sessionStorage.",
                 "**API testing:** The request fixture (APIRequestContext) sends HTTP calls; check with expect(res).toBeOK().",
                 "**Network mocking: page.route & HAR:** page.route + fulfill / abort / continue / fetch; routeFromHAR replays recorded traffic.",
                 "**Assertions cheat sheet:** await expect(locator) retries; expect(value) checks once. Use expect.soft to keep going.",
                 "**Geolocation & emulation:** Set geolocation + permissions on the context; devices['iPhone 15'] for phones.",
+                "**Visual, accessibility, mobile, browsers, headless:** toHaveScreenshot (update with -u); @axe-core/playwright AxeBuilder.analyze(); devices[] for phones; projects for browsers; headless by default, --headed to watch.",
                 "**Data-driven tests:** Loop over an array and create one test per row, with unique titles.",
                 "**Test data from files & .env:** JSON via import, CSV via csv-parse, Excel via xlsx, secrets via .env + process.env.",
                 "**Run commands cheat sheet:** -g filters by title, --grep @tag by tag, --ui to explore, --debug to step through.",
@@ -1161,8 +1172,21 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
                 "[**Architecture**](#arch): Selenium is sending a **post card** for every instruction; Playwright is **one WhatsApp call kept open** with the browser. → *One live connection, so commands are fast and nothing gets lost between steps.*",
                 "[**Auto-wait**](#arch): An **auto-rickshaw driver waits** till the passenger is fully seated before moving. → *Playwright waits until an element is visible, enabled and stable before it acts.*",
                 "[**Browser / Context / Page**](#contexts): A **housing society** (browser) → each **flat** with its own lock (context) → **rooms** in the flat (pages). → *Contexts are isolated: cookies of one flat never reach another.*",
+                "[**async / await**](#ts): Ordering **chai at a tapri**: you place the order (Promise) and **wait** till the cup is in your hand (await) before you drink. → *No await = you \"drink\" before the chai is ready → random failures.*",
+                "[**Locators**](#locators): Giving a **delivery boy an address**: \"Flat 302, Shanti Apartments\" (role + name) works; \"the third door after the blue gate\" (XPath) breaks when the gate is repainted. → *Use stable, user-facing locators.*",
+                "[**Locator vs ElementHandle**](#locators): A locator is the **address** (always finds today's resident); an ElementHandle is a **photo of the person** (wrong after they move out). → *Locators re-find the element every time; handles go stale.*",
+                "[**fill vs pressSequentially**](#actions): **fill** = pasting a full address from WhatsApp; **pressSequentially** = typing it letter by letter on a phone keypad. → *Use fill normally; type key by key only when the app reacts to each key.*",
+                "[**waitForTimeout vs real waits**](#navigation): **Fixed sleep** = waiting 10 minutes on the platform \"just in case\"; **real wait** = waiting until the **train announcement** comes. → *Wait for an event (URL, response, element), not for time.*",
+                "[**Tabs**](#tabs): Several **TV channels on one remote**: you don't move the TV, you just pick which channel (Page variable) to watch. → *A Page object is a tab; use whichever variable you need.*",
+                "[**Download**](#upload): Telling the **watchman** \"a Flipkart parcel is coming\" before you order, so he catches it at the gate. → *Start waitForEvent('download') before the click.*",
+                "[**iframe**](#frames): A **shop inside a mall**: you must first walk into that shop (frameLocator) before picking items off its shelves. → *Enter the frame, then locate inside it.*",
+                "[**Dialogs**](#frames): A **doorbell**: decide in advance who answers it (listener), otherwise nobody opens (auto-dismiss). → *Register the dialog handler before triggering it.*",
+                "[**Hooks**](#hooks): **Net practice before every match** (beforeEach) and **ground cleaning after** (afterEach); the season opening ceremony is beforeAll. → *Setup/teardown around tests.*",
+                "[**Retries & flaky tests**](#hooks): A **cricket review**: if the first decision looks wrong, check again (retry) — but if every review is needed, fix the umpire (the test). → *Retries hide flakiness; find the root cause.*",
+                "[**Trace viewer**](#debugging): The **DRS replay with Hawk-Eye**: go ball by ball, see exactly where it pitched (DOM, network, console at each step). → *A trace lets you replay a failed test step by step.*",
                 "[**Fixture**](#fixtures): A **restaurant waiter** lays the plate before you eat and clears it after. → *Setup before `use()`, teardown after; the test just asks for what it needs.*",
                 "[**Test vs worker scope**](#fixtures): A **fresh plate per customer** (test scope) vs **one water jug per table** for the whole meal (worker scope). → *Test scope = new each test; worker scope = created once per worker process.*",
+                "[**Page Object Model**](#pom): A **TV remote**: you press \"Volume +\" without knowing the circuits inside; if the TV changes, only the remote is rewired. → *Tests call actions; locator details hide inside the page class.*",
                 "[**storageState**](#auth): A **hotel key card**: check in once at reception, then just tap the card at your door. → *Log in once in a setup project, save the state file, reuse it in every test.*",
                 "[**localStorage vs sessionStorage**](#storage): **localStorage** = your **Aadhaar card** in the wallet (stays). **sessionStorage** = a **platform ticket** (valid only for this visit, this tab). → *storageState saves cookies + localStorage, not sessionStorage.*",
                 "[**page.route mocking**](#mock): A **society security guard** checks every delivery: lets it in, sends it back, or swaps the parcel. → *Intercept requests: fulfill (fake reply), abort (block), continue/fetch (change).*",
@@ -1170,11 +1194,13 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
                 "[**Web-first vs generic**](#assertions): A **third umpire** who keeps replaying till the decision is clear (web-first) vs a **scoreboard** you read once (generic). → *`await expect(locator)` retries until timeout; `expect(value)` checks once.*",
                 "[**Soft assertion**](#assertions): A **teacher marks all mistakes** in the paper instead of stopping at the first one. → *`expect.soft` records the failure and the test keeps going.*",
                 "[**expect.poll / toPass**](#assertions): Calling the **railway enquiry** again and again till it says \"train arrived\" (poll); retrying a **whole recipe** till the dish comes out right (toPass). → *poll retries one value; toPass retries a whole block of code.*",
-                "[**Workers vs shards**](#parallel): **Workers** = several **billing counters in one D-Mart**; **shards** = splitting customers across **different D-Mart branches**. → *Workers = processes on one machine; shards = split tests across machines.*",
+                "[**Visual testing**](#quality): **Spot the difference** puzzle in the newspaper: compare two pictures pixel by pixel. → *toHaveScreenshot compares with a golden image.*",
+                "[**Headless vs headed**](#quality): A **radio commentary** (headless: it happens, you don't see it) vs **watching on TV** (headed). → *Headless for speed/CI; headed for debugging.*",
                 "[**Reporters**](#reporters): The **same match** shown as live score SMS (line), ball-by-ball dots (dot), or a full newspaper report (html). → *Reporters only change how results are shown, not the tests.*",
+                "[**Workers vs shards**](#parallel): **Workers** = several **billing counters in one D-Mart**; **shards** = splitting customers across **different D-Mart branches**. → *Workers = processes on one machine; shards = split tests across machines.*",
                 "[**Allure**](#allure): A **wedding photo album**: Playwright clicks the raw photos, Allure makes the album with captions. → *allure-results (raw) → allure generate → a rich HTML report.*",
-                "[**MCP**](#mcp): A **universal travel adapter**: one plug lets the AI use any tool (browser, GitHub, Jira). → *MCP is a standard way for AI apps to call tools.*",
-                "[**Agents: planner / generator / healer**](#cli): Building a house: the **architect** draws the plan, the **mistri** builds it, the **plumber-electrician** fixes leaks later. → *Planner writes the plan, generator writes tests, healer fixes failing tests.*"
+                "[**Agents: planner / generator / healer**](#cli): Building a house: the **architect** draws the plan, the **mistri** builds it, the **plumber-electrician** fixes leaks later. → *Planner writes the plan, generator writes tests, healer fixes failing tests.*",
+                "[**MCP**](#mcp): A **universal travel adapter**: one plug lets the AI use any tool (browser, GitHub, Jira). → *MCP is a standard way for AI apps to call tools.*"
               ]
             }
           ]
@@ -1200,96 +1226,140 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "label": "2. Browser → Context → Page"
             },
             {
+              "anchor": "ts",
+              "label": "3. TypeScript basics: async / await"
+            },
+            {
+              "anchor": "locators",
+              "label": "4. Locators: finding elements"
+            },
+            {
+              "anchor": "actions",
+              "label": "5. Actions: click, type, select, drag"
+            },
+            {
+              "anchor": "navigation",
+              "label": "6. Navigation & waits"
+            },
+            {
               "anchor": "pages",
-              "label": "3. Popups, dialogs, frames, many tabs"
+              "label": "7. Popups, dialogs, frames, many tabs"
+            },
+            {
+              "anchor": "tabs",
+              "label": "8. Tabs & windows recap"
+            },
+            {
+              "anchor": "upload",
+              "label": "9. File upload & download"
+            },
+            {
+              "anchor": "frames",
+              "label": "10. iframes, alerts & shadow DOM"
+            },
+            {
+              "anchor": "hooks",
+              "label": "11. Hooks, describe, annotations, steps & timeouts"
+            },
+            {
+              "anchor": "debugging",
+              "label": "12. Screenshots, video, trace & debugging tools"
             },
             {
               "anchor": "fixtures",
-              "label": "4. Custom fixtures"
+              "label": "13. Custom fixtures"
+            },
+            {
+              "anchor": "pom",
+              "label": "14. Page Object Model (POM) recap"
             },
             {
               "anchor": "auth",
-              "label": "5. Log in once: storageState + setup project"
+              "label": "15. Log in once: storageState + setup project"
             },
             {
               "anchor": "storage",
-              "label": "6. localStorage & sessionStorage"
+              "label": "16. localStorage & sessionStorage"
             },
             {
               "anchor": "api",
-              "label": "7. API testing"
+              "label": "17. API testing"
             },
             {
               "anchor": "mock",
-              "label": "8. Network mocking: page.route & HAR"
+              "label": "18. Network mocking: page.route & HAR"
             },
             {
               "anchor": "assertions",
-              "label": "9. Assertions cheat sheet"
+              "label": "19. Assertions cheat sheet"
             },
             {
               "anchor": "emulation",
-              "label": "10. Geolocation & emulation"
+              "label": "20. Geolocation & emulation"
+            },
+            {
+              "anchor": "quality",
+              "label": "21. Visual, accessibility, mobile, browsers, headless"
             },
             {
               "anchor": "datadriven",
-              "label": "11. Data-driven tests"
+              "label": "22. Data-driven tests"
             },
             {
               "anchor": "files",
-              "label": "12. Test data from files & .env"
+              "label": "23. Test data from files & .env"
             },
             {
               "anchor": "run",
-              "label": "13. Run commands cheat sheet"
+              "label": "24. Run commands cheat sheet"
             },
             {
               "anchor": "reporters",
-              "label": "14. Reporters"
+              "label": "25. Reporters"
             },
             {
               "anchor": "config",
-              "label": "15. playwright.config.ts walkthrough"
+              "label": "26. playwright.config.ts walkthrough"
             },
             {
               "anchor": "parallel",
-              "label": "16. Parallelism & sharding"
+              "label": "27. Parallelism & sharding"
             },
             {
               "anchor": "ci",
-              "label": "17. CI/CD: Jenkins + artifacts"
+              "label": "28. CI/CD: Jenkins + artifacts"
             },
             {
               "anchor": "allure",
-              "label": "18. Allure report"
+              "label": "29. Allure report"
             },
             {
               "anchor": "framework",
-              "label": "19. Framework structure"
+              "label": "30. Framework structure"
             },
             {
               "anchor": "cli",
-              "label": "20. CLI & test agents"
+              "label": "31. CLI & test agents"
             },
             {
               "anchor": "ai",
-              "label": "21. Claude Code & Copilot agent mode"
+              "label": "32. Claude Code & Copilot agent mode"
             },
             {
               "anchor": "mcp",
-              "label": "22. Playwright MCP setup"
+              "label": "33. Playwright MCP setup"
             },
             {
               "anchor": "repo-mcp",
-              "label": "23. GitHub & Bitbucket MCP"
+              "label": "34. GitHub & Bitbucket MCP"
             },
             {
               "anchor": "workflow",
-              "label": "24. Agent workflow: Jira → PR"
+              "label": "35. Agent workflow: Jira → PR"
             },
             {
               "anchor": "qa",
-              "label": "25. Interview Q&A (tap to reveal)"
+              "label": "36. Interview Q&A (tap to reveal)"
             }
           ]
         },
@@ -1319,7 +1389,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "ts"
             },
             {
-              "img": "assets/img/playwright/architecture.svg?v=202610151449",
+              "img": "assets/img/playwright/architecture.svg?v=202610151544",
               "width": 400,
               "height": 586,
               "alt": "Diagram: test code calls the Playwright server (Node driver), which speaks CDP to Chromium or patched protocols to Firefox and WebKit, which drives the browser.",
@@ -1407,7 +1477,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "ts"
             },
             {
-              "img": "assets/img/playwright/hierarchy.svg?v=202610151449",
+              "img": "assets/img/playwright/hierarchy.svg?v=202610151544",
               "width": 400,
               "height": 414,
               "alt": "Diagram: one browser contains Context A and Context B; each context has its own cookies and two pages.",
@@ -1455,8 +1525,328 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "ts",
+          "title": "3. TypeScript basics: async / await",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "The browser is slow compared to your code. `await` means **\"wait here until this finishes\"**. Forget it, and your code runs ahead before the page is ready."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**async / await:** Ordering **chai at a tapri**: you place the order (Promise) and **wait** till the cup is in your hand (await) before you drink."
+            },
+            {
+              "note": "remember",
+              "text": "Every Playwright action returns a Promise; always await it. Locators themselves need no await."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// async = this function is allowed to wait\ntest('my test', async ({ page }) => {\n  // await = wait till the page has loaded\n  await page.goto('/login');\n  // no await: a locator is just a description\n  const btn = page.getByRole('button');\n  // await: the click really happens here\n  await btn.click();\n});",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Symbol",
+                  "Means"
+                ],
+                "rows": [
+                  [
+                    "`async`",
+                    "this function can use await"
+                  ],
+                  [
+                    "`await x`",
+                    "pause until promise x finishes"
+                  ],
+                  [
+                    "`Promise<T>`",
+                    "\"a T will arrive later\""
+                  ],
+                  [
+                    "`(a) => …`",
+                    "arrow function, a short function"
+                  ],
+                  [
+                    "`x?.y`",
+                    "read y only if x is not null"
+                  ],
+                  [
+                    "`!`",
+                    "\"trust me, not null\" (e.g. `process.env.PASS!`)"
+                  ],
+                  [
+                    "`: string`",
+                    "type annotation: this must be text"
+                  ],
+                  [
+                    "`Promise.all([…])`",
+                    "wait for several things together"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\n// async function = a function that can \"wait\" inside. Every Playwright test is one.\ntest('why await matters', async ({ page }) => {\n  // page.goto returns a Promise (a \"token\": the work will finish later).\n  // await = \"stop here until it is done\".\n  await page.goto('https://demo.playwright.dev/todomvc');\n\n  // ❌ forgetting await: the next line runs before the typing finishes -> flaky or\n  //    \"Target closed\" errors. Turn on the ESLint rule @typescript-eslint/no-floating-promises.\n  // page.getByPlaceholder('What needs to be done?').fill('Milk');\n\n  // ✅ with await\n  await page.getByPlaceholder('What needs to be done?').fill('Milk');\n\n  // Locators are lazy: creating one needs NO await (nothing happens yet)\n  const input = page.getByPlaceholder('What needs to be done?');\n  await input.press('Enter');                         // the action needs await\n\n  // web-first expect on a locator -> await; plain value -> no await\n  await expect(page.getByTestId('todo-title')).toHaveText('Milk');\n  const count: number = await page.getByTestId('todo-item').count(); // \": number\" = type annotation\n  expect(count).toBe(1);\n\n  // run things at the same time with Promise.all (both must finish)\n  const [response] = await Promise.all([\n    page.waitForResponse(r => r.url().includes('todomvc')).catch(() => null), // arrow function: r => ...\n    page.reload(),\n  ]);\n  console.log(response?.status());                    // ?. = \"only if not null\"\n});\n\n// a typed helper: async + return type Promise<void>\nasync function addTodo(page: import('@playwright/test').Page, text: string): Promise<void> {\n  await page.getByPlaceholder('What needs to be done?').fill(text);\n  await page.keyboard.press('Enter');\n}\nexport { addTodo };",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "locators",
+          "title": "4. Locators: finding elements",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "A locator is an **address** for an element on the page. Best addresses describe it **like a user would**: \"the button called Buy\", not \"the 3rd div inside the 2nd div\"."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Locators:** Giving a **delivery boy an address**: \"Flat 302, Shanti Apartments\" (role + name) works; \"the third door after the blue gate\" (XPath) breaks when the gate is repainted. **Locator vs ElementHandle:** A locator is the **address** (always finds today's resident); an ElementHandle is a **photo of the person** (wrong after they move out)."
+            },
+            {
+              "note": "remember",
+              "text": "Prefer getByRole, getByLabel, getByText, getByTestId; CSS/XPath last. Locators are lazy, strict and auto-waiting."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// the button whose visible name is \"Buy\" (best)\npage.getByRole('button', { name: 'Buy' });\n// the input whose <label> says \"Email\"\npage.getByLabel('Email');\n// element with data-testid=\"cart-total\"\npage.getByTestId('cart-total');\n// the first list row containing \"Mug\"\npage.getByRole('listitem').filter({ hasText: 'Mug' }).first();",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Locator",
+                  "Use when"
+                ],
+                "rows": [
+                  [
+                    "`getByRole(role, { name })`",
+                    "buttons, links, headings, checkboxes (first choice)"
+                  ],
+                  [
+                    "`getByLabel`",
+                    "form fields with a label"
+                  ],
+                  [
+                    "`getByPlaceholder`",
+                    "inputs with placeholder text"
+                  ],
+                  [
+                    "`getByText`",
+                    "non-interactive text"
+                  ],
+                  [
+                    "`getByAltText` / `getByTitle`",
+                    "images / title attribute"
+                  ],
+                  [
+                    "`getByTestId`",
+                    "devs added `data-testid`"
+                  ],
+                  [
+                    "`locator(css)` / `locator('//xpath')`",
+                    "nothing else works"
+                  ],
+                  [
+                    "`.filter({ hasText, has })`",
+                    "narrow a list"
+                  ],
+                  [
+                    "`.first() .last() .nth(i)`",
+                    "position (0-based), use rarely"
+                  ],
+                  [
+                    "`a.locator(b)` / `a.getByRole(…)`",
+                    "chain: search inside a"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('locators, best to worst', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n\n  // 1) BY ROLE: how a user / screen reader sees it (best)\n  page.getByRole('button', { name: 'Add to cart' });\n  page.getByRole('link', { name: /privacy/i });            // regex, case-insensitive\n  page.getByRole('heading', { name: 'Cart', level: 2 });\n  page.getByRole('checkbox', { name: 'Gift wrap' });\n  page.getByRole('textbox', { name: 'Email' });\n\n  // 2) BY TEXT / LABEL / PLACEHOLDER / ALT / TITLE\n  page.getByText('Free delivery');                         // substring match\n  page.getByText('Free delivery', { exact: true });        // whole text, exact case\n  page.getByLabel('Password');                             // <label> linked to the input\n  page.getByPlaceholder('Search products');\n  page.getByAltText('Company logo');                       // <img alt=\"...\">\n  page.getByTitle('Close');\n\n  // 3) BY TEST ID: data-testid=\"cart-total\" (stable, set by devs)\n  page.getByTestId('cart-total');                          // attribute name configurable: use.testIdAttribute\n\n  // 4) CSS and XPath (last resort: break when design changes)\n  page.locator('#login-form .submit');                     // CSS\n  page.locator('xpath=//button[@type=\"submit\"]');          // XPath (or just start with //)\n\n  // FILTER: narrow a list\n  const rows = page.getByRole('listitem');\n  rows.filter({ hasText: 'Mug' });                         // items containing \"Mug\"\n  rows.filter({ hasNotText: 'Sold out' });\n  rows.filter({ has: page.getByRole('button', { name: 'Buy' }) }); // items that contain a Buy button\n\n  // POSITION (avoid if you can: order may change)\n  rows.first(); rows.last(); rows.nth(2);                  // nth is 0-based -> 3rd item\n\n  // CHAINING: search inside another locator\n  const card = page.getByTestId('product-card').filter({ hasText: 'Mug' });\n  await card.getByRole('button', { name: 'Add to cart' }).click();\n\n  // and / or\n  page.getByRole('button').and(page.getByTitle('Subscribe'));\n  page.getByRole('button', { name: 'New' }).or(page.getByText('Confirm'));\n\n  // STRICT: an action on a locator matching 2+ elements throws -> make it unique\n  await expect(page.getByTestId('cart-count')).toHaveText('1');\n});\n\ntest('locator vs elementHandle', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  // Locator: a \"recipe\", found fresh every time it is used, auto-waits -> USE THIS\n  const buy = page.getByRole('button', { name: 'Buy' });\n  await buy.click();\n  // ElementHandle: a pointer to ONE DOM node found now; goes stale if the page re-renders (discouraged)\n  const handle = await page.$('button.buy');               // may be null\n  await handle?.click();\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "actions",
+          "title": "5. Actions: click, type, select, drag",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Actions are what a user **does**: click, type, tick a box, choose from a dropdown, drag. Before each action Playwright checks the element is visible, enabled and still."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**fill vs pressSequentially:** **fill** = pasting a full address from WhatsApp; **pressSequentially** = typing it letter by letter on a phone keypad."
+            },
+            {
+              "note": "remember",
+              "text": "fill() sets the value at once; pressSequentially() types key by key (type() is deprecated). force:true skips checks: last resort."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// clear the box and put \"Akash\" in it\nawait page.getByLabel('Name').fill('Akash');\n// tick the checkbox\nawait page.getByLabel('I agree').check();\n// choose \"Pune\" in the dropdown\nawait page.getByLabel('City').selectOption('Pune');\n// click Save (waits till clickable)\nawait page.getByRole('button', { name: 'Save' }).click();\n// drag one box onto another\nawait page.getByTestId('card').dragTo(page.getByTestId('done'));",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Want",
+                  "Code"
+                ],
+                "rows": [
+                  [
+                    "type text",
+                    "`fill('x')` · `pressSequentially('x', { delay })`"
+                  ],
+                  [
+                    "clear",
+                    "`clear()`"
+                  ],
+                  [
+                    "keys",
+                    "`press('Enter')` · `keyboard.press('Control+A')`"
+                  ],
+                  [
+                    "double / right click",
+                    "`dblclick()` · `click({ button: 'right' })`"
+                  ],
+                  [
+                    "Shift+click",
+                    "`click({ modifiers: ['Shift'] })`"
+                  ],
+                  [
+                    "skip checks",
+                    "`click({ force: true })` (hides real bugs)"
+                  ],
+                  [
+                    "hover / focus",
+                    "`hover()` · `focus()`"
+                  ],
+                  [
+                    "checkbox",
+                    "`check()` · `uncheck()` · `setChecked(bool)`"
+                  ],
+                  [
+                    "dropdown",
+                    "`selectOption('value' | { label } | [..])`"
+                  ],
+                  [
+                    "scroll",
+                    "automatic · `scrollIntoViewIfNeeded()` · `mouse.wheel(0, 800)`"
+                  ],
+                  [
+                    "drag",
+                    "`dragTo(target)` or mouse down/move/up"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test } from '@playwright/test';\n\ntest('actions', async ({ page }) => {\n  await page.goto('https://shop.example.com/form');\n  const name = page.getByLabel('Name');\n\n  // TEXT\n  await name.fill('Akash');                         // clears, then sets the value at once (use this)\n  await name.clear();                               // empty the field\n  await name.pressSequentially('Akash', { delay: 100 }); // types key by key (for search-as-you-type). type() is deprecated\n  await name.press('Control+A');                    // one key / shortcut on this element\n  await page.keyboard.press('Backspace');           // keyboard on whatever is focused\n  await page.keyboard.type('Hi');                   // type into the focused element\n  await page.keyboard.down('Shift'); await page.keyboard.up('Shift');\n\n  // CLICKS\n  const btn = page.getByRole('button', { name: 'Save' });\n  await btn.click();\n  await btn.dblclick();                             // double click\n  await btn.click({ button: 'right' });             // right click (context menu)\n  await btn.click({ modifiers: ['Shift'] });        // Shift+click ('Control', 'Alt', 'Meta', 'ControlOrMeta')\n  await btn.click({ position: { x: 5, y: 5 } });    // click a spot inside the element\n  await btn.click({ force: true });                 // skip actionability checks (last resort; hides real bugs)\n  await btn.click({ clickCount: 3 });               // triple click\n\n  // OTHER ACTIONS\n  await page.getByText('Menu').hover();             // mouse over\n  await page.getByLabel('I agree').check();         // tick (no-op if already ticked)\n  await page.getByLabel('Newsletter').uncheck();\n  await page.getByLabel('Gift').setChecked(true);\n  await page.getByLabel('City').selectOption('Pune');             // by value or label\n  await page.getByLabel('City').selectOption({ label: 'Mumbai' });\n  await page.getByLabel('Skills').selectOption(['ts', 'py']);     // multi-select\n  await name.focus();                               // put the cursor there\n  await name.blur();\n  await page.getByText('Footer').scrollIntoViewIfNeeded();        // scroll to it (actions scroll automatically)\n  await page.mouse.wheel(0, 800);                   // scroll the page by 800px\n\n  // DRAG AND DROP\n  await page.getByTestId('task-1').dragTo(page.getByTestId('done-column'));\n  // manual version with the mouse\n  await page.getByTestId('task-2').hover();\n  await page.mouse.down();\n  await page.getByTestId('done-column').hover();\n  await page.mouse.up();\n\n  // MOUSE by coordinates (canvas, maps)\n  await page.mouse.click(200, 150);\n  await page.mouse.move(0, 0);\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "navigation",
+          "title": "6. Navigation & waits",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Moving between pages is like using the browser's address bar and Back button. Playwright **already waits** for most things; you only add a wait for a **specific signal**, never a fixed sleep."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**waitForTimeout vs real waits:** **Fixed sleep** = waiting 10 minutes on the platform \"just in case\"; **real wait** = waiting until the **train announcement** comes."
+            },
+            {
+              "note": "remember",
+              "text": "Use goto/reload/goBack, toHaveURL or waitForURL, waitForResponse for API calls; avoid waitForTimeout and networkidle."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// open a page (baseURL + /products)\nawait page.goto('/products');\n// go to the cart\nawait page.getByRole('link', { name: 'Cart' }).click();\n// wait until the address contains \"cart\"\nawait expect(page).toHaveURL(/cart/);\n// press the browser's Back button\nawait page.goBack();\n// ❌ await page.waitForTimeout(3000);         // a fixed sleep: slow and still flaky",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Wait for…",
+                  "Use"
+                ],
+                "rows": [
+                  [
+                    "an element",
+                    "nothing extra (actions + expect auto-wait) · `locator.waitFor()`"
+                  ],
+                  [
+                    "the URL",
+                    "`await expect(page).toHaveURL(…)` · `page.waitForURL(…)`"
+                  ],
+                  [
+                    "an API reply",
+                    "`const p = page.waitForResponse(…)` before the click, then `await p`"
+                  ],
+                  [
+                    "page load",
+                    "`goto` waits for `load` · `waitForLoadState('domcontentloaded')`"
+                  ],
+                  [
+                    "time",
+                    "❌ `waitForTimeout`: debugging only"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('navigation and waits', async ({ page }) => {\n  await page.goto('/products');                          // relative to baseURL; waits for \"load\" by default\n  await page.goto('/products', { waitUntil: 'domcontentloaded' }); // 'load' | 'domcontentloaded' | 'networkidle' | 'commit'\n  await page.reload();\n  await page.goBack();                                   // browser Back button\n  await page.goForward();\n\n  // wait for the address bar to change after a click\n  await page.getByRole('link', { name: 'Cart' }).click();\n  await page.waitForURL('**/cart');                      // glob or regex\n  await expect(page).toHaveURL(/\\/cart$/);               // same idea, as an assertion (preferred)\n\n  // load states\n  await page.waitForLoadState('domcontentloaded');\n  await page.waitForLoadState('networkidle');            // no requests for 500ms; discouraged for normal tests\n\n  // wait for a specific API call triggered by a click: start waiting BEFORE the click\n  const respPromise = page.waitForResponse(r => r.url().includes('/api/cart') && r.status() === 200);\n  await page.getByRole('button', { name: 'Add to cart' }).click();\n  const resp = await respPromise;\n  expect((await resp.json()).items).toHaveLength(1);\n\n  // page.waitForRequest('**/api/track') works the same for outgoing requests\n\n  // wait for an element (usually not needed: actions and expect already wait)\n  await page.getByText('Order placed').waitFor({ state: 'visible' });\n\n  // ❌ AVOID: fixed sleep, slow AND still flaky\n  // await page.waitForTimeout(3000);\n  // ✅ wait for the real signal instead\n  await expect(page.getByText('Order placed')).toBeVisible({ timeout: 10_000 });\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "pages",
-          "title": "3. Popups, dialogs, frames, many tabs",
+          "title": "7. Popups, dialogs, frames, many tabs",
           "blocks": [
             {
               "note": "idea",
@@ -1493,8 +1883,275 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "tabs",
+          "title": "8. Tabs & windows recap",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Every tab is just another **Page** object. \"Switching\" means using a different variable. All tabs of one context are in `context.pages()`."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Tabs:** Several **TV channels on one remote**: you don't move the TV, you just pick which channel (Page variable) to watch."
+            },
+            {
+              "note": "remember",
+              "text": "context.waitForEvent('page') before the click; context.pages() lists tabs; page.close() closes one."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// get ready for a new tab\nconst newTabPromise = context.waitForEvent('page');\n// this opens it\nawait page.getByText('Terms').click();\n// terms = the new tab\nconst terms = await newTabPromise;\n// how many tabs are open (2)\nconsole.log(context.pages().length);\n// close it; keep using page\nawait terms.close();",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('tabs and windows', async ({ page, context }) => {\n  await page.goto('https://shop.example.com');\n\n  // a link with target=_blank opens a new tab: catch it (start waiting before the click)\n  const pagePromise = context.waitForEvent('page');      // any new tab in this context\n  await page.getByRole('link', { name: 'Terms' }).click();\n  const terms = await pagePromise;\n  await terms.waitForLoadState();\n  await expect(terms).toHaveTitle(/Terms/);\n\n  // all open tabs of this context\n  const tabs = context.pages();                          // [page, terms]\n  console.log(tabs.length, tabs.map(t => t.url()));\n\n  // \"switch\" = just use the other Page object. bringToFront only matters for headed demos\n  await page.bringToFront();\n  await page.getByRole('button', { name: 'Accept' }).click();\n\n  // open a new tab yourself\n  const extra = await context.newPage();\n  await extra.goto('https://shop.example.com/help');\n\n  await terms.close();                                   // close one tab\n  await extra.close();\n  expect(context.pages()).toHaveLength(1);\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "upload",
+          "title": "9. File upload & download",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**Upload:** hand the file straight to the file box, no OS window needed. **Download:** say \"I'm expecting a parcel\", click, then receive and save it."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Download:** Telling the **watchman** \"a Flipkart parcel is coming\" before you order, so he catches it at the gate."
+            },
+            {
+              "note": "remember",
+              "text": "setInputFiles for upload (filechooser if no input); waitForEvent('download') before the click, then saveAs."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// put the file in the input\nawait page.getByLabel('Upload photo').setInputFiles('data/photo.png');\n// expect a download\nconst downloadPromise = page.waitForEvent('download');\n// start it\nawait page.getByText('Invoice PDF').click();\n// receive it\nconst download = await downloadPromise;\n// save it where we want\nawait download.saveAs('downloads/invoice.pdf');",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\nimport path from 'node:path';\n\ntest('upload and download', async ({ page }) => {\n  await page.goto('https://shop.example.com/profile');\n\n  // UPLOAD: put files straight into <input type=\"file\">\n  const fileInput = page.getByLabel('Upload photo');\n  await fileInput.setInputFiles(path.join(__dirname, 'data/photo.png'));          // one file\n  await fileInput.setInputFiles(['data/a.pdf', 'data/b.pdf']);                      // several (input needs \"multiple\")\n  await fileInput.setInputFiles([]);                                                // clear selection\n  await fileInput.setInputFiles({ name: 'note.txt', mimeType: 'text/plain', buffer: Buffer.from('hello') }); // made in memory\n\n  // UPLOAD when there is no visible input (a button opens the OS picker)\n  const chooserPromise = page.waitForEvent('filechooser');\n  await page.getByRole('button', { name: 'Choose file' }).click();\n  const chooser = await chooserPromise;\n  await chooser.setFiles('data/photo.png');\n\n  // DOWNLOAD: start waiting, click, then save\n  const downloadPromise = page.waitForEvent('download');\n  await page.getByRole('link', { name: 'Invoice PDF' }).click();\n  const download = await downloadPromise;\n  expect(download.suggestedFilename()).toBe('invoice.pdf');\n  await download.saveAs(path.join(test.info().outputDir, download.suggestedFilename())); // keep it\n  console.log(await download.path());                   // temp file path (deleted when the context closes)\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "frames",
+          "title": "10. iframes, alerts & shadow DOM",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "An **iframe** is a page inside a page: step into it first with `frameLocator`. **Alerts** must be answered by a listener you set up **before** they appear. **Shadow DOM** (hidden component insides) just works with normal locators."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**iframe:** A **shop inside a mall**: you must first walk into that shop (frameLocator) before picking items off its shelves. **Dialogs:** A **doorbell**: decide in advance who answers it (listener), otherwise nobody opens (auto-dismiss)."
+            },
+            {
+              "note": "remember",
+              "text": "frameLocator for iframes; page.on/once('dialog') before the action (default: dismiss); locators pierce open shadow DOM, XPath does not."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// step inside the iframe\nconst pay = page.frameLocator('#payment-iframe');\n// then use normal locators\nawait pay.getByLabel('Card number').fill('4242...');\n// answer the next alert with OK\npage.once('dialog', d => d.accept());\n// this shows the alert\nawait page.getByRole('button', { name: 'Delete' }).click();",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('iframes, dialogs, shadow DOM', async ({ page }) => {\n  await page.goto('https://shop.example.com/checkout');\n\n  // IFRAME: a page inside the page. Step \"into\" it first.\n  const payment = page.frameLocator('#payment-iframe');                 // by CSS of the <iframe>\n  await payment.getByLabel('Card number').fill('4242 4242 4242 4242');\n  // same thing, starting from a normal locator\n  await page.locator('#payment-iframe').contentFrame().getByRole('button', { name: 'Pay' }).click();\n  // nested iframe = chain\n  await page.frameLocator('#outer').frameLocator('#inner').getByText('OK').click();\n\n  // DIALOGS: alert / confirm / prompt / beforeunload. Register BEFORE the action.\n  page.once('dialog', async dialog => {\n    console.log(dialog.type(), dialog.message());                       // 'confirm', 'Delete item?'\n    await dialog.accept();                                              // OK  (dialog.dismiss() = Cancel)\n  });\n  await page.getByRole('button', { name: 'Delete' }).click();\n\n  page.once('dialog', d => d.accept('Akash'));                          // prompt: type an answer\n  await page.getByRole('button', { name: 'Rename' }).click();\n  // without a listener Playwright auto-DISMISSES dialogs\n\n  // SHADOW DOM: locators pierce OPEN shadow roots automatically, nothing special\n  await page.getByRole('button', { name: 'Shadow button' }).click();\n  await page.locator('my-widget .inner-text').click();                  // CSS also pierces\n  // (XPath does NOT pierce shadow roots; closed shadow roots are not reachable)\n  await expect(page.getByText('Done')).toBeVisible();\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "hooks",
+          "title": "11. Hooks, describe, annotations, steps & timeouts",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**Hooks** run code before/after tests, like warming up before a match. **describe** groups tests. **Annotations** label tests: skip, fixme, fail, slow, only. **test.step** gives steps names in the report."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Hooks:** **Net practice before every match** (beforeEach) and **ground cleaning after** (afterEach); the season opening ceremony is beforeAll. **Retries & flaky tests:** A **cricket review**: if the first decision looks wrong, check again (retry) — but if every review is needed, fix the umpire (the test)."
+            },
+            {
+              "note": "remember",
+              "text": "beforeAll/afterAll once per worker, beforeEach/afterEach per test; skip/fixme/fail/slow/only; default test timeout 30 s, expect 5 s."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// a group of related tests\ntest.describe('Cart', () => {\n  // runs before EACH test below\n  test.beforeEach(async ({ page }) => {\n    // so every test starts on the cart\n    await page.goto('/cart');\n  });\n  // tagged test\n  test('shows total', { tag: '@smoke' }, async ({ page }) => { /* ... */ });\n  // skipped: known bug to fix\n  test.fixme('coupon bug', async () => {});\n});",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Annotation",
+                  "Effect"
+                ],
+                "rows": [
+                  [
+                    "`test.skip()`",
+                    "do not run (can be conditional)"
+                  ],
+                  [
+                    "`test.fixme()`",
+                    "skip, marked as \"to fix\""
+                  ],
+                  [
+                    "`test.fail()`",
+                    "expected to fail; passes if it fails"
+                  ],
+                  [
+                    "`test.slow()`",
+                    "triple the timeout"
+                  ],
+                  [
+                    "`test.only()`",
+                    "run only this (blocked on CI by forbidOnly)"
+                  ],
+                  [
+                    "`{ tag: '@smoke' }`",
+                    "filter with `--grep @smoke`"
+                  ],
+                  [
+                    "`test.setTimeout(ms)`",
+                    "change this test's timeout"
+                  ],
+                  [
+                    "`describe.configure({ retries })`",
+                    "retries for a group"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest.describe('Cart', () => {                        // a group (can nest)\n  test.beforeAll(async () => {                       // once per worker, before the group\n    console.log('seed data');\n  });\n  test.beforeEach(async ({ page }) => {              // before EVERY test in the group\n    await page.goto('/cart');\n  });\n  test.afterEach(async ({ page }, testInfo) => {     // after every test\n    if (testInfo.status !== testInfo.expectedStatus) {\n      await testInfo.attach('failed', { body: await page.screenshot(), contentType: 'image/png' });\n    }\n  });\n  test.afterAll(async () => { console.log('clean up'); });\n\n  test('empty cart message', { tag: '@smoke' }, async ({ page }) => {\n    await test.step('open cart', async () => {       // named step in report + trace\n      await page.getByRole('link', { name: 'Cart' }).click();\n    });\n    await test.step('see message', async () => {\n      await expect(page.getByText('Your cart is empty')).toBeVisible();\n    });\n  });\n\n  // ANNOTATIONS\n  test.skip('not built yet', async () => {});       // skipped\n  test.fixme('known bug JIRA-12', async () => {});   // skipped, marked \"to fix\"\n  test('webkit only issue', async ({ page, browserName }) => {\n    test.skip(browserName === 'webkit', 'feature not on Safari'); // conditional skip\n    test.slow();                                     // triple the timeout\n    test.info().annotations.push({ type: 'issue', description: 'JIRA-34' });\n    await page.goto('/cart');\n  });\n  test('known failing', async () => {\n    test.fail();                                     // expected to fail; passes if it fails\n    expect(1).toBe(2);\n  });\n  // test.only('debug just me', ...)  -> runs ONLY this; forbidOnly: !!process.env.CI blocks it on CI\n});\n\ntest('timeouts and info', async ({ page }, testInfo) => {\n  test.setTimeout(60_000);                           // this test: 60 s (default 30 s)\n  console.log(testInfo.title, testInfo.retry, testInfo.project.name, testInfo.workerIndex);\n  if (testInfo.retry > 0) console.log('this is a retry');\n  await page.goto('/cart', { timeout: 15_000 });     // per-action timeout\n  await expect(page.getByText('Cart')).toBeVisible({ timeout: 10_000 }); // per-assertion\n});\n\n// retries for one group only\ntest.describe('flaky area', () => {\n  test.describe.configure({ retries: 2 });\n  test('payment widget', async ({ page }) => { await page.goto('/pay'); });\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "debugging",
+          "title": "12. Screenshots, video, trace & debugging tools",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "When a test fails you want **evidence**: a photo (screenshot), a video, or best of all a **trace**, a time-travel recording of every step with DOM, network and console."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Trace viewer:** The **DRS replay with Hawk-Eye**: go ball by ball, see exactly where it pitched (DOM, network, console at each step)."
+            },
+            {
+              "note": "remember",
+              "text": "Trace viewer is the #1 debug tool (trace: on-first-retry, show-trace); --debug or page.pause() opens the Inspector; --ui for UI mode; codegen records."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// photo of the whole page\nawait page.screenshot({ path: 'home.png', fullPage: true });\n// photo of one element\nawait page.getByTestId('cart').screenshot({ path: 'cart.png' });\n// freeze here and open the Inspector (headed)\nawait page.pause();\n// terminal: npx playwright show-trace test-results/.../trace.zip",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Tool",
+                  "Command",
+                  "Use for"
+                ],
+                "rows": [
+                  [
+                    "Trace viewer",
+                    "`npx playwright show-trace trace.zip`",
+                    "CI failures (best)"
+                  ],
+                  [
+                    "Inspector",
+                    "`--debug` or `await page.pause()`",
+                    "step through locally"
+                  ],
+                  [
+                    "UI mode",
+                    "`--ui`",
+                    "watch mode, time travel, pick locators"
+                  ],
+                  [
+                    "Headed",
+                    "`--headed` + `slowMo` in launchOptions",
+                    "see it happen"
+                  ],
+                  [
+                    "Codegen",
+                    "`npx playwright codegen url`",
+                    "record actions, find locators"
+                  ],
+                  [
+                    "VS Code",
+                    "Playwright Test extension",
+                    "run/debug with breakpoints"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test } from '@playwright/test';\n\ntest('screenshots and debugging', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n\n  await page.screenshot({ path: 'shots/home.png' });                    // what is visible now\n  await page.screenshot({ path: 'shots/full.png', fullPage: true });     // the whole long page\n  await page.getByTestId('cart').screenshot({ path: 'shots/cart.png' }); // one element\n  await page.screenshot({ path: 'shots/masked.png', mask: [page.getByTestId('price')] }); // hide parts\n\n  // attach to the HTML report\n  await test.info().attach('home', { body: await page.screenshot(), contentType: 'image/png' });\n\n  // await page.pause();   // stops here and opens the Inspector (works with --headed / --debug)\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// playwright.config.ts — what to record\nimport { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  use: {\n    screenshot: 'only-on-failure',  // 'off' | 'on' | 'only-on-failure'\n    video: 'retain-on-failure',     // 'off' | 'on' | 'retain-on-failure' | 'on-first-retry'\n    trace: 'on-first-retry',        // 'off' | 'on' | 'retain-on-failure' | 'on-first-retry'\n  },\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "fixtures",
-          "title": "4. Custom fixtures",
+          "title": "13. Custom fixtures",
           "blocks": [
             {
               "note": "idea",
@@ -1562,8 +2219,48 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "pom",
+          "title": "14. Page Object Model (POM) recap",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "A Page Object is a **class for one screen**. It keeps the locators and actions (\"login\", \"add to cart\") in one place, so tests read like a story and a UI change is fixed in one file."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Page Object Model:** A **TV remote**: you press \"Volume +\" without knowing the circuits inside; if the TV changes, only the remote is rewired."
+            },
+            {
+              "note": "remember",
+              "text": "POM = one class per page with locators + actions; tests keep the business assertions; inject POMs via fixtures."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// one class for the login screen\nclass LoginPage {\n  // keep the tab to work on\n  constructor(private page: Page) {}\n  // an action a user can do here\n  async login(email: string, pass: string) {\n    // locators live inside the class\n    await this.page.getByLabel('Email').fill(email);\n    await this.page.getByLabel('Password').fill(pass);\n    await this.page.getByRole('button', { name: 'Sign in' }).click();\n  }\n}",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// pages/LoginPage.ts — Page Object: the \"how\" of one screen in one place\nimport { type Page, type Locator, expect } from '@playwright/test';\n\nexport class LoginPage {\n  readonly email: Locator;                           // locators as fields (created once, lazy)\n  readonly password: Locator;\n  readonly submit: Locator;\n  readonly error: Locator;\n\n  constructor(private readonly page: Page) {         // \"private readonly page\" = a field set from the argument\n    this.email = page.getByLabel('Email');\n    this.password = page.getByLabel('Password');\n    this.submit = page.getByRole('button', { name: 'Sign in' });\n    this.error = page.getByRole('alert');\n  }\n\n  async goto() { await this.page.goto('/login'); }\n\n  async login(email: string, password: string) {     // one user-level action\n    await this.email.fill(email);\n    await this.password.fill(password);\n    await this.submit.click();\n  }\n\n  async expectError(text: string) {                  // optional helper assertion\n    await expect(this.error).toContainText(text);\n  }\n}",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// tests/login.spec.ts — the test reads like plain English\nimport { test, expect } from '@playwright/test';\nimport { LoginPage } from './pom';\n\ntest('wrong password shows an error', async ({ page }) => {\n  const login = new LoginPage(page);                 // build the page object (or get it from a fixture)\n  await login.goto();\n  await login.login('me@test.com', 'wrong');\n  await login.expectError('Invalid password');\n  await expect(page).toHaveURL(/login/);             // business check stays in the test\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "auth",
-          "title": "5. Log in once: storageState + setup project",
+          "title": "15. Log in once: storageState + setup project",
           "blocks": [
             {
               "note": "idea",
@@ -1619,7 +2316,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "storage",
-          "title": "6. localStorage & sessionStorage",
+          "title": "16. localStorage & sessionStorage",
           "blocks": [
             {
               "note": "idea",
@@ -1667,7 +2364,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "api",
-          "title": "7. API testing",
+          "title": "17. API testing",
           "blocks": [
             {
               "note": "idea",
@@ -1717,7 +2414,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "mock",
-          "title": "8. Network mocking: page.route & HAR",
+          "title": "18. Network mocking: page.route & HAR",
           "blocks": [
             {
               "note": "idea",
@@ -1783,7 +2480,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "assertions",
-          "title": "9. Assertions cheat sheet",
+          "title": "19. Assertions cheat sheet",
           "blocks": [
             {
               "note": "idea",
@@ -1882,7 +2579,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "emulation",
-          "title": "10. Geolocation & emulation",
+          "title": "20. Geolocation & emulation",
           "blocks": [
             {
               "note": "idea",
@@ -1921,8 +2618,70 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "quality",
+          "title": "21. Visual, accessibility, mobile, browsers, headless",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**Visual test:** compare today's screenshot with a saved \"golden\" one. **Accessibility (a11y):** check the page works for people using screen readers, with axe. **Projects** run the same tests on Chrome, Firefox, Safari engine and phones. **Headless** = no window (fast, CI); **headed** = you can see it."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Visual testing:** **Spot the difference** puzzle in the newspaper: compare two pictures pixel by pixel. **Headless vs headed:** A **radio commentary** (headless: it happens, you don't see it) vs **watching on TV** (headed)."
+            },
+            {
+              "note": "remember",
+              "text": "toHaveScreenshot (update with -u); @axe-core/playwright AxeBuilder.analyze(); devices[] for phones; projects for browsers; headless by default, --headed to watch."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// compare with the saved picture\nawait expect(page).toHaveScreenshot('home.png');\n// run accessibility rules on the page\nconst r = await new AxeBuilder({ page }).analyze();\n// expect zero problems\nexpect(r.violations).toEqual([]);\n// config: projects: [{ name: 'iphone', use: { ...devices['iPhone 15'] } }] // run as an iPhone",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Engine",
+                  "Real browser"
+                ],
+                "rows": [
+                  [
+                    "chromium",
+                    "Chrome, Edge (`channel: 'chrome' | 'msedge'`)"
+                  ],
+                  [
+                    "firefox",
+                    "Firefox"
+                  ],
+                  [
+                    "webkit",
+                    "Safari's engine (works on Linux/Windows too)"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\nimport AxeBuilder from '@axe-core/playwright';      // npm i -D @axe-core/playwright\n\ntest('visual check', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  // 1st run saves the \"golden\" image; later runs compare pixel by pixel\n  await expect(page).toHaveScreenshot('home.png', {\n    fullPage: true,\n    maxDiffPixelRatio: 0.01,                         // allow 1% difference\n    mask: [page.getByTestId('live-time')],           // hide parts that always change\n    animations: 'disabled',\n  });\n  // update goldens on purpose: npx playwright test --update-snapshots\n});\n\ntest('accessibility check', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  const results = await new AxeBuilder({ page })\n    .withTags(['wcag2a', 'wcag2aa'])                 // which rules\n    .exclude('#third-party-chat')                    // skip what you don't own\n    .analyze();\n  expect(results.violations).toEqual([]);            // no a11y problems\n});\n\ntest('aria snapshot', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  await expect(page.getByRole('navigation')).toMatchAriaSnapshot(`\n    - link \"Home\"\n    - link \"Cart\"\n  `);\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// playwright.config.ts — many browsers + phones + headed/headless\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  use: { headless: true },                           // default; CLI --headed shows the window\n  projects: [\n    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },\n    { name: 'firefox',  use: { ...devices['Desktop Firefox'] } },\n    { name: 'webkit',   use: { ...devices['Desktop Safari'] } },   // Safari's engine\n    { name: 'chrome',   use: { ...devices['Desktop Chrome'], channel: 'chrome' } }, // real Google Chrome\n    { name: 'edge',     use: { ...devices['Desktop Edge'], channel: 'msedge' } },\n    { name: 'iphone',   use: { ...devices['iPhone 15'] } },        // viewport, userAgent, touch, isMobile\n    { name: 'android',  use: { ...devices['Pixel 7'] } },\n  ],\n});\n// npx playwright test --project=iphone --headed",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "datadriven",
-          "title": "11. Data-driven tests",
+          "title": "22. Data-driven tests",
           "blocks": [
             {
               "note": "idea",
@@ -1977,7 +2736,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "files",
-          "title": "12. Test data from files & .env",
+          "title": "23. Test data from files & .env",
           "blocks": [
             {
               "note": "idea",
@@ -2051,7 +2810,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "run",
-          "title": "13. Run commands cheat sheet",
+          "title": "24. Run commands cheat sheet",
           "blocks": [
             {
               "note": "idea",
@@ -2098,7 +2857,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "reporters",
-          "title": "14. Reporters",
+          "title": "25. Reporters",
           "blocks": [
             {
               "note": "idea",
@@ -2184,7 +2943,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "config",
-          "title": "15. playwright.config.ts walkthrough",
+          "title": "26. playwright.config.ts walkthrough",
           "blocks": [
             {
               "note": "idea",
@@ -2218,7 +2977,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "parallel",
-          "title": "16. Parallelism & sharding",
+          "title": "27. Parallelism & sharding",
           "blocks": [
             {
               "note": "idea",
@@ -2241,7 +3000,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "bash"
             },
             {
-              "img": "assets/img/playwright/workers-shards.svg?v=202610151449",
+              "img": "assets/img/playwright/workers-shards.svg?v=202610151544",
               "width": 400,
               "height": 456,
               "alt": "Diagram: 100 tests split by --shard across two machines; each machine runs two workers; blob reports merged into one HTML report.",
@@ -2309,7 +3068,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "ci",
-          "title": "17. CI/CD: Jenkins + artifacts",
+          "title": "28. CI/CD: Jenkins + artifacts",
           "blocks": [
             {
               "note": "idea",
@@ -2347,7 +3106,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "allure",
-          "title": "18. Allure report",
+          "title": "29. Allure report",
           "blocks": [
             {
               "note": "idea",
@@ -2417,7 +3176,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "framework",
-          "title": "19. Framework structure",
+          "title": "30. Framework structure",
           "blocks": [
             {
               "note": "idea",
@@ -2435,7 +3194,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "ts"
             },
             {
-              "img": "assets/img/playwright/layers.svg?v=202610151449",
+              "img": "assets/img/playwright/layers.svg?v=202610151544",
               "width": 400,
               "height": 686,
               "alt": "Diagram: tests use fixtures, fixtures use page objects, page objects use utils and test data, all configured by playwright.config.ts.",
@@ -2475,7 +3234,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "cli",
-          "title": "20. CLI & test agents",
+          "title": "31. CLI & test agents",
           "blocks": [
             {
               "note": "idea",
@@ -2522,7 +3281,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "ai",
-          "title": "21. Claude Code & Copilot agent mode",
+          "title": "32. Claude Code & Copilot agent mode",
           "blocks": [
             {
               "note": "idea",
@@ -2564,7 +3323,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "mcp",
-          "title": "22. Playwright MCP setup",
+          "title": "33. Playwright MCP setup",
           "blocks": [
             {
               "note": "idea",
@@ -2611,7 +3370,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "repo-mcp",
-          "title": "23. GitHub & Bitbucket MCP",
+          "title": "34. GitHub & Bitbucket MCP",
           "blocks": [
             {
               "note": "idea",
@@ -2660,7 +3419,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "workflow",
-          "title": "24. Agent workflow: Jira → PR",
+          "title": "35. Agent workflow: Jira → PR",
           "blocks": [
             {
               "note": "idea",
@@ -2678,7 +3437,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "text"
             },
             {
-              "img": "assets/img/playwright/agent-workflow.svg?v=202610151449",
+              "img": "assets/img/playwright/agent-workflow.svg?v=202610151544",
               "width": 400,
               "height": 686,
               "alt": "Diagram: Jira story, then planner, generator, healer agents, then a pull request via GitHub MCP.",
@@ -2698,7 +3457,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "qa",
-          "title": "25. Interview Q&A (tap to reveal)",
+          "title": "36. Interview Q&A (tap to reveal)",
           "blocks": [
             {
               "qa": [
@@ -2797,6 +3556,78 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
                 {
                   "q": "What is Playwright MCP?",
                   "a": "An MCP server that lets an AI drive a real browser through accessibility snapshots."
+                },
+                {
+                  "q": "Which locator do you prefer and why?",
+                  "a": "`getByRole` with a name: it matches what users see and survives CSS changes."
+                },
+                {
+                  "q": "What is a strict locator?",
+                  "a": "An action fails if the locator matches more than one element, so you never click the wrong one."
+                },
+                {
+                  "q": "Locator vs ElementHandle?",
+                  "a": "Locator is lazy and re-finds + auto-waits; ElementHandle points to one node and can go stale."
+                },
+                {
+                  "q": "fill vs pressSequentially?",
+                  "a": "fill sets the value at once; pressSequentially types key by key (`type()` is deprecated)."
+                },
+                {
+                  "q": "When would you use force: true?",
+                  "a": "Almost never: it skips actionability checks and can hide real bugs."
+                },
+                {
+                  "q": "Why avoid waitForTimeout?",
+                  "a": "Fixed sleeps are slow and still flaky; wait for a URL, response or element instead."
+                },
+                {
+                  "q": "How do you wait for an API call after a click?",
+                  "a": "Start `page.waitForResponse(...)` before the click, then await it."
+                },
+                {
+                  "q": "How do you upload a file?",
+                  "a": "`locator.setInputFiles(path)`, or `waitForEvent('filechooser')` if there is no input."
+                },
+                {
+                  "q": "How do you verify a download?",
+                  "a": "`waitForEvent('download')` before the click, then `suggestedFilename()` and `saveAs()`."
+                },
+                {
+                  "q": "How do you handle shadow DOM?",
+                  "a": "Nothing special: Playwright locators pierce open shadow roots (XPath does not)."
+                },
+                {
+                  "q": "beforeAll vs beforeEach?",
+                  "a": "beforeAll once per worker for the group; beforeEach before every test."
+                },
+                {
+                  "q": "skip vs fixme vs fail?",
+                  "a": "skip = don't run; fixme = don't run, needs fixing; fail = run and expect it to fail."
+                },
+                {
+                  "q": "What is test.step for?",
+                  "a": "Named steps that show up in the report and trace."
+                },
+                {
+                  "q": "Default timeouts?",
+                  "a": "Test 30 s, expect 5 s, actions/navigation no limit by default (set actionTimeout/navigationTimeout)."
+                },
+                {
+                  "q": "How do you handle flaky tests?",
+                  "a": "Find the cause with traces, use web-first waits, isolate data; retries only as a safety net."
+                },
+                {
+                  "q": "How do you do visual testing?",
+                  "a": "`expect(page).toHaveScreenshot()`; update goldens with `--update-snapshots`; mask dynamic areas."
+                },
+                {
+                  "q": "How do you check accessibility?",
+                  "a": "`@axe-core/playwright`: `new AxeBuilder({ page }).analyze()` and expect no violations."
+                },
+                {
+                  "q": "Why must you await Playwright calls?",
+                  "a": "They return Promises; without await the next line runs before the action finishes."
                 }
               ]
             }
