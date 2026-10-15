@@ -432,8 +432,8 @@ details.more[open] > summary::before { transform: rotate(90deg); }
 .notes-table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
 .notes-table th, .notes-table td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid rgba(44, 196, 181, 0.22); }
 .notes-table th { color: var(--gold); font-weight: 700; }
-.notes-table code { white-space: normal; overflow-wrap: anywhere; word-break: break-word; }
-.notes-table td, .notes-table th { overflow-wrap: anywhere; }
+.notes-table code { white-space: normal; overflow-wrap: break-word; }
+.notes-table td, .notes-table th { overflow-wrap: break-word; }
 .flashcards { display: grid; gap: 8px; margin: 8px 0 14px; }
 .flashcard { border: 1px solid rgba(44, 196, 181, 0.28); border-radius: 12px; padding: 10px 14px; background: rgba(4, 7, 26, 0.5); }
 .flashcard summary { cursor: pointer; font-weight: 600; }
