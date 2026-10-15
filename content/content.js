@@ -40,8 +40,8 @@ window.SARATHI = {
     name: "Sarathi Hub",
     owner: "Akash Debnath",
     tagline: "Your steady charioteer for mind, work and the road ahead.",
-    lastUpdated: "2026-10-15",          // YYYY-MM-DD (IST)
-    lastUpdatedLabel: "Oct 15, 2026 (IST)",
+    lastUpdated: "2026-10-16",          // YYYY-MM-DD (IST)
+    lastUpdatedLabel: "Oct 16, 2026 (IST)",
     timezone: "Asia/Kolkata"
   },
 
@@ -1124,11 +1124,19 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
             {
               "list": [
                 "**Architecture: why Playwright is fast:** One open connection + auto-wait + retrying assertions = fast and less flaky.",
+                "**Install & project setup:** npm init playwright@latest; npx playwright install to update browsers; tests/ + playwright.config.ts are created.",
                 "**Browser → Context → Page:** Browser → Context (isolated session) → Page (tab). New context per test = no leaks.",
                 "**TypeScript basics: async / await:** Every Playwright action returns a Promise; always await it. Locators themselves need no await.",
+                "**JavaScript essentials: values, arrays, objects:** const by default, let if it changes, never var; === not ==; map/filter/find/reduce; ?. for maybe-missing, ?? for defaults.",
+                "**Functions, callbacks & closures:** Arrow functions are short (x => x*2); a callback is a function passed to another; closures remember outer variables.",
+                "**Promises, async/await & the event loop:** Promise = future value; await inside async; try/catch/finally for errors; Promise.all (all succeed), race (first done), allSettled (all results), any (first success).",
+                "**Modules, classes, files & env:** import/export (ES modules) vs require/module.exports (CommonJS); class + constructor + this + extends/super + static; path.join for paths; process.env values are strings.",
+                "**TypeScript essentials: types, interfaces, generics:** type vs interface (both describe objects; type also does unions); ? optional; | union; <T> generics; enums; strict: true in tsconfig.",
                 "**Locators: finding elements:** Prefer getByRole, getByLabel, getByText, getByTestId; CSS/XPath last. Locators are lazy, strict and auto-waiting.",
                 "**Actions: click, type, select, drag:** fill() sets the value at once; pressSequentially() types key by key (type() is deprecated). force:true skips checks: last resort.",
+                "**Actionability & element states:** Actionability = attached, visible, stable, receives events, enabled; waitFor states attached/detached/visible/hidden; isX() checks once, expect().toBeX() retries.",
                 "**Navigation & waits:** Use goto/reload/goBack, toHaveURL or waitForURL, waitForResponse for API calls; avoid waitForTimeout and networkidle.",
+                "**Run JavaScript in the page: evaluate:** page.evaluate(fn, arg) runs in the browser; pass data as an argument; locator.evaluate gets the element; prefer built-ins like inputValue/textContent.",
                 "**Popups, dialogs, frames, many tabs:** Start waitForEvent('popup') before the click; register page.on('dialog') before the action.",
                 "**Tabs & windows recap:** context.waitForEvent('page') before the click; context.pages() lists tabs; page.close() closes one.",
                 "**File upload & download:** setInputFiles for upload (filechooser if no input); waitForEvent('download') before the click, then saveAs.",
@@ -1139,25 +1147,32 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
                 "**Page Object Model (POM) recap:** POM = one class per page with locators + actions; tests keep the business assertions; inject POMs via fixtures.",
                 "**Log in once: storageState + setup project:** A setup project logs in once and saves storageState; other projects load it.",
                 "**localStorage & sessionStorage:** storageState saves cookies + localStorage, NOT sessionStorage.",
+                "**Cookies:** context.addCookies([...]) before goto; context.cookies(url); context.clearCookies() (filter by name in 1.43+).",
                 "**API testing:** The request fixture (APIRequestContext) sends HTTP calls; check with expect(res).toBeOK().",
                 "**Network mocking: page.route & HAR:** page.route + fulfill / abort / continue / fetch; routeFromHAR replays recorded traffic.",
+                "**WebSockets & service workers:** page.on('websocket') to listen; page.routeWebSocket (1.48+) to mock; serviceWorkers: 'block' so routes see everything.",
                 "**Assertions cheat sheet:** await expect(locator) retries; expect(value) checks once. Use expect.soft to keep going.",
                 "**Geolocation & emulation:** Set geolocation + permissions on the context; devices['iPhone 15'] for phones.",
                 "**Visual, accessibility, mobile, browsers, headless:** toHaveScreenshot (update with -u); @axe-core/playwright AxeBuilder.analyze(); devices[] for phones; projects for browsers; headless by default, --headed to watch.",
+                "**Browser & context options, test.use:** use: { viewport, colorScheme, userAgent, locale, extraHTTPHeaders, httpCredentials, proxy, permissions, offline, launchOptions }; test.use per file/describe; launchPersistentContext keeps a real profile.",
+                "**Time travel (clock), offline & slow network:** page.clock.install / fastForward / runFor / setFixedTime / pauseAt; context.setOffline(true); throttling: CDP Network.emulateNetworkConditions (Chromium) or delay in page.route.",
                 "**Data-driven tests:** Loop over an array and create one test per row, with unique titles.",
                 "**Test data from files & .env:** JSON via import, CSV via csv-parse, Excel via xlsx, secrets via .env + process.env.",
                 "**Run commands cheat sheet:** -g filters by title, --grep @tag by tag, --ui to explore, --debug to step through.",
                 "**Reporters:** list/line/dot for console, html for people, junit/json for CI tools.",
                 "**playwright.config.ts walkthrough:** defineConfig: testDir, timeout, retries, workers, reporter, use, projects, webServer.",
+                "**globalSetup, expect.configure & attachments:** globalSetup/globalTeardown in config (setup projects are preferred: they get traces and fixtures); expect.configure({ timeout, soft }); testInfo.attach(name, { body | path, contentType }).",
                 "**Parallelism & sharding:** Workers = processes on one machine (default half the CPU cores); shards = split across machines.",
                 "**CI/CD: Jenkins + artifacts:** npm ci → npx playwright install --with-deps → npx playwright test → upload report.",
                 "**Allure report:** allure-playwright reporter → allure-results/ → allure generate → allure open.",
                 "**Framework structure:** Tests → fixtures → page objects → utils/data → config; tests only describe steps.",
+                "**Component testing & other languages:** npm init playwright@latest -- --ct, mount() fixture (experimental); Python pytest-playwright, Java, .NET share the same API names.",
                 "**CLI & test agents:** codegen records; show-trace replays; init-agents adds planner, generator, healer.",
                 "**Claude Code & Copilot agent mode:** init-agents writes the agent files + an MCP config; you pick the agent and give a goal.",
                 "**Playwright MCP setup:** Playwright MCP = npx @playwright/mcp@latest, added to your AI app's MCP config.",
                 "**GitHub & Bitbucket MCP:** GitHub MCP: remote https://api.githubcopilot.com/mcp/ or Docker with a PAT; Bitbucket MCP is community-made.",
-                "**Agent workflow: Jira → PR:** Story → plan → tests → heal → PR, with a human review at the end."
+                "**Agent workflow: Jira → PR:** Story → plan → tests → heal → PR, with a human review at the end.",
+                "**Best practices & anti-patterns:** Isolate tests, getByRole/getByTestId, web-first assertions, no sleeps, mock third parties, keep secrets in env, use traces, run on CI with retries."
               ]
             }
           ]
@@ -1171,12 +1186,28 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "list": [
                 "[**Architecture**](#arch): Selenium is sending a **post card** for every instruction; Playwright is **one WhatsApp call kept open** with the browser. → *One live connection, so commands are fast and nothing gets lost between steps.*",
                 "[**Auto-wait**](#arch): An **auto-rickshaw driver waits** till the passenger is fully seated before moving. → *Playwright waits until an element is visible, enabled and stable before it acts.*",
+                "[**Install**](#setup): Buying a **new phone that comes with SIM, charger and apps** already in the box. → *npm init playwright gives config, example test and browsers in one go.*",
                 "[**Browser / Context / Page**](#contexts): A **housing society** (browser) → each **flat** with its own lock (context) → **rooms** in the flat (pages). → *Contexts are isolated: cookies of one flat never reach another.*",
                 "[**async / await**](#ts): Ordering **chai at a tapri**: you place the order (Promise) and **wait** till the cup is in your hand (await) before you drink. → *No await = you \"drink\" before the chai is ready → random failures.*",
+                "[**const / let / var**](#js-basics): **const** = your Aadhaar number (never changes), **let** = your phone balance (changes), **var** = an old ration card (works, but avoid). → *Use const by default, let when reassigning.*",
+                "[**== vs ===**](#js-basics): **==** is a shopkeeper who accepts \"₹10 note = 10 coins\" (converts types); **===** checks it is the **exact same thing**. → *Always use ===.*",
+                "[**map / filter / reduce**](#js-basics): A **thali**: map = add pickle to every item, filter = keep only veg items, reduce = total the bill. → *Transform, select, combine arrays.*",
+                "[**?. and ??**](#js-basics): **?.** = \"check if the auto is there before getting in\"; **??** = \"if no auto, take the bus\" (default). → *Safe access + default only for null/undefined.*",
+                "[**Callback**](#js-functions): Giving the **dhobi your number**: \"call me when the clothes are ironed\" — you don't stand and wait. → *A function passed in, called later.*",
+                "[**Closure**](#js-functions): A **tiffin packed by maa**: even far from home, it still has what she put in. → *An inner function keeps access to outer variables.*",
+                "[**Promise**](#js-async): A **railway PNR / token at a sweet shop**: you have proof the order exists; it is either served (fulfilled) or cancelled (rejected). → *A placeholder for a future value.*",
+                "[**Promise.all / race / allSettled**](#js-async): **all** = the baraat leaves only when everyone is ready; **race** = whichever auto comes first; **allSettled** = the class teacher records every student's result, pass or fail. → *Combine several promises.*",
+                "[**Event loop**](#js-async): **One cook in a dhaba**: finishes the current dish (sync code), then quick add-ons (promises), then orders waiting on the timer board (setTimeout). → *Sync → microtasks → macrotasks.*",
+                "[**Modules**](#js-modules): **Dabbawalas**: each tiffin (file) is labelled and delivered exactly to who asked (import). → *export shares, import receives.*",
+                "[**Class & extends**](#js-modules): A **house blueprint**: every flat built from it has the same rooms; a \"deluxe\" blueprint **extends** it with a balcony. → *Classes create objects; extends inherits.*",
+                "[**TypeScript types**](#ts-types): **Labelled jars in the kitchen**: the \"sugar\" jar must not get salt; the label (type) catches mistakes before cooking. → *Types catch mistakes before running.*",
+                "[**Generics**](#ts-types): A **tiffin box** that can hold any food, but once you say \"dal\" it holds only dal. → *<T> = a type filled in later.*",
                 "[**Locators**](#locators): Giving a **delivery boy an address**: \"Flat 302, Shanti Apartments\" (role + name) works; \"the third door after the blue gate\" (XPath) breaks when the gate is repainted. → *Use stable, user-facing locators.*",
                 "[**Locator vs ElementHandle**](#locators): A locator is the **address** (always finds today's resident); an ElementHandle is a **photo of the person** (wrong after they move out). → *Locators re-find the element every time; handles go stale.*",
                 "[**fill vs pressSequentially**](#actions): **fill** = pasting a full address from WhatsApp; **pressSequentially** = typing it letter by letter on a phone keypad. → *Use fill normally; type key by key only when the app reacts to each key.*",
+                "[**Actionability checks**](#states): A **traffic signal**: the car (click) moves only when the light is green, the road is clear and the car in front has stopped moving. → *Playwright clicks only when the element is ready.*",
                 "[**waitForTimeout vs real waits**](#navigation): **Fixed sleep** = waiting 10 minutes on the platform \"just in case\"; **real wait** = waiting until the **train announcement** comes. → *Wait for an event (URL, response, element), not for time.*",
+                "[**page.evaluate**](#evaluate): Sending a **note through the bank's glass window**: you pass a slip in, the cashier does it inside, you get a reply slip back — you can't reach in yourself. → *Code runs in the browser; only data crosses over.*",
                 "[**Tabs**](#tabs): Several **TV channels on one remote**: you don't move the TV, you just pick which channel (Page variable) to watch. → *A Page object is a tab; use whichever variable you need.*",
                 "[**Download**](#upload): Telling the **watchman** \"a Flipkart parcel is coming\" before you order, so he catches it at the gate. → *Start waitForEvent('download') before the click.*",
                 "[**iframe**](#frames): A **shop inside a mall**: you must first walk into that shop (frameLocator) before picking items off its shelves. → *Enter the frame, then locate inside it.*",
@@ -1189,18 +1220,26 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
                 "[**Page Object Model**](#pom): A **TV remote**: you press \"Volume +\" without knowing the circuits inside; if the TV changes, only the remote is rewired. → *Tests call actions; locator details hide inside the page class.*",
                 "[**storageState**](#auth): A **hotel key card**: check in once at reception, then just tap the card at your door. → *Log in once in a setup project, save the state file, reuse it in every test.*",
                 "[**localStorage vs sessionStorage**](#storage): **localStorage** = your **Aadhaar card** in the wallet (stays). **sessionStorage** = a **platform ticket** (valid only for this visit, this tab). → *storageState saves cookies + localStorage, not sessionStorage.*",
+                "[**Cookies**](#cookies): The **stamp on your hand at a mela**: show it at the gate and you are let back in without buying a new ticket. → *Small data the site uses to remember you.*",
                 "[**page.route mocking**](#mock): A **society security guard** checks every delivery: lets it in, sends it back, or swaps the parcel. → *Intercept requests: fulfill (fake reply), abort (block), continue/fetch (change).*",
                 "[**HAR replay**](#mock): A **recorded cricket match** on replay: the same balls, same shots, no live players needed. → *Record real network traffic once into a .har file, replay it so tests do not need the server.*",
+                "[**WebSocket**](#sockets): **Live cricket commentary on radio**: the channel stays open and updates keep coming, versus calling for the score each time (HTTP). → *A two-way connection that stays open.*",
                 "[**Web-first vs generic**](#assertions): A **third umpire** who keeps replaying till the decision is clear (web-first) vs a **scoreboard** you read once (generic). → *`await expect(locator)` retries until timeout; `expect(value)` checks once.*",
                 "[**Soft assertion**](#assertions): A **teacher marks all mistakes** in the paper instead of stopping at the first one. → *`expect.soft` records the failure and the test keeps going.*",
                 "[**expect.poll / toPass**](#assertions): Calling the **railway enquiry** again and again till it says \"train arrived\" (poll); retrying a **whole recipe** till the dish comes out right (toPass). → *poll retries one value; toPass retries a whole block of code.*",
                 "[**Visual testing**](#quality): **Spot the difference** puzzle in the newspaper: compare two pictures pixel by pixel. → *toHaveScreenshot compares with a golden image.*",
                 "[**Headless vs headed**](#quality): A **radio commentary** (headless: it happens, you don't see it) vs **watching on TV** (headed). → *Headless for speed/CI; headed for debugging.*",
+                "[**test.use**](#browser-options): A **dress code for one function hall**: everyone in this hall (file) wears kurta, other halls follow the default. → *Override options for one file or describe.*",
+                "[**Persistent context**](#browser-options): Your **own home** (keeps everything) vs a **hotel room** (fresh each stay) = normal context. → *launchPersistentContext keeps cookies/extensions between runs.*",
+                "[**Clock API**](#clock): A **time machine for the page**: skip to \"30 minutes later\" without actually waiting at the bus stop. → *Fake Date and timers to test time-based features fast.*",
                 "[**Reporters**](#reporters): The **same match** shown as live score SMS (line), ball-by-ball dots (dot), or a full newspaper report (html). → *Reporters only change how results are shown, not the tests.*",
+                "[**globalSetup**](#global): **Opening the shop shutter** once in the morning, not before every customer. → *Runs once for the whole run.*",
                 "[**Workers vs shards**](#parallel): **Workers** = several **billing counters in one D-Mart**; **shards** = splitting customers across **different D-Mart branches**. → *Workers = processes on one machine; shards = split tests across machines.*",
                 "[**Allure**](#allure): A **wedding photo album**: Playwright clicks the raw photos, Allure makes the album with captions. → *allure-results (raw) → allure generate → a rich HTML report.*",
+                "[**Component testing**](#component): Testing **one dish in the kitchen** before serving the full thali. → *Mount a single component in a real browser.*",
                 "[**Agents: planner / generator / healer**](#cli): Building a house: the **architect** draws the plan, the **mistri** builds it, the **plumber-electrician** fixes leaks later. → *Planner writes the plan, generator writes tests, healer fixes failing tests.*",
-                "[**MCP**](#mcp): A **universal travel adapter**: one plug lets the AI use any tool (browser, GitHub, Jira). → *MCP is a standard way for AI apps to call tools.*"
+                "[**MCP**](#mcp): A **universal travel adapter**: one plug lets the AI use any tool (browser, GitHub, Jira). → *MCP is a standard way for AI apps to call tools.*",
+                "[**Independent tests**](#best): **Separate tiffins for each kid**: if one spills, the others still eat. → *No test should depend on another.*"
               ]
             }
           ]
@@ -1222,144 +1261,204 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "label": "1. Architecture: why Playwright is fast"
             },
             {
+              "anchor": "setup",
+              "label": "2. Install & project setup"
+            },
+            {
               "anchor": "contexts",
-              "label": "2. Browser → Context → Page"
+              "label": "3. Browser → Context → Page"
             },
             {
               "anchor": "ts",
-              "label": "3. TypeScript basics: async / await"
+              "label": "4. TypeScript basics: async / await"
+            },
+            {
+              "anchor": "js-basics",
+              "label": "5. JavaScript essentials: values, arrays, objects"
+            },
+            {
+              "anchor": "js-functions",
+              "label": "6. Functions, callbacks & closures"
+            },
+            {
+              "anchor": "js-async",
+              "label": "7. Promises, async/await & the event loop"
+            },
+            {
+              "anchor": "js-modules",
+              "label": "8. Modules, classes, files & env"
+            },
+            {
+              "anchor": "ts-types",
+              "label": "9. TypeScript essentials: types, interfaces, generics"
             },
             {
               "anchor": "locators",
-              "label": "4. Locators: finding elements"
+              "label": "10. Locators: finding elements"
             },
             {
               "anchor": "actions",
-              "label": "5. Actions: click, type, select, drag"
+              "label": "11. Actions: click, type, select, drag"
+            },
+            {
+              "anchor": "states",
+              "label": "12. Actionability & element states"
             },
             {
               "anchor": "navigation",
-              "label": "6. Navigation & waits"
+              "label": "13. Navigation & waits"
+            },
+            {
+              "anchor": "evaluate",
+              "label": "14. Run JavaScript in the page: evaluate"
             },
             {
               "anchor": "pages",
-              "label": "7. Popups, dialogs, frames, many tabs"
+              "label": "15. Popups, dialogs, frames, many tabs"
             },
             {
               "anchor": "tabs",
-              "label": "8. Tabs & windows recap"
+              "label": "16. Tabs & windows recap"
             },
             {
               "anchor": "upload",
-              "label": "9. File upload & download"
+              "label": "17. File upload & download"
             },
             {
               "anchor": "frames",
-              "label": "10. iframes, alerts & shadow DOM"
+              "label": "18. iframes, alerts & shadow DOM"
             },
             {
               "anchor": "hooks",
-              "label": "11. Hooks, describe, annotations, steps & timeouts"
+              "label": "19. Hooks, describe, annotations, steps & timeouts"
             },
             {
               "anchor": "debugging",
-              "label": "12. Screenshots, video, trace & debugging tools"
+              "label": "20. Screenshots, video, trace & debugging tools"
             },
             {
               "anchor": "fixtures",
-              "label": "13. Custom fixtures"
+              "label": "21. Custom fixtures"
             },
             {
               "anchor": "pom",
-              "label": "14. Page Object Model (POM) recap"
+              "label": "22. Page Object Model (POM) recap"
             },
             {
               "anchor": "auth",
-              "label": "15. Log in once: storageState + setup project"
+              "label": "23. Log in once: storageState + setup project"
             },
             {
               "anchor": "storage",
-              "label": "16. localStorage & sessionStorage"
+              "label": "24. localStorage & sessionStorage"
+            },
+            {
+              "anchor": "cookies",
+              "label": "25. Cookies"
             },
             {
               "anchor": "api",
-              "label": "17. API testing"
+              "label": "26. API testing"
             },
             {
               "anchor": "mock",
-              "label": "18. Network mocking: page.route & HAR"
+              "label": "27. Network mocking: page.route & HAR"
+            },
+            {
+              "anchor": "sockets",
+              "label": "28. WebSockets & service workers"
             },
             {
               "anchor": "assertions",
-              "label": "19. Assertions cheat sheet"
+              "label": "29. Assertions cheat sheet"
             },
             {
               "anchor": "emulation",
-              "label": "20. Geolocation & emulation"
+              "label": "30. Geolocation & emulation"
             },
             {
               "anchor": "quality",
-              "label": "21. Visual, accessibility, mobile, browsers, headless"
+              "label": "31. Visual, accessibility, mobile, browsers, headless"
+            },
+            {
+              "anchor": "browser-options",
+              "label": "32. Browser & context options, test.use"
+            },
+            {
+              "anchor": "clock",
+              "label": "33. Time travel (clock), offline & slow network"
             },
             {
               "anchor": "datadriven",
-              "label": "22. Data-driven tests"
+              "label": "34. Data-driven tests"
             },
             {
               "anchor": "files",
-              "label": "23. Test data from files & .env"
+              "label": "35. Test data from files & .env"
             },
             {
               "anchor": "run",
-              "label": "24. Run commands cheat sheet"
+              "label": "36. Run commands cheat sheet"
             },
             {
               "anchor": "reporters",
-              "label": "25. Reporters"
+              "label": "37. Reporters"
             },
             {
               "anchor": "config",
-              "label": "26. playwright.config.ts walkthrough"
+              "label": "38. playwright.config.ts walkthrough"
+            },
+            {
+              "anchor": "global",
+              "label": "39. globalSetup, expect.configure & attachments"
             },
             {
               "anchor": "parallel",
-              "label": "27. Parallelism & sharding"
+              "label": "40. Parallelism & sharding"
             },
             {
               "anchor": "ci",
-              "label": "28. CI/CD: Jenkins + artifacts"
+              "label": "41. CI/CD: Jenkins + artifacts"
             },
             {
               "anchor": "allure",
-              "label": "29. Allure report"
+              "label": "42. Allure report"
             },
             {
               "anchor": "framework",
-              "label": "30. Framework structure"
+              "label": "43. Framework structure"
+            },
+            {
+              "anchor": "component",
+              "label": "44. Component testing & other languages"
             },
             {
               "anchor": "cli",
-              "label": "31. CLI & test agents"
+              "label": "45. CLI & test agents"
             },
             {
               "anchor": "ai",
-              "label": "32. Claude Code & Copilot agent mode"
+              "label": "46. Claude Code & Copilot agent mode"
             },
             {
               "anchor": "mcp",
-              "label": "33. Playwright MCP setup"
+              "label": "47. Playwright MCP setup"
             },
             {
               "anchor": "repo-mcp",
-              "label": "34. GitHub & Bitbucket MCP"
+              "label": "48. GitHub & Bitbucket MCP"
             },
             {
               "anchor": "workflow",
-              "label": "35. Agent workflow: Jira → PR"
+              "label": "49. Agent workflow: Jira → PR"
+            },
+            {
+              "anchor": "best",
+              "label": "50. Best practices & anti-patterns"
             },
             {
               "anchor": "qa",
-              "label": "36. Interview Q&A (tap to reveal)"
+              "label": "51. Interview Q&A (tap to reveal)"
             }
           ]
         },
@@ -1389,7 +1488,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "ts"
             },
             {
-              "img": "assets/img/playwright/architecture.svg?v=202610151544",
+              "img": "assets/img/playwright/architecture.svg?v=202610151941",
               "width": 400,
               "height": 586,
               "alt": "Diagram: test code calls the Playwright server (Node driver), which speaks CDP to Chromium or patched protocols to Firefox and WebKit, which drives the browser.",
@@ -1453,8 +1552,77 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "setup",
+          "title": "2. Install & project setup",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "One command creates a ready project: config file, an example test, browsers and (optionally) a GitHub Actions workflow."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Install:** Buying a **new phone that comes with SIM, charger and apps** already in the box."
+            },
+            {
+              "note": "remember",
+              "text": "npm init playwright@latest; npx playwright install to update browsers; tests/ + playwright.config.ts are created."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# answer: TypeScript, tests folder, GitHub Actions?, install browsers\nnpm init playwright@latest\n# run the example test\nnpx playwright test\n# see the HTML report\nnpx playwright show-report\n# upgrade later + new browsers\nnpm i -D @playwright/test@latest && npx playwright install --with-deps",
+              "lang": "bash"
+            },
+            {
+              "table": {
+                "head": [
+                  "Command",
+                  "Does"
+                ],
+                "rows": [
+                  [
+                    "`npx playwright install`",
+                    "download browsers for this version"
+                  ],
+                  [
+                    "`npx playwright install --with-deps chromium`",
+                    "one browser + Linux system libraries"
+                  ],
+                  [
+                    "`npx playwright --version`",
+                    "which version you have"
+                  ],
+                  [
+                    "`npx playwright uninstall`",
+                    "remove browsers"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "my-project/\n├── tests/\n│   └── example.spec.ts          # your first test\n├── tests-examples/              # a bigger demo (todo app), safe to delete\n├── playwright.config.ts         # all settings\n├── package.json                 # @playwright/test in devDependencies\n└── .github/workflows/playwright.yml   # only if you said yes",
+                  "lang": "text"
+                },
+                {
+                  "text": "**First test anatomy** (Arrange, Act, Assert):"
+                },
+                {
+                  "code": "// tests/example.spec.ts — anatomy of a first test\nimport { test, expect } from '@playwright/test';   // 1. bring in \"test\" (runner) and \"expect\" (checks)\n\ntest.describe('Todo app', () => {                   // 2. optional group\n  test('can add a todo', async ({ page }) => {      // 3. title + async body; { page } = fixture (a fresh tab)\n    await page.goto('https://demo.playwright.dev/todomvc');          // 4. ARRANGE: open the app\n    await page.getByPlaceholder('What needs to be done?').fill('Milk'); // 5. ACT: do things\n    await page.keyboard.press('Enter');\n    await expect(page.getByTestId('todo-title')).toHaveText('Milk'); // 6. ASSERT: check the result\n  });                                               // 7. the page/context are closed for you\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "contexts",
-          "title": "2. Browser → Context → Page",
+          "title": "3. Browser → Context → Page",
           "blocks": [
             {
               "note": "idea",
@@ -1477,7 +1645,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "ts"
             },
             {
-              "img": "assets/img/playwright/hierarchy.svg?v=202610151544",
+              "img": "assets/img/playwright/hierarchy.svg?v=202610151941",
               "width": 400,
               "height": 414,
               "alt": "Diagram: one browser contains Context A and Context B; each context has its own cookies and two pages.",
@@ -1526,7 +1694,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "ts",
-          "title": "3. TypeScript basics: async / await",
+          "title": "4. TypeScript basics: async / await",
           "blocks": [
             {
               "note": "idea",
@@ -1603,8 +1771,376 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "js-basics",
+          "title": "5. JavaScript essentials: values, arrays, objects",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "JavaScript is the language Playwright runs on. You mostly need: **variables**, **strings**, **arrays** (lists) and **objects** (labelled boxes), plus a few short symbols like `?.` and `??`."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**const / let / var:** **const** = your Aadhaar number (never changes), **let** = your phone balance (changes), **var** = an old ration card (works, but avoid). **== vs ===:** **==** is a shopkeeper who accepts \"₹10 note = 10 coins\" (converts types); **===** checks it is the **exact same thing**. **map / filter / reduce:** A **thali**: map = add pickle to every item, filter = keep only veg items, reduce = total the bill. **?. and ??:** **?.** = \"check if the auto is there before getting in\"; **??** = \"if no auto, take the bus\" (default)."
+            },
+            {
+              "note": "remember",
+              "text": "const by default, let if it changes, never var; === not ==; map/filter/find/reduce; ?. for maybe-missing, ?? for defaults."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// a value that won't change\nconst name = 'Akash';\n// a value that will change\nlet tries = 0;\n// template literal: put values inside text\nconst msg = `Hi ${name}, try ${tries + 1}`;\n// keep only prices under 500 -> [499]\nconst cheap = [499, 1299].filter(p => p < 500);\n// use 3000 if PORT is not set\nconst port = process.env.PORT ?? 3000;",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Thing",
+                  "Example",
+                  "Result"
+                ],
+                "rows": [
+                  [
+                    "falsy values",
+                    "`false, 0, '', null, undefined, NaN`",
+                    "everything else is truthy (even `[]`, `{}`)"
+                  ],
+                  [
+                    "`0 || 5`",
+                    "OR replaces any falsy",
+                    "5"
+                  ],
+                  [
+                    "`0 ?? 5`",
+                    "?? replaces only null/undefined",
+                    "0"
+                  ],
+                  [
+                    "`[1,2].map(x=>x*2)`",
+                    "change each",
+                    "[2,4]"
+                  ],
+                  [
+                    "`find` vs `filter`",
+                    "first match vs all matches",
+                    "value vs array"
+                  ],
+                  [
+                    "`some` / `every`",
+                    "any / all match",
+                    "true/false"
+                  ],
+                  [
+                    "`{...a, b:1}`",
+                    "spread: copy + override",
+                    "new object"
+                  ],
+                  [
+                    "`const {x} = obj`",
+                    "destructuring",
+                    "x = obj.x"
+                  ],
+                  [
+                    "`JSON.stringify` / `JSON.parse`",
+                    "object ↔ text",
+                    "for files/APIs"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "export {};                         // makes this file a module (own scope)\n// ---------- variables ----------\nconst site = 'shop.example.com';   // const: cannot be re-assigned (use by default)\nlet retries = 0;                   // let: can change, block-scoped { }\nretries++;\n// var count = 1;                  // var: old, function-scoped, hoisted -> avoid\n\n// ---------- data types ----------\nconst n: number = 42;              // number (no separate int/float)\nconst s: string = 'Akash';         // string\nconst ok: boolean = true;          // boolean\nconst nothing = null;              // \"empty on purpose\"\nlet notSet: undefined;             // \"not given a value yet\"\nconst big = 10n;                   // bigint\nconst id = Symbol('id');           // symbol (rare)\nconst user = { name: 'Akash', age: 30 }; // object\nconst tags = ['smoke', 'login'];   // array (an object too)\nconsole.log(typeof n, typeof s, typeof nothing, Array.isArray(tags)); // number string object true\n\n// ---------- template literals ----------\nconst url = `https://${site}/users/${user.name}?try=${retries + 1}`; // backticks + ${ }\n\n// ---------- == vs === ----------\nconsole.log((0 as unknown) == '', (0 as unknown) === '');   // true (converts types) | false (no conversion) -> always use ===\n\n// ---------- truthy / falsy ----------\n// falsy: false, 0, '', null, undefined, NaN   (everything else is truthy, even [] and {})\nif (!process.env.BASE_URL) console.log('BASE_URL missing');\n\n// ---------- ?. and ?? ----------\nconst city = (user as { address?: { city?: string } }).address?.city; // undefined, no crash\nconst port = Number(process.env.PORT ?? 3000);     // ?? only replaces null/undefined\nconst zero = 0 || 5;                               // 5  (|| replaces ANY falsy)\nconst qty: number | null = Number(process.env.QTY ?? 0);\nconst keep = qty ?? 5;                             // 0 stays 0 (?? only replaces null/undefined)\n\n// ---------- arrays ----------\nconst prices = [499, 99, 1299];\nconst withTax = prices.map(p => p * 1.18);         // new array, each changed\nconst cheap = prices.filter(p => p < 500);         // keep matching items\nconst first = prices.find(p => p > 1000);          // first match or undefined\nconst total = prices.reduce((sum, p) => sum + p, 0); // squash into one value\nconst anyFree = prices.some(p => p === 0);         // at least one?\nconst allPositive = prices.every(p => p > 0);      // all?\nprices.forEach((p, i) => console.log(i, p));       // just loop (returns nothing)\nconst has = tags.includes('smoke');\nconst sorted = [...prices].sort((a, b) => a - b);  // copy, then sort numbers\n\n// ---------- objects, destructuring, spread, rest ----------\nconst { name, age = 18 } = user;                   // pull out fields (age default if missing)\nconst [firstTag, ...otherTags] = tags;             // arrays too; ...rest = \"the remaining\"\nconst admin = { ...user, role: 'admin' };          // copy + add/override (spread)\nconst merged = [...tags, 'regression'];\nfunction log(...args: unknown[]) { console.log(args.length); } // rest parameters\nObject.keys(user); Object.values(user); Object.entries(user); // ['name','age'] ...\n\n// ---------- JSON ----------\nconst text = JSON.stringify(admin, null, 2);        // object -> string (pretty)\nconst back = JSON.parse(text) as typeof admin;      // string -> object\n\nconsole.log(url, city, port, zero, keep, withTax, cheap, first, total, anyFree, allPositive,\n  has, sorted, name, age, firstTag, otherTags, merged, back, notSet, big, id, ok, log);",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "js-functions",
+          "title": "6. Functions, callbacks & closures",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "A **function** is a reusable recipe. An **arrow function** is a short way to write one. A **callback** is a recipe you hand to someone to use later. A **closure** is a function that remembers the kitchen it was made in."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Callback:** Giving the **dhobi your number**: \"call me when the clothes are ironed\" — you don't stand and wait. **Closure:** A **tiffin packed by maa**: even far from home, it still has what she put in."
+            },
+            {
+              "note": "remember",
+              "text": "Arrow functions are short (x => x*2); a callback is a function passed to another; closures remember outer variables."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// arrow function: input x, give back x*2\nconst double = (x: number) => x * 2;\n// pass it as a callback -> [2, 4, 6]\n[1, 2, 3].map(double);\n// Playwright calls this callback when a dialog opens\npage.on('dialog', d => d.accept());\n// run this callback after 1 second\nsetTimeout(() => console.log('later'), 1000);",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// ---------- functions ----------\nfunction add(a: number, b: number): number { return a + b; }  // declaration (hoisted)\nconst multiply = (a: number, b: number) => a * b;             // arrow function\nconst square = (x: number) => x * x;                          // one-liner returns automatically\nconst makeUser = (name: string) => ({ name });                // return an object: wrap in ( )\n\n// ---------- callbacks: pass a function to be called later ----------\nfunction onDone(cb: (result: string) => void) { setTimeout(() => cb('done'), 100); }\nonDone(r => console.log(r));\n[3, 1, 2].sort((a, b) => a - b);                              // sort's compare fn is a callback\n\n// ---------- closures: a function remembers variables around it ----------\nfunction counter() {\n  let count = 0;                                              // private to this counter\n  return () => ++count;                                       // the inner function \"closes over\" count\n}\nconst next = counter();\nnext(); next();                                               // 1, 2\n\nconsole.log(add(1, 2), multiply(2, 3), square(4), makeUser('A'), next());",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "js-async",
+          "title": "7. Promises, async/await & the event loop",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "A **Promise** is a token: \"your value will come later\" (pending → fulfilled or rejected). `await` pauses until the token is ready. JavaScript has **one worker**: it finishes normal code, then promise callbacks, then timers."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Promise:** A **railway PNR / token at a sweet shop**: you have proof the order exists; it is either served (fulfilled) or cancelled (rejected). **Promise.all / race / allSettled:** **all** = the baraat leaves only when everyone is ready; **race** = whichever auto comes first; **allSettled** = the class teacher records every student's result, pass or fail. **Event loop:** **One cook in a dhaba**: finishes the current dish (sync code), then quick add-ons (promises), then orders waiting on the timer board (setTimeout)."
+            },
+            {
+              "note": "remember",
+              "text": "Promise = future value; await inside async; try/catch/finally for errors; Promise.all (all succeed), race (first done), allSettled (all results), any (first success)."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// async: this function returns a Promise\nasync function getTitle(page: Page) {\n  try {\n    // wait for the page to load\n    await page.goto('/');\n    // wait for the title, then give it back\n    return await page.title();\n  // log and re-throw so the test still fails\n  } catch (e) { console.error(e); throw e; }\n}",
+              "lang": "ts"
+            },
+            {
+              "img": "assets/img/playwright/async-await.svg?v=202610151941",
+              "width": 400,
+              "height": 566,
+              "alt": "Diagram: callbacks evolve into promises then async/await, which Playwright uses for every action.",
+              "caption": "Callback → Promise → async/await."
+            },
+            {
+              "img": "assets/img/playwright/event-loop.svg?v=202610151941",
+              "width": 400,
+              "height": 466,
+              "alt": "Diagram: the call stack runs first, then the microtask queue (promises), then the macrotask queue (timers).",
+              "caption": "Sync first, then promises, then timers."
+            },
+            {
+              "table": {
+                "head": [
+                  "Combinator",
+                  "Resolves when",
+                  "Rejects when"
+                ],
+                "rows": [
+                  [
+                    "`Promise.all`",
+                    "all succeed",
+                    "any one fails (fast)"
+                  ],
+                  [
+                    "`Promise.race`",
+                    "first one settles",
+                    "first one settles with an error"
+                  ],
+                  [
+                    "`Promise.allSettled`",
+                    "all finished (gives status of each)",
+                    "never"
+                  ],
+                  [
+                    "`Promise.any`",
+                    "first success",
+                    "all fail"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// ---------- Promise: \"I will give you a value later\" ----------\nfunction wait(ms: number): Promise<void> {\n  return new Promise(resolve => setTimeout(resolve, ms));    // resolve() = \"done\"\n}\nfunction fetchUser(id: number): Promise<{ id: number; name: string }> {\n  return new Promise((resolve, reject) => {\n    if (id <= 0) reject(new Error('bad id'));                // reject() = \"failed\"\n    else setTimeout(() => resolve({ id, name: 'Akash' }), 50);\n  });\n}\n\n// old style: .then / .catch chains\nfetchUser(1).then(u => console.log(u.name)).catch(e => console.error(e)).finally(() => console.log('end'));\n\n// ---------- async / await: same thing, reads top to bottom ----------\nasync function main() {\n  try {\n    const u = await fetchUser(1);                            // pause here until resolved\n    console.log(u.name);\n    await fetchUser(0);                                      // rejects -> jumps to catch\n  } catch (err) {\n    console.error('failed:', (err as Error).message);       // handle the error\n  } finally {\n    console.log('always runs');                              // cleanup\n  }\n\n  // ---------- several at once ----------\n  const [a, b] = await Promise.all([fetchUser(1), fetchUser(2)]);   // all must succeed; fails fast\n  const fastest = await Promise.race([wait(100).then(() => 'slow'), wait(10).then(() => 'fast')]); // first to finish\n  const results = await Promise.allSettled([fetchUser(1), fetchUser(-1)]); // never throws\n  results.forEach(r => console.log(r.status));               // 'fulfilled' | 'rejected'\n  const any = await Promise.any([fetchUser(-1), fetchUser(3)]); // first SUCCESS\n  console.log(a, b, fastest, any);\n\n  // ❌ forEach does NOT wait for async callbacks\n  // [1, 2].forEach(async id => await fetchUser(id));\n  // ✅ for...of waits one by one, Promise.all runs in parallel\n  for (const id of [1, 2]) await fetchUser(id);\n  await Promise.all([1, 2].map(id => fetchUser(id)));\n}\n\n// ---------- event loop order ----------\nconsole.log('1 sync');\nsetTimeout(() => console.log('4 timer (macrotask)'), 0);\nPromise.resolve().then(() => console.log('3 promise (microtask)'));\nconsole.log('2 sync');\n// prints 1, 2, 3, 4: sync code first, then ALL microtasks (promises), then timers\n\nmain();",
+                  "lang": "ts"
+                },
+                {
+                  "text": "**Error handling in tests:**"
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('error handling in tests', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n\n  // optional element: try it, ignore if absent (keep it short and rare)\n  try {\n    await page.getByRole('button', { name: 'Close ad' }).click({ timeout: 2_000 });\n  } catch {\n    console.log('no ad today');\n  }\n\n  // better: no try/catch, check once and branch\n  const banner = page.getByRole('button', { name: 'Accept cookies' });\n  if (await banner.isVisible()) await banner.click();\n\n  // ❌ don't swallow real failures: a catch that hides an assertion makes the test always pass\n  // try { await expect(x).toBeVisible(); } catch {}\n\n  // expect a function to throw\n  expect(() => JSON.parse('{bad')).toThrow();\n  await expect(page.goto('http://localhost:1')).rejects.toThrow();     // async version\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "js-modules",
+          "title": "8. Modules, classes, files & env",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**Modules** let files share code (`export` / `import`). **Classes** are blueprints for objects: the base of Page Objects. **fs/path** read test data files. **process.env** reads settings like the environment name."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Modules:** **Dabbawalas**: each tiffin (file) is labelled and delivered exactly to who asked (import). **Class & extends:** A **house blueprint**: every flat built from it has the same rooms; a \"deluxe\" blueprint **extends** it with a balcony."
+            },
+            {
+              "note": "remember",
+              "text": "import/export (ES modules) vs require/module.exports (CommonJS); class + constructor + this + extends/super + static; path.join for paths; process.env values are strings."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// take named things from a package\nimport { test, expect } from '@playwright/test';\n// share this class with other files\nexport class LoginPage {\n  // runs when you write new LoginPage(page)\n  constructor(private page: Page) {}\n}\n// read an environment variable\nconst env = process.env.TEST_ENV ?? 'qa';",
+              "lang": "bash"
+            },
+            {
+              "table": {
+                "head": [
+                  "",
+                  "ES modules",
+                  "CommonJS"
+                ],
+                "rows": [
+                  [
+                    "import",
+                    "`import x from 'y'`",
+                    "`const x = require('y')`"
+                  ],
+                  [
+                    "export",
+                    "`export const a` / `export default`",
+                    "`module.exports = {...}`"
+                  ],
+                  [
+                    "where",
+                    "Playwright TS files, modern Node",
+                    "older Node, some config files"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// ---------- ES modules (what Playwright TS files use) ----------\nimport fs from 'node:fs';                         // default import\nimport path from 'node:path';\nimport { test, expect } from '@playwright/test';  // named imports\nimport * as allure from 'allure-js-commons';      // everything as one object\n\nexport const BASE = 'https://shop.example.com';   // named export\nexport default function helper() { return BASE; } // default export (one per file)\n\n// ---------- CommonJS (older Node style) ----------\n// const fs = require('fs');                      // require instead of import\n// module.exports = { helper };                   // instead of export\n\n// ---------- fs + path for test data ----------\nconst file = path.join(__dirname, 'data', 'users.json');      // build paths safely on any OS\nconst users = JSON.parse(fs.readFileSync(file, 'utf8'));       // read + parse\nfs.mkdirSync(path.join(__dirname, 'out'), { recursive: true });\nfs.writeFileSync(path.join(__dirname, 'out', 'result.json'), JSON.stringify(users, null, 2));\nconsole.log(fs.existsSync(file), path.basename(file), path.extname(file)); // true users.json .json\n\n// ---------- process.env ----------\nconst env = process.env.TEST_ENV ?? 'qa';         // read (always a string or undefined)\nconst isCI = !!process.env.CI;                    // turn into true/false\nconst workers = Number(process.env.WORKERS ?? '2'); // convert to number yourself\nconsole.log(env, isCI, workers, test, expect, allure);\n// set when running:  TEST_ENV=staging npx playwright test   (Windows PowerShell: $env:TEST_ENV=\"staging\")",
+                  "lang": "ts"
+                },
+                {
+                  "code": "import { type Page, type Locator } from '@playwright/test';\n\n// ---------- classes: the base of Page Objects ----------\nclass BasePage {\n  static readonly TIMEOUT = 10_000;            // static: belongs to the class, BasePage.TIMEOUT\n  protected readonly page: Page;               // protected: usable in this class and children\n\n  constructor(page: Page) {                    // runs on \"new BasePage(page)\"\n    this.page = page;                          // this = the object being built\n  }\n  async open(path: string) { await this.page.goto(path); }\n  static describe() { return 'base page'; }    // static method: BasePage.describe()\n}\n\nclass CartPage extends BasePage {              // extends = inherits open(), page ...\n  readonly checkout: Locator;\n  private visits = 0;                          // private: only inside CartPage\n\n  constructor(page: Page) {\n    super(page);                               // must call the parent constructor first\n    this.checkout = page.getByRole('button', { name: 'Checkout' });\n  }\n  override async open() {                      // replace the parent's version\n    this.visits++;\n    await super.open('/cart');                 // call the parent's version\n  }\n  get count() { return this.visits; }          // getter: cart.count (no brackets)\n}\n\nexport { BasePage, CartPage };",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "ts-types",
+          "title": "9. TypeScript essentials: types, interfaces, generics",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "TypeScript is JavaScript **with labels**. You say \"this is a string\", \"this user has a name and a role\", and the editor warns you **before** running if something does not fit."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**TypeScript types:** **Labelled jars in the kitchen**: the \"sugar\" jar must not get salt; the label (type) catches mistakes before cooking. **Generics:** A **tiffin box** that can hold any food, but once you say \"dal\" it holds only dal."
+            },
+            {
+              "note": "remember",
+              "text": "type vs interface (both describe objects; type also does unions); ? optional; | union; <T> generics; enums; strict: true in tsconfig."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// the shape of a user object\ninterface User {\n  // must be text\n  username: string;\n  // optional, and only these two values\n  role?: 'admin' | 'user';\n}\n// ✅ fits the shape\nconst u: User = { username: 'akash' };\n// const bad: User = { name: 'x' };    // ❌ editor error before you even run",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "Feature",
+                  "Example"
+                ],
+                "rows": [
+                  [
+                    "basic",
+                    "`string` `number` `boolean` `string[]` `[string, number]`"
+                  ],
+                  [
+                    "union",
+                    "`'qa' | 'prod'` · `number | string`"
+                  ],
+                  [
+                    "optional",
+                    "`role?: string`"
+                  ],
+                  [
+                    "interface",
+                    "`interface User { name: string }` (can extend & merge)"
+                  ],
+                  [
+                    "type alias",
+                    "`type Id = number | string` (unions, tuples too)"
+                  ],
+                  [
+                    "generic",
+                    "`function first<T>(a: T[]): T`"
+                  ],
+                  [
+                    "enum",
+                    "`enum Role { Admin = 'admin' }`"
+                  ],
+                  [
+                    "utility",
+                    "`Partial<T>` `Pick<T,K>` `Omit<T,K>` `Record<K,V>`"
+                  ],
+                  [
+                    "unknown vs any",
+                    "unknown must be checked; any turns checks off"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// ---------- basic types ----------\nlet title: string = 'Login';\nlet count: number = 3;\nlet done: boolean = false;\nlet ids: number[] = [1, 2];                     // or Array<number>\nlet pair: [string, number] = ['akash', 30];     // tuple: fixed positions\nlet anything: unknown = JSON.parse('{}');       // unknown: must check before use (safer than any)\n\n// ---------- union + literal types ----------\ntype Env = 'qa' | 'staging' | 'prod';           // only these 3 strings allowed\nlet env: Env = 'qa';\nlet idOrName: number | string = 7;\n\n// ---------- interface vs type ----------\ninterface User {                                // describes an object's shape\n  username: string;\n  password: string;\n  role?: 'admin' | 'user';                      // ? = optional\n  readonly id: number;                          // cannot change after creation\n}\ninterface Admin extends User { permissions: string[] }   // interfaces extend (and can merge)\ntype Product = { name: string; price: number }; // type alias: same for objects...\ntype Id = number | string;                      // ...but also unions, tuples, primitives\ntype CartItem = Product & { qty: number };      // & combines types\n\n// ---------- functions with types ----------\nfunction login(user: User, retries = 1): Promise<boolean> { return Promise.resolve(!!user && retries > 0); }\nconst greet = (name?: string): string => `Hi ${name ?? 'guest'}`;\n\n// ---------- generics: a type as a parameter ----------\nfunction firstOf<T>(items: T[]): T | undefined { return items[0]; }\nconst u = firstOf<User>([{ username: 'a', password: 'b', id: 1 }]); // T = User\nasync function getJson<T>(url: string): Promise<T> { return (await fetch(url)).json() as Promise<T>; }\n\n// ---------- enums ----------\nenum Role { Admin = 'admin', User = 'user' }    // named constants (a union type is often simpler)\nconst r: Role = Role.Admin;\n\n// ---------- utility types ----------\ntype UserDraft = Partial<User>;                 // all fields optional\ntype LoginForm = Pick<User, 'username' | 'password'>;\ntype PublicUser = Omit<User, 'password'>;\nconst users: Record<Env, User[]> = { qa: [], staging: [], prod: [] };\n\n// ---------- narrowing ----------\nfunction show(x: number | string) {\n  if (typeof x === 'string') return x.toUpperCase(); // TS knows x is string here\n  return x.toFixed(2);                               // and number here\n}\n\n// \"as\" = tell TS the type (no runtime check). \"!\" = not null.\nconst el = anything as { value: string };\n\nconsole.log(title, count, done, ids, pair, env, idOrName, login, greet(), u, getJson, r,\n  ({} as UserDraft), ({} as LoginForm), ({} as PublicUser), ({} as Admin), ({} as CartItem), ({} as Id), users, show(1), el);",
+                  "lang": "ts"
+                },
+                {
+                  "code": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",            // which JS version to output / allow\n    \"module\": \"commonjs\",          // module system (\"ESNext\" if package.json has \"type\": \"module\")\n    \"strict\": true,                // all strict checks ON (recommended)\n    \"esModuleInterop\": true,       // lets you write: import fs from 'fs'\n    \"resolveJsonModule\": true,     // lets you: import users from './users.json'\n    \"baseUrl\": \".\",\n    \"paths\": { \"@pages/*\": [\"pages/*\"] },  // import { LoginPage } from '@pages/LoginPage'\n    \"types\": [\"node\"],\n    \"noEmit\": true                 // Playwright runs TS itself; tsc is only for type-checking\n  },\n  \"include\": [\"tests\", \"pages\", \"fixtures\", \"utils\", \"*.ts\"]\n}\n// check types without running:  npx tsc --noEmit",
+                  "lang": "json"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "locators",
-          "title": "4. Locators: finding elements",
+          "title": "10. Locators: finding elements",
           "blocks": [
             {
               "note": "idea",
@@ -1690,7 +2226,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "actions",
-          "title": "5. Actions: click, type, select, drag",
+          "title": "11. Actions: click, type, select, drag",
           "blocks": [
             {
               "note": "idea",
@@ -1779,8 +2315,95 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "states",
+          "title": "12. Actionability & element states",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Before clicking, Playwright checks the element is **there, visible, still, not covered and enabled**. You can also wait for a state (`waitFor`) or check it once (`isVisible`)."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Actionability checks:** A **traffic signal**: the car (click) moves only when the light is green, the road is clear and the car in front has stopped moving."
+            },
+            {
+              "note": "remember",
+              "text": "Actionability = attached, visible, stable, receives events, enabled; waitFor states attached/detached/visible/hidden; isX() checks once, expect().toBeX() retries."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// wait until the spinner goes away\nawait page.getByTestId('spinner').waitFor({ state: 'hidden' });\n// wait until Pay can be clicked\nawait expect(page.getByRole('button', { name: 'Pay' })).toBeEnabled();\n// check ONCE, no waiting\nif (await page.getByText('Accept cookies').isVisible()) {\n  // only click if it was there\n  await page.getByText('Accept cookies').click();\n}",
+              "lang": "ts"
+            },
+            {
+              "table": {
+                "head": [
+                  "State",
+                  "Meaning",
+                  "Assert"
+                ],
+                "rows": [
+                  [
+                    "attached",
+                    "in the HTML (maybe invisible)",
+                    "`toBeAttached()`"
+                  ],
+                  [
+                    "visible",
+                    "has size, not hidden",
+                    "`toBeVisible()`"
+                  ],
+                  [
+                    "hidden",
+                    "not visible or not there",
+                    "`toBeHidden()`"
+                  ],
+                  [
+                    "enabled / disabled",
+                    "can be used",
+                    "`toBeEnabled()` `toBeDisabled()`"
+                  ],
+                  [
+                    "editable",
+                    "input you can type in",
+                    "`toBeEditable()`"
+                  ],
+                  [
+                    "checked",
+                    "checkbox ticked",
+                    "`toBeChecked()`"
+                  ],
+                  [
+                    "focused",
+                    "has the cursor",
+                    "`toBeFocused()`"
+                  ],
+                  [
+                    "in viewport",
+                    "on screen now",
+                    "`toBeInViewport()`"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('element states and waitFor', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  const banner = page.getByTestId('promo');\n\n  // waitFor states: 'attached' (in the DOM), 'detached' (removed), 'visible' (default), 'hidden'\n  await banner.waitFor({ state: 'attached' });\n  await page.getByTestId('spinner').waitFor({ state: 'hidden' });\n\n  // read a state ONCE (no waiting) -> use for if/else logic only\n  if (await page.getByRole('button', { name: 'Accept cookies' }).isVisible()) {\n    await page.getByRole('button', { name: 'Accept cookies' }).click();\n  }\n  console.log(await banner.isHidden(), await banner.isEnabled(), await banner.isEditable());\n  console.log(await page.getByLabel('Agree').isChecked());\n\n  // assert a state (waits + retries) -> use for checks\n  await expect(banner).toBeAttached();\n  await expect(banner).toBeVisible();\n  await expect(page.getByRole('button', { name: 'Pay' })).toBeDisabled();\n  await expect(page.getByLabel('Email')).toBeEditable();\n  await expect(page.getByLabel('Email')).toBeFocused();\n  await expect(page.getByTestId('spinner')).toBeHidden();\n  await expect(page.getByRole('img')).toBeInViewport();\n\n  // actionability: click() waits until the element is\n  // attached + visible + stable (not animating) + receives events (not covered) + enabled\n  await page.getByRole('button', { name: 'Buy' }).click({ trial: true }); // run the checks only, don't click\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "navigation",
-          "title": "6. Navigation & waits",
+          "title": "13. Navigation & waits",
           "blocks": [
             {
               "note": "idea",
@@ -1845,8 +2468,44 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "evaluate",
+          "title": "14. Run JavaScript in the page: evaluate",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "`page.evaluate` sends a small function **into the browser**, runs it there, and brings the answer back. Use it for things Playwright has no method for."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**page.evaluate:** Sending a **note through the bank's glass window**: you pass a slip in, the cashier does it inside, you get a reply slip back — you can't reach in yourself."
+            },
+            {
+              "note": "remember",
+              "text": "page.evaluate(fn, arg) runs in the browser; pass data as an argument; locator.evaluate gets the element; prefer built-ins like inputValue/textContent."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// run in the browser, get the title back\nconst title = await page.evaluate(() => document.title);\n// send 21 in as an argument -> 42\nconst twice = await page.evaluate(n => n * 2, 21);\nconst bg = await page.getByRole('button').first()\n  // run on one element\n  .evaluate(el => getComputedStyle(el).color);",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('run JavaScript inside the page', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n\n  // page.evaluate: the function runs IN THE BROWSER, the result comes back to Node\n  const title = await page.evaluate(() => document.title);\n  const width = await page.evaluate(() => window.innerWidth);\n\n  // pass data in as an argument (closures from Node do NOT reach the browser)\n  const doubled = await page.evaluate(n => n * 2, 21);              // 42\n  expect(doubled).toBe(42);\n\n  // locator.evaluate: the element is the first argument\n  const color = await page.getByRole('button', { name: 'Buy' })\n    .evaluate(el => getComputedStyle(el).backgroundColor);\n  const hrefs = await page.getByRole('link').evaluateAll(links => links.map(a => (a as HTMLAnchorElement).href));\n\n  // let the page call a Node function\n  await page.exposeFunction('sha', (text: string) => text.length.toString(16));\n\n  // read values without evaluate when there is a built-in\n  const value = await page.getByLabel('Email').inputValue();\n  const text = await page.getByTestId('total').textContent();\n  const attr = await page.getByRole('link', { name: 'Home' }).getAttribute('href');\n  console.log(title, width, color, hrefs.length, value, text, attr);\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "pages",
-          "title": "7. Popups, dialogs, frames, many tabs",
+          "title": "15. Popups, dialogs, frames, many tabs",
           "blocks": [
             {
               "note": "idea",
@@ -1884,7 +2543,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "tabs",
-          "title": "8. Tabs & windows recap",
+          "title": "16. Tabs & windows recap",
           "blocks": [
             {
               "note": "idea",
@@ -1920,7 +2579,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "upload",
-          "title": "9. File upload & download",
+          "title": "17. File upload & download",
           "blocks": [
             {
               "note": "idea",
@@ -1956,7 +2615,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "frames",
-          "title": "10. iframes, alerts & shadow DOM",
+          "title": "18. iframes, alerts & shadow DOM",
           "blocks": [
             {
               "note": "idea",
@@ -1992,7 +2651,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "hooks",
-          "title": "11. Hooks, describe, annotations, steps & timeouts",
+          "title": "19. Hooks, describe, annotations, steps & timeouts",
           "blocks": [
             {
               "note": "idea",
@@ -2070,7 +2729,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "debugging",
-          "title": "12. Screenshots, video, trace & debugging tools",
+          "title": "20. Screenshots, video, trace & debugging tools",
           "blocks": [
             {
               "note": "idea",
@@ -2151,7 +2810,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "fixtures",
-          "title": "13. Custom fixtures",
+          "title": "21. Custom fixtures",
           "blocks": [
             {
               "note": "idea",
@@ -2220,7 +2879,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "pom",
-          "title": "14. Page Object Model (POM) recap",
+          "title": "22. Page Object Model (POM) recap",
           "blocks": [
             {
               "note": "idea",
@@ -2260,7 +2919,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "auth",
-          "title": "15. Log in once: storageState + setup project",
+          "title": "23. Log in once: storageState + setup project",
           "blocks": [
             {
               "note": "idea",
@@ -2316,7 +2975,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "storage",
-          "title": "16. localStorage & sessionStorage",
+          "title": "24. localStorage & sessionStorage",
           "blocks": [
             {
               "note": "idea",
@@ -2363,8 +3022,44 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "cookies",
+          "title": "25. Cookies",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Cookies are small notes a website stores in the browser (like \"logged in\" or \"accepted cookies\"). Each context has its own. You can add, read and clear them."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Cookies:** The **stamp on your hand at a mela**: show it at the gate and you are let back in without buying a new ticket."
+            },
+            {
+              "note": "remember",
+              "text": "context.addCookies([...]) before goto; context.cookies(url); context.clearCookies() (filter by name in 1.43+)."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// add before visiting\nawait context.addCookies([{ name: 'consent', value: 'yes', url: 'https://shop.com' }]);\n// the site sees the cookie\nawait page.goto('https://shop.com');\n// read all cookies\nconst cookies = await context.cookies();\n// delete them all\nawait context.clearCookies();",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('cookies', async ({ page, context }) => {\n  // add a cookie BEFORE visiting (e.g. skip the cookie banner or set a session)\n  await context.addCookies([\n    { name: 'consent', value: 'yes', domain: 'shop.example.com', path: '/' },\n    { name: 'session', value: 'abc123', url: 'https://shop.example.com', httpOnly: true, secure: true },\n  ]);\n  await page.goto('https://shop.example.com');\n\n  const all = await context.cookies();                               // every cookie in this context\n  const mine = await context.cookies('https://shop.example.com');    // only for this URL\n  expect(mine.find(c => c.name === 'consent')?.value).toBe('yes');\n  console.log(all.length);\n\n  await context.clearCookies({ name: 'session' });                   // delete one (1.43+ filters)\n  await context.clearCookies();                                      // delete all\n  expect(await context.cookies()).toHaveLength(0);\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "api",
-          "title": "17. API testing",
+          "title": "26. API testing",
           "blocks": [
             {
               "note": "idea",
@@ -2414,7 +3109,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "mock",
-          "title": "18. Network mocking: page.route & HAR",
+          "title": "27. Network mocking: page.route & HAR",
           "blocks": [
             {
               "note": "idea",
@@ -2479,8 +3174,44 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "sockets",
+          "title": "28. WebSockets & service workers",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "A **WebSocket** is a phone line that stays open for live data (chat, live scores). Playwright can listen to it, or pretend to be the server with `routeWebSocket`. **Service workers** can hide requests from `page.route`, so block them when mocking."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**WebSocket:** **Live cricket commentary on radio**: the channel stays open and updates keep coming, versus calling for the score each time (HTTP)."
+            },
+            {
+              "note": "remember",
+              "text": "page.on('websocket') to listen; page.routeWebSocket (1.48+) to mock; serviceWorkers: 'block' so routes see everything."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// a live connection opened\npage.on('websocket', ws => {\n  // print every message from the server\n  ws.on('framereceived', f => console.log(f.payload));\n});\nawait page.routeWebSocket('wss://chat.example.com/live', ws => {\n  // act as a fake server\n  ws.onMessage(m => { if (m === 'ping') ws.send('pong'); });\n});",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('listen to WebSockets', async ({ page }) => {\n  page.on('websocket', ws => {                            // fires when the page opens a socket\n    console.log('opened', ws.url());\n    ws.on('framesent', f => console.log('>>', f.payload));\n    ws.on('framereceived', f => console.log('<<', f.payload));\n    ws.on('close', () => console.log('closed'));\n  });\n  await page.goto('https://chat.example.com');\n});\n\ntest('mock a WebSocket server (1.48+)', async ({ page }) => {\n  await page.routeWebSocket('wss://chat.example.com/live', ws => {\n    ws.onMessage(message => {                             // the page sent something\n      if (message === 'ping') ws.send('pong');            // answer like a fake server\n    });\n  });\n  await page.goto('https://chat.example.com');\n  await expect(page.getByText('pong')).toBeVisible();\n});\n\ntest('service workers', async ({ context, page }) => {\n  // block service workers so page.route sees every request (also a config option)\n  // use: { serviceWorkers: 'block' }\n  context.on('serviceworker', worker => console.log('SW', worker.url()));\n  await page.goto('https://pwa.example.com');\n  console.log(context.serviceWorkers().length);\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "assertions",
-          "title": "19. Assertions cheat sheet",
+          "title": "29. Assertions cheat sheet",
           "blocks": [
             {
               "note": "idea",
@@ -2579,7 +3310,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "emulation",
-          "title": "20. Geolocation & emulation",
+          "title": "30. Geolocation & emulation",
           "blocks": [
             {
               "note": "idea",
@@ -2619,7 +3350,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "quality",
-          "title": "21. Visual, accessibility, mobile, browsers, headless",
+          "title": "31. Visual, accessibility, mobile, browsers, headless",
           "blocks": [
             {
               "note": "idea",
@@ -2680,8 +3411,88 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "browser-options",
+          "title": "32. Browser & context options, test.use",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Every \"incognito window\" can be set up differently: screen size, dark mode, language, user agent, headers, login popup passwords, proxy, permissions, offline. Set them in the config, per file with `test.use`, or when you create a context."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**test.use:** A **dress code for one function hall**: everyone in this hall (file) wears kurta, other halls follow the default. **Persistent context:** Your **own home** (keeps everything) vs a **hotel room** (fresh each stay) = normal context."
+            },
+            {
+              "note": "remember",
+              "text": "use: { viewport, colorScheme, userAgent, locale, extraHTTPHeaders, httpCredentials, proxy, permissions, offline, launchOptions }; test.use per file/describe; launchPersistentContext keeps a real profile."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// this FILE: dark + phone size\ntest.use({ colorScheme: 'dark', viewport: { width: 375, height: 812 } });\n// answer the browser login popup\ntest.use({ httpCredentials: { username: 'qa', password: 'secret' } });\n// add a header to every request\ntest.use({ extraHTTPHeaders: { 'x-test': '1' } });\n// config: use: { launchOptions: { slowMo: 250 } }                        // slow every action by 250 ms",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// playwright.config.ts — browser + context options (all can also go in test.use or newContext)\nimport { defineConfig, devices } from '@playwright/test';\n\nexport default defineConfig({\n  use: {\n    // context options (a fresh \"incognito window\" with these settings)\n    viewport: { width: 1366, height: 768 },\n    colorScheme: 'dark',                              // prefers-color-scheme: dark\n    userAgent: 'Mozilla/5.0 MyTestBot',               // override the browser identity\n    locale: 'hi-IN',\n    timezoneId: 'Asia/Kolkata',\n    permissions: ['geolocation', 'notifications', 'clipboard-read'],\n    extraHTTPHeaders: { 'x-test-run': 'nightly' },     // sent with EVERY request\n    httpCredentials: { username: 'qa', password: process.env.BASIC_PASS ?? '' }, // HTTP basic auth popup\n    ignoreHTTPSErrors: true,                          // self-signed certificates on test envs\n    offline: false,\n    javaScriptEnabled: true,\n    proxy: { server: 'http://proxy.company.com:8080', bypass: 'localhost' },\n\n    // browser launch options\n    launchOptions: {\n      slowMo: 250,                                    // wait 250 ms between actions (demos/debug)\n      args: ['--start-maximized'],\n    },\n  },\n  projects: [\n    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },\n    { name: 'dark-mobile', use: { ...devices['Pixel 7'], colorScheme: 'dark' } },\n  ],\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "import { test, expect, chromium } from '@playwright/test';\n\n// test.use: override options for THIS FILE (or a describe block)\ntest.use({ colorScheme: 'dark', viewport: { width: 375, height: 812 }, locale: 'en-IN' });\n\ntest('dark mode on a small screen', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(0, 0, 0)');\n});\n\ntest.describe('admin area', () => {\n  test.use({ extraHTTPHeaders: { authorization: `Bearer ${process.env.API_TOKEN}` } });\n  test('loads', async ({ page }) => { await page.goto('/admin'); });\n});\n\ntest('change things at runtime', async ({ page, context }) => {\n  await page.setViewportSize({ width: 800, height: 600 });\n  await page.emulateMedia({ colorScheme: 'light', media: 'print' });\n  await page.setExtraHTTPHeaders({ 'x-feature': 'new-cart' });\n  await context.grantPermissions(['geolocation'], { origin: 'https://shop.example.com' });\n  await context.clearPermissions();\n  await context.setOffline(true);                       // no internet\n  await page.goto('https://shop.example.com').catch(() => {});\n  await context.setOffline(false);\n});\n\ntest('launch a browser yourself + persistent profile', async () => {\n  // normal launch (what the browser fixture does for you)\n  const browser = await chromium.launch({ headless: false, slowMo: 100, channel: 'chrome' });\n  const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });\n  await (await ctx.newPage()).goto('https://shop.example.com');\n  await browser.close();\n\n  // persistent context = a real user-data folder that KEEPS cookies, extensions, history between runs\n  const persistent = await chromium.launchPersistentContext('./.chrome-profile', { headless: false });\n  await persistent.pages()[0].goto('https://shop.example.com');\n  await persistent.close();\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
+          "anchor": "clock",
+          "title": "33. Time travel (clock), offline & slow network",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**page.clock** lets you control time on the page: freeze \"now\", jump ahead 30 minutes, so countdowns and session-expiry are testable without waiting. **setOffline** is flight mode; slow networks can be faked with CDP (Chromium) or a delayed route."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Clock API:** A **time machine for the page**: skip to \"30 minutes later\" without actually waiting at the bus stop."
+            },
+            {
+              "note": "remember",
+              "text": "page.clock.install / fastForward / runFor / setFixedTime / pauseAt; context.setOffline(true); throttling: CDP Network.emulateNetworkConditions (Chromium) or delay in page.route."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// fake clock BEFORE loading\nawait page.clock.install({ time: new Date('2026-10-16T09:00:00') });\n// the page thinks it's 9 AM\nawait page.goto('/sale');\n// jump 30 minutes ahead instantly\nawait page.clock.fastForward('30:00');\n// flight mode: no internet\nawait context.setOffline(true);",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('control time with page.clock', async ({ page }) => {\n  // install BEFORE the page loads: Date, setTimeout, setInterval become fake\n  await page.clock.install({ time: new Date('2026-10-16T09:00:00+05:30') });\n  await page.goto('https://shop.example.com/sale');\n\n  await page.clock.fastForward('30:00');                 // jump 30 minutes ahead (fires due timers once)\n  await expect(page.getByText('Sale ends in 0 min')).toBeVisible();\n\n  await page.clock.runFor(5_000);                        // run 5 s of timers, tick by tick\n  await page.clock.pauseAt(new Date('2026-10-16T10:00:00+05:30')); // jump + freeze\n  await page.clock.resume();                             // let time flow again\n});\n\ntest('just freeze \"now\"', async ({ page }) => {\n  await page.clock.setFixedTime(new Date('2026-12-31T23:59:00+05:30')); // Date.now() always returns this\n  await page.goto('https://shop.example.com');\n  await expect(page.getByText('Happy New Year')).toBeHidden();\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\ntest('offline mode', async ({ page, context }) => {\n  await page.goto('https://shop.example.com');\n  await context.setOffline(true);                        // like switching on flight mode\n  await page.getByRole('button', { name: 'Refresh' }).click();\n  await expect(page.getByText('You are offline')).toBeVisible();\n  await context.setOffline(false);\n});\n\ntest('slow 3G (Chromium only, via CDP)', async ({ page, browserName }) => {\n  test.skip(browserName !== 'chromium', 'CDP is Chromium-only');\n  const cdp = await page.context().newCDPSession(page);  // talk to Chrome DevTools directly\n  await cdp.send('Network.emulateNetworkConditions', {\n    offline: false,\n    latency: 400,                                        // ms added to each request\n    downloadThroughput: (500 * 1024) / 8,                // ~500 kbps in bytes/s\n    uploadThroughput: (500 * 1024) / 8,\n  });\n  await page.goto('https://shop.example.com');\n});\n\ntest('slow down one API with route (any browser)', async ({ page }) => {\n  await page.route('**/api/products', async route => {\n    await new Promise(r => setTimeout(r, 3_000));        // wait 3 s, then let it through\n    await route.continue();\n  });\n  await page.goto('https://shop.example.com');\n  await expect(page.getByText('Loading...')).toBeVisible();\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "datadriven",
-          "title": "22. Data-driven tests",
+          "title": "34. Data-driven tests",
           "blocks": [
             {
               "note": "idea",
@@ -2736,7 +3547,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "files",
-          "title": "23. Test data from files & .env",
+          "title": "35. Test data from files & .env",
           "blocks": [
             {
               "note": "idea",
@@ -2810,7 +3621,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "run",
-          "title": "24. Run commands cheat sheet",
+          "title": "36. Run commands cheat sheet",
           "blocks": [
             {
               "note": "idea",
@@ -2857,7 +3668,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "reporters",
-          "title": "25. Reporters",
+          "title": "37. Reporters",
           "blocks": [
             {
               "note": "idea",
@@ -2943,7 +3754,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "config",
-          "title": "26. playwright.config.ts walkthrough",
+          "title": "38. playwright.config.ts walkthrough",
           "blocks": [
             {
               "note": "idea",
@@ -2976,8 +3787,56 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "global",
+          "title": "39. globalSetup, expect.configure & attachments",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**globalSetup** runs once before everything (seed data, start a mock server). **expect.configure** makes your own expect with different defaults. **testInfo.attach** puts files and screenshots into the report."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**globalSetup:** **Opening the shop shutter** once in the morning, not before every customer."
+            },
+            {
+              "note": "remember",
+              "text": "globalSetup/globalTeardown in config (setup projects are preferred: they get traces and fixtures); expect.configure({ timeout, soft }); testInfo.attach(name, { body | path, contentType })."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// playwright.config.ts\n// run once before all tests\nglobalSetup: './global-setup.ts',\n// an expect that waits 20 s\nconst slowExpect = expect.configure({ timeout: 20_000 });\n// add a file to the report\nawait test.info().attach('order.json', {\n  body: JSON.stringify(order), contentType: 'application/json' });",
+              "lang": "ts"
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// global-setup.ts — runs ONCE before all tests (prefer a \"setup project\" when you need fixtures/traces)\nimport { type FullConfig } from '@playwright/test';\n\nexport default async function globalSetup(config: FullConfig) {\n  console.log('base URL:', config.projects[0].use.baseURL);\n  process.env.RUN_ID = Date.now().toString();           // share simple values via env\n  // e.g. seed a database, start a mock server, clean old files\n}",
+                  "lang": "ts"
+                },
+                {
+                  "code": "// global-teardown.ts — runs ONCE after all tests\nexport default async function globalTeardown() {\n  console.log('clean up run', process.env.RUN_ID);\n}",
+                  "lang": "ts"
+                },
+                {
+                  "code": "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  globalSetup: require.resolve('./global-setup'),       // a file path ('./global-setup.ts' also works)\n  globalTeardown: require.resolve('./global-teardown'),\n  expect: {\n    timeout: 7_000,\n    toHaveScreenshot: { maxDiffPixels: 50, animations: 'disabled' }, // defaults for every screenshot check\n  },\n});",
+                  "lang": "ts"
+                },
+                {
+                  "code": "import { test, expect } from '@playwright/test';\n\n// expect.configure: a custom expect with its own defaults\nconst slowExpect = expect.configure({ timeout: 20_000 });\nconst softExpect = expect.configure({ soft: true });\n\ntest('attach + configure', async ({ page }, testInfo) => {\n  await page.goto('https://shop.example.com');\n  await slowExpect(page.getByText('Report ready')).toBeVisible();   // waits up to 20 s\n  await softExpect(page.getByText('Beta')).toBeVisible();           // soft by default\n\n  // attach anything to the report: text, JSON, files, screenshots\n  await testInfo.attach('order.json', { body: JSON.stringify({ id: 7 }), contentType: 'application/json' });\n  await testInfo.attach('log', { path: testInfo.outputPath('app.log') });\n  await test.info().attach('page', { body: await page.screenshot(), contentType: 'image/png' });\n\n  // a custom message shows up in the report when it fails\n  await expect(page.getByTestId('total'), 'cart total should be shown').toBeVisible();\n});\n\ntest('toHaveScreenshot options', async ({ page }) => {\n  await page.goto('https://shop.example.com');\n  await expect(page).toHaveScreenshot('home.png', {\n    fullPage: true,                     // whole scroll height\n    maxDiffPixels: 100,                 // or maxDiffPixelRatio: 0.01\n    threshold: 0.2,                     // per-pixel colour tolerance 0..1\n    mask: [page.getByTestId('clock')],  // paint these boxes over\n    animations: 'disabled',             // stop CSS animations\n    caret: 'hide',                      // hide blinking cursor\n    clip: { x: 0, y: 0, width: 800, height: 400 },\n  });\n});",
+                  "lang": "ts"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "parallel",
-          "title": "27. Parallelism & sharding",
+          "title": "40. Parallelism & sharding",
           "blocks": [
             {
               "note": "idea",
@@ -3000,7 +3859,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "bash"
             },
             {
-              "img": "assets/img/playwright/workers-shards.svg?v=202610151544",
+              "img": "assets/img/playwright/workers-shards.svg?v=202610151941",
               "width": 400,
               "height": 456,
               "alt": "Diagram: 100 tests split by --shard across two machines; each machine runs two workers; blob reports merged into one HTML report.",
@@ -3068,7 +3927,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "ci",
-          "title": "28. CI/CD: Jenkins + artifacts",
+          "title": "41. CI/CD: Jenkins + artifacts",
           "blocks": [
             {
               "note": "idea",
@@ -3106,7 +3965,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "allure",
-          "title": "29. Allure report",
+          "title": "42. Allure report",
           "blocks": [
             {
               "note": "idea",
@@ -3176,7 +4035,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "framework",
-          "title": "30. Framework structure",
+          "title": "43. Framework structure",
           "blocks": [
             {
               "note": "idea",
@@ -3194,7 +4053,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "ts"
             },
             {
-              "img": "assets/img/playwright/layers.svg?v=202610151544",
+              "img": "assets/img/playwright/layers.svg?v=202610151941",
               "width": 400,
               "height": 686,
               "alt": "Diagram: tests use fixtures, fixtures use page objects, page objects use utils and test data, all configured by playwright.config.ts.",
@@ -3233,8 +4092,79 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "component",
+          "title": "44. Component testing & other languages",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "**Component testing** mounts one React/Vue/Svelte component in a real browser, without the whole app (still marked experimental). Playwright also exists for **Python, Java and .NET** with the same ideas."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Component testing:** Testing **one dish in the kitchen** before serving the full thali."
+            },
+            {
+              "note": "remember",
+              "text": "npm init playwright@latest -- --ct, mount() fixture (experimental); Python pytest-playwright, Java, .NET share the same API names."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "# set up component testing (choose React/Vue/Svelte)\nnpm init playwright@latest -- --ct",
+              "lang": "bash"
+            },
+            {
+              "table": {
+                "head": [
+                  "Language",
+                  "Install",
+                  "Test runner"
+                ],
+                "rows": [
+                  [
+                    "TypeScript/JS",
+                    "`npm init playwright@latest`",
+                    "@playwright/test (built in)"
+                  ],
+                  [
+                    "Python",
+                    "`pip install pytest-playwright` + `playwright install`",
+                    "pytest (`page` fixture, `expect`)"
+                  ],
+                  [
+                    "Java",
+                    "Maven `com.microsoft.playwright:playwright`",
+                    "JUnit/TestNG"
+                  ],
+                  [
+                    ".NET",
+                    "`Microsoft.Playwright.NUnit` / `MSTest`",
+                    "NUnit/MSTest"
+                  ]
+                ]
+              }
+            },
+            {
+              "details": "Full example (optional)",
+              "blocks": [
+                {
+                  "code": "// tests/Button.spec.tsx (React, experimental)\nimport { test, expect } from '@playwright/experimental-ct-react';\nimport { Button } from '../src/Button';\n\ntest('button click', async ({ mount }) => {\n  let clicked = false;\n  const component = await mount(<Button title=\"Buy\" onClick={() => { clicked = true; }} />); // render just this\n  await component.click();\n  await expect(component).toContainText('Buy');\n  expect(clicked).toBe(true);\n});",
+                  "lang": "tsx"
+                },
+                {
+                  "code": "# Python (pytest-playwright): same ideas, snake_case names\nfrom playwright.sync_api import Page, expect\n\ndef test_add_todo(page: Page):\n    page.goto(\"https://demo.playwright.dev/todomvc\")\n    page.get_by_placeholder(\"What needs to be done?\").fill(\"Milk\")\n    page.keyboard.press(\"Enter\")\n    expect(page.get_by_test_id(\"todo-title\")).to_have_text(\"Milk\")",
+                  "lang": "python"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "cli",
-          "title": "31. CLI & test agents",
+          "title": "45. CLI & test agents",
           "blocks": [
             {
               "note": "idea",
@@ -3281,7 +4211,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "ai",
-          "title": "32. Claude Code & Copilot agent mode",
+          "title": "46. Claude Code & Copilot agent mode",
           "blocks": [
             {
               "note": "idea",
@@ -3323,7 +4253,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "mcp",
-          "title": "33. Playwright MCP setup",
+          "title": "47. Playwright MCP setup",
           "blocks": [
             {
               "note": "idea",
@@ -3370,7 +4300,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "repo-mcp",
-          "title": "34. GitHub & Bitbucket MCP",
+          "title": "48. GitHub & Bitbucket MCP",
           "blocks": [
             {
               "note": "idea",
@@ -3419,7 +4349,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         {
           "type": "lesson",
           "anchor": "workflow",
-          "title": "35. Agent workflow: Jira → PR",
+          "title": "49. Agent workflow: Jira → PR",
           "blocks": [
             {
               "note": "idea",
@@ -3437,7 +4367,7 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
               "lang": "text"
             },
             {
-              "img": "assets/img/playwright/agent-workflow.svg?v=202610151544",
+              "img": "assets/img/playwright/agent-workflow.svg?v=202610151941",
               "width": 400,
               "height": 686,
               "alt": "Diagram: Jira story, then planner, generator, healer agents, then a pull request via GitHub MCP.",
@@ -3456,8 +4386,89 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
         },
         {
           "type": "lesson",
+          "anchor": "best",
+          "title": "50. Best practices & anti-patterns",
+          "blocks": [
+            {
+              "note": "idea",
+              "text": "Good tests are **independent**, use **user-facing locators**, **wait for real signals**, and **test your app, not others**. Most flakiness comes from breaking one of these."
+            },
+            {
+              "note": "analogy",
+              "title": "🇮🇳 Everyday example",
+              "text": "**Independent tests:** **Separate tiffins for each kid**: if one spills, the others still eat."
+            },
+            {
+              "note": "remember",
+              "text": "Isolate tests, getByRole/getByTestId, web-first assertions, no sleeps, mock third parties, keep secrets in env, use traces, run on CI with retries."
+            },
+            {
+              "text": "**Tiny example** (read the comment on each line):"
+            },
+            {
+              "code": "// ❌ fragile                                         ✅ better\n// page.locator('div > div:nth-child(3) button')    page.getByRole('button', { name: 'Buy' })\n// await page.waitForTimeout(3000)                  await expect(page.getByText('Saved')).toBeVisible()\n// expect(await el.isVisible()).toBe(true)          await expect(el).toBeVisible()\n// test 2 depends on data from test 1               each test creates its own data (API/fixture)",
+              "lang": "text"
+            },
+            {
+              "table": {
+                "head": [
+                  "Do ✅",
+                  "Avoid ❌"
+                ],
+                "rows": [
+                  [
+                    "`getByRole` / `getByLabel` / `getByTestId`",
+                    "long CSS/XPath, `nth-child`"
+                  ],
+                  [
+                    "`await expect(locator)…` (retries)",
+                    "`expect(await locator.isVisible())`"
+                  ],
+                  [
+                    "wait for URL/response/element",
+                    "`waitForTimeout`, `networkidle`"
+                  ],
+                  [
+                    "each test sets up its own data",
+                    "tests depending on order"
+                  ],
+                  [
+                    "log in once with storageState",
+                    "UI login in every test"
+                  ],
+                  [
+                    "mock third-party APIs (payments, ads)",
+                    "testing sites you don't control"
+                  ],
+                  [
+                    "secrets in env / CI secrets",
+                    "passwords in code or git"
+                  ],
+                  [
+                    "`trace: 'on-first-retry'` + fix root cause",
+                    "raising retries to hide flakiness"
+                  ],
+                  [
+                    "`forbidOnly` on CI",
+                    "committing `test.only`"
+                  ],
+                  [
+                    "keep Playwright + browsers updated",
+                    "mismatched Docker image versions"
+                  ],
+                  [
+                    "lint for missing `await` (no-floating-promises)",
+                    "forgetting `await`"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "lesson",
           "anchor": "qa",
-          "title": "36. Interview Q&A (tap to reveal)",
+          "title": "51. Interview Q&A (tap to reveal)",
           "blocks": [
             {
               "qa": [
@@ -3628,6 +4639,102 @@ deepeval test run test_file.py           # run pytest-style DeepEval tests` }
                 {
                   "q": "Why must you await Playwright calls?",
                   "a": "They return Promises; without await the next line runs before the action finishes."
+                },
+                {
+                  "q": "let vs const vs var?",
+                  "a": "const can't be reassigned, let can; both block-scoped. var is function-scoped and hoisted, avoid it."
+                },
+                {
+                  "q": "== vs ===?",
+                  "a": "=== compares value and type; == converts types first. Use ===."
+                },
+                {
+                  "q": "What is falsy in JS?",
+                  "a": "false, 0, '', null, undefined, NaN."
+                },
+                {
+                  "q": "null vs undefined?",
+                  "a": "undefined = not assigned yet; null = empty on purpose."
+                },
+                {
+                  "q": "?? vs ||?",
+                  "a": "?? replaces only null/undefined; || replaces any falsy (so 0 becomes the default)."
+                },
+                {
+                  "q": "map vs forEach?",
+                  "a": "map returns a new array; forEach just loops and returns nothing."
+                },
+                {
+                  "q": "What is a Promise?",
+                  "a": "An object for a future value: pending, then fulfilled or rejected."
+                },
+                {
+                  "q": "async/await vs .then?",
+                  "a": "Same promises; await reads top to bottom and uses try/catch."
+                },
+                {
+                  "q": "Promise.all vs allSettled?",
+                  "a": "all fails fast on the first error; allSettled waits for all and reports each status."
+                },
+                {
+                  "q": "Why doesn't forEach work with await?",
+                  "a": "forEach ignores returned promises; use for...of or Promise.all with map."
+                },
+                {
+                  "q": "What is the event loop?",
+                  "a": "Runs sync code, then all microtasks (promises), then the next macrotask (timers, I/O)."
+                },
+                {
+                  "q": "What is a closure?",
+                  "a": "A function that remembers variables from where it was created."
+                },
+                {
+                  "q": "Arrow vs normal function?",
+                  "a": "Arrow is shorter and has no own `this`; normal functions get `this` from how they are called."
+                },
+                {
+                  "q": "ES modules vs CommonJS?",
+                  "a": "import/export vs require/module.exports."
+                },
+                {
+                  "q": "interface vs type?",
+                  "a": "Both describe objects; interfaces can extend/merge, types also do unions and tuples."
+                },
+                {
+                  "q": "What are generics?",
+                  "a": "Type parameters like <T> so one function works with many types safely."
+                },
+                {
+                  "q": "unknown vs any?",
+                  "a": "any switches checks off; unknown forces you to check the type first."
+                },
+                {
+                  "q": "What is an actionability check?",
+                  "a": "Before acting, Playwright waits for attached, visible, stable, receives events, enabled."
+                },
+                {
+                  "q": "What does page.evaluate do?",
+                  "a": "Runs a function inside the browser and returns the serialisable result."
+                },
+                {
+                  "q": "How do you test a countdown without waiting?",
+                  "a": "page.clock.install, then fastForward / runFor."
+                },
+                {
+                  "q": "How do you simulate offline?",
+                  "a": "`context.setOffline(true)` or `use: { offline: true }`."
+                },
+                {
+                  "q": "How do you handle HTTP basic auth?",
+                  "a": "`use: { httpCredentials: { username, password } }`."
+                },
+                {
+                  "q": "globalSetup vs setup project?",
+                  "a": "Both run first; setup projects are preferred because they get fixtures, traces and reports."
+                },
+                {
+                  "q": "What is test.use?",
+                  "a": "Overrides options (viewport, locale, storageState...) for a file or describe block."
                 }
               ]
             }
